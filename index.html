@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="YIA — Young Inventors Group. Scientific research and technology for the benefit of all humanity.">
+  <title>YIA — Young Inventors Group</title>
+  <style>
+    :root{
+      --bg:#061321; --panel:#0b1d30; --blue:#1597ff; --cyan:#25d9e8;
+      --text:#f7fbff; --muted:#a9bdd1; --line:rgba(255,255,255,.12);
+      --light:#f5f8fc; --ink:#102238;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--light);line-height:1.6}
+    a{text-decoration:none;color:inherit}
+    .hero{min-height:720px;background:
+      radial-gradient(circle at 78% 28%,rgba(21,151,255,.25),transparent 28%),
+      radial-gradient(circle at 55% 85%,rgba(37,217,232,.10),transparent 30%),
+      linear-gradient(135deg,#030c16 0%,#071b2e 55%,#06223a 100%);
+      position:relative;overflow:hidden}
+    .hero:after{content:"";position:absolute;inset:auto -10% -180px;height:360px;background:var(--light);border-radius:50% 50% 0 0/20% 20% 0 0}
+    nav{max-width:1180px;margin:auto;padding:28px 24px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
+    .logo{font-size:46px;letter-spacing:-5px;background:linear-gradient(135deg,#fff,#1ba8ff);-webkit-background-clip:text;color:transparent}
+    .brand small{display:block;font-size:10px;letter-spacing:3px;color:#b7c9da;margin-top:-7px}
+    .links{display:flex;gap:34px;color:#d7e4ef;font-size:15px}
+    .links a:hover{color:#fff}
+    .hero-inner{max-width:1180px;margin:auto;padding:70px 24px 130px;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:1}
+    h1{font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-3px;margin-bottom:24px}
+    .accent{color:var(--blue)}
+    .lead{font-size:20px;color:var(--muted);max-width:650px}
+    .buttons{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+    .btn{padding:13px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-weight:700;display:inline-flex;align-items:center;gap:10px}
+    .btn.primary{background:linear-gradient(90deg,#087fff,#13b5ff);border:0;box-shadow:0 12px 30px rgba(21,151,255,.25)}
+    .orb{height:420px;border-radius:50%;background:
+      radial-gradient(circle at 35% 35%,rgba(255,255,255,.8) 0 2px,transparent 3px),
+      radial-gradient(circle at 65% 60%,rgba(37,217,232,.8) 0 2px,transparent 3px),
+      radial-gradient(circle at center,#15548a 0,#082b49 45%,#020b14 72%);
+      box-shadow:0 0 90px rgba(21,151,255,.24),inset -30px -30px 70px rgba(0,0,0,.5);
+      position:relative}
+    .orb:before{content:"";position:absolute;inset:20%;border:1px solid rgba(255,255,255,.18);border-radius:50%;transform:rotate(25deg) scaleX(1.35)}
+    .orb:after{content:"";position:absolute;width:210px;height:34px;border:2px solid rgba(37,217,232,.65);border-radius:50%;top:47%;left:25%;transform:rotate(-22deg);box-shadow:0 0 25px rgba(37,217,232,.35)}
+    .fields{max-width:1180px;margin:-82px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;position:relative;z-index:5}
+    .field{background:rgba(9,29,47,.88);border:1px solid var(--line);border-radius:15px;padding:19px 12px;text-align:center;color:#dceaf6;backdrop-filter:blur(10px);font-size:13px}
+    .field b{display:block;color:#35c8ff;font-size:24px;margin-bottom:7px}
+    section{max-width:1180px;margin:auto;padding:100px 24px}
+    .about{display:grid;grid-template-columns:1.1fr 1.9fr;gap:50px;color:var(--ink)}
+    .eyebrow{color:#0789ec;text-transform:uppercase;letter-spacing:2px;font-weight:800;font-size:12px}
+    h2{font-size:42px;line-height:1.1;margin:10px 0 20px}
+    .about p{color:#52657a;font-size:17px}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .card{border:1px solid #dce5ee;background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(25,55,80,.05)}
+    .icon{font-size:28px;color:#087fff}
+    .card h3{margin:12px 0 8px;color:var(--ink)}
+    .card p{font-size:14px}
+    .join{background:linear-gradient(135deg,#eaf5ff,#f8fbff);border:1px solid #dce8f2;border-radius:28px;padding:45px;display:grid;grid-template-columns:1fr 1fr;gap:35px;color:var(--ink)}
+    form{display:grid;gap:13px}
+    input{width:100%;padding:15px 17px;border:1px solid #d5e0ea;border-radius:12px;font:inherit;background:white}
+    form button{border:0;padding:15px;border-radius:12px;background:linear-gradient(90deg,#087fff,#11b6ff);color:white;font-weight:800;font-size:15px;cursor:pointer}
+    .note{font-size:12px;color:#718397}
+    footer{background:#061321;color:#91a7bb;padding:35px 24px;text-align:center;font-size:13px}
+    @media(max-width:900px){
+      .links{display:none}.hero-inner{grid-template-columns:1fr;padding-top:45px}.orb{height:300px}.fields{grid-template-columns:repeat(2,1fr);margin-top:-40px}.about,.join{grid-template-columns:1fr}.cards{grid-template-columns:1fr}h2{font-size:34px}
+    }
+  </style>
+</head>
+<body>
+<header class="hero">
+  <nav>
+    <a class="brand" href="#">
+      <span><span class="logo">Yia</span><small>YOUNG INVENTORS GROUP</small></span>
+    </a>
+    <div class="links">
+      <a href="#home">Home</a><a href="#about">About</a><a href="#fields">Fields</a><a href="#members">Members</a><a href="#join">Join</a>
+    </div>
+  </nav>
+  <div class="hero-inner" id="home">
+    <div>
+      <h1>Young Inventors of <span class="accent">YIA</span></h1>
+      <p class="lead">Working in scientific and research fields to develop science and technology for the benefit of all humanity.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#join">Join the Community →</a>
+        <a class="btn" href="#about">Learn More</a>
+      </div>
+    </div>
+    <div class="orb" aria-label="Abstract technology globe"></div>
+  </div>
+</header>
+
+<div class="fields" id="fields">
+  <div class="field"><b>◫</b>Electronics</div>
+  <div class="field"><b>&lt;/&gt;</b>Software</div>
+  <div class="field"><b>◉</b>Artificial Intelligence</div>
+  <div class="field"><b>✚</b>Medical</div>
+  <div class="field"><b>⚙</b>Robotics</div>
+  <div class="field"><b>⌁</b>Automotive</div>
+  <div class="field"><b>◈</b>Energy</div>
+</div>
+
+<section id="about">
+  <div class="about">
+    <div>
+      <div class="eyebrow">About YIA</div>
+      <h2>A community for ideas that can shape the future.</h2>
+      <p>YIA is a global community focused on scientific research, invention and technological development across disciplines — connecting curious minds and encouraging practical solutions for humanity.</p>
+    </div>
+    <div class="cards">
+      <article class="card"><div class="icon">◉</div><h3>Our Mission</h3><p>To promote innovation and scientific research for a better future.</p></article>
+      <article class="card"><div class="icon">◇</div><h3>Our Vision</h3><p>A world where young inventors create solutions for real global challenges.</p></article>
+      <article class="card"><div class="icon">◎</div><h3>Global Community</h3><p>Connecting talented minds from around the world.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="join">
+  <div class="join">
+    <div>
+      <div class="eyebrow">Join YIA</div>
+      <h2>Be part of the community.</h2>
+      <p>Enter your name and email to join the Young Inventors Group.</p>
+      <p class="note" style="margin-top:14px">Your information will be used only for membership purposes.</p>
+    </div>
+    <form id="joinForm">
+      <input type="text" name="name" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <button type="submit">Join Now →</button>
+      <p id="formMessage" class="note"></p>
+    </form>
+  </div>
+</section>
+
+<footer>© 2026 YIA — Young Inventors Group. Science, technology and innovation for humanity.</footer>
+
+<script>
+document.getElementById("joinForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  document.getElementById("formMessage").textContent =
+    "The form interface is ready. Membership storage will be connected in the next step.";
+});
+</script>
+</body>
+</html>
