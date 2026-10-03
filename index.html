@@ -1,144 +1,163 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="YIA — Young Inventors Group. Scientific research and technology for the benefit of all humanity.">
-  <title>YIA — Young Inventors Group</title>
-  <style>
-    :root{
-      --bg:#061321; --panel:#0b1d30; --blue:#1597ff; --cyan:#25d9e8;
-      --text:#f7fbff; --muted:#a9bdd1; --line:rgba(255,255,255,.12);
-      --light:#f5f8fc; --ink:#102238;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
-    body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:var(--light);line-height:1.6}
-    a{text-decoration:none;color:inherit}
-    .hero{min-height:720px;background:
-      radial-gradient(circle at 78% 28%,rgba(21,151,255,.25),transparent 28%),
-      radial-gradient(circle at 55% 85%,rgba(37,217,232,.10),transparent 30%),
-      linear-gradient(135deg,#030c16 0%,#071b2e 55%,#06223a 100%);
-      position:relative;overflow:hidden}
-    .hero:after{content:"";position:absolute;inset:auto -10% -180px;height:360px;background:var(--light);border-radius:50% 50% 0 0/20% 20% 0 0}
-    nav{max-width:1180px;margin:auto;padding:28px 24px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800}
-    .logo{font-size:46px;letter-spacing:-5px;background:linear-gradient(135deg,#fff,#1ba8ff);-webkit-background-clip:text;color:transparent}
-    .brand small{display:block;font-size:10px;letter-spacing:3px;color:#b7c9da;margin-top:-7px}
-    .links{display:flex;gap:34px;color:#d7e4ef;font-size:15px}
-    .links a:hover{color:#fff}
-    .hero-inner{max-width:1180px;margin:auto;padding:70px 24px 130px;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;position:relative;z-index:1}
-    h1{font-size:clamp(44px,6vw,76px);line-height:1.02;letter-spacing:-3px;margin-bottom:24px}
-    .accent{color:var(--blue)}
-    .lead{font-size:20px;color:var(--muted);max-width:650px}
-    .buttons{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
-    .btn{padding:13px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.3);font-weight:700;display:inline-flex;align-items:center;gap:10px}
-    .btn.primary{background:linear-gradient(90deg,#087fff,#13b5ff);border:0;box-shadow:0 12px 30px rgba(21,151,255,.25)}
-    .orb{height:420px;border-radius:50%;background:
-      radial-gradient(circle at 35% 35%,rgba(255,255,255,.8) 0 2px,transparent 3px),
-      radial-gradient(circle at 65% 60%,rgba(37,217,232,.8) 0 2px,transparent 3px),
-      radial-gradient(circle at center,#15548a 0,#082b49 45%,#020b14 72%);
-      box-shadow:0 0 90px rgba(21,151,255,.24),inset -30px -30px 70px rgba(0,0,0,.5);
-      position:relative}
-    .orb:before{content:"";position:absolute;inset:20%;border:1px solid rgba(255,255,255,.18);border-radius:50%;transform:rotate(25deg) scaleX(1.35)}
-    .orb:after{content:"";position:absolute;width:210px;height:34px;border:2px solid rgba(37,217,232,.65);border-radius:50%;top:47%;left:25%;transform:rotate(-22deg);box-shadow:0 0 25px rgba(37,217,232,.35)}
-    .fields{max-width:1180px;margin:-82px auto 0;padding:0 24px;display:grid;grid-template-columns:repeat(7,1fr);gap:10px;position:relative;z-index:5}
-    .field{background:rgba(9,29,47,.88);border:1px solid var(--line);border-radius:15px;padding:19px 12px;text-align:center;color:#dceaf6;backdrop-filter:blur(10px);font-size:13px}
-    .field b{display:block;color:#35c8ff;font-size:24px;margin-bottom:7px}
-    section{max-width:1180px;margin:auto;padding:100px 24px}
-    .about{display:grid;grid-template-columns:1.1fr 1.9fr;gap:50px;color:var(--ink)}
-    .eyebrow{color:#0789ec;text-transform:uppercase;letter-spacing:2px;font-weight:800;font-size:12px}
-    h2{font-size:42px;line-height:1.1;margin:10px 0 20px}
-    .about p{color:#52657a;font-size:17px}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-    .card{border:1px solid #dce5ee;background:white;border-radius:20px;padding:28px;box-shadow:0 10px 30px rgba(25,55,80,.05)}
-    .icon{font-size:28px;color:#087fff}
-    .card h3{margin:12px 0 8px;color:var(--ink)}
-    .card p{font-size:14px}
-    .join{background:linear-gradient(135deg,#eaf5ff,#f8fbff);border:1px solid #dce8f2;border-radius:28px;padding:45px;display:grid;grid-template-columns:1fr 1fr;gap:35px;color:var(--ink)}
-    form{display:grid;gap:13px}
-    input{width:100%;padding:15px 17px;border:1px solid #d5e0ea;border-radius:12px;font:inherit;background:white}
-    form button{border:0;padding:15px;border-radius:12px;background:linear-gradient(90deg,#087fff,#11b6ff);color:white;font-weight:800;font-size:15px;cursor:pointer}
-    .note{font-size:12px;color:#718397}
-    footer{background:#061321;color:#91a7bb;padding:35px 24px;text-align:center;font-size:13px}
-    @media(max-width:900px){
-      .links{display:none}.hero-inner{grid-template-columns:1fr;padding-top:45px}.orb{height:300px}.fields{grid-template-columns:repeat(2,1fr);margin-top:-40px}.about,.join{grid-template-columns:1fr}.cards{grid-template-columns:1fr}h2{font-size:34px}
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Young Inventors Academy — a global community for young inventors, researchers and technology enthusiasts.">
+<title>YIA — Young Inventors Academy</title>
+<style>
+:root{--bg:#020712;--text:#f5f9ff;--muted:#a7bacd;--line:rgba(143,209,255,.18);--cyan:#48dcff;--blue:#39aaff;--violet:#8b61ff;--max:1280px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+a{text-decoration:none;color:inherit}.container{max-width:var(--max);margin:auto;padding:0 34px}
+.hero{min-height:790px;position:relative;overflow:hidden;background:#020712}
+.hero-image{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(1,5,12,.97) 0%,rgba(1,7,16,.82) 35%,rgba(1,7,16,.24) 68%,rgba(1,7,16,.62)),linear-gradient(0deg,#020712 0%,transparent 45%),url("images/hero.jpg");background-size:cover;background-position:center}
+.hero-glow{position:absolute;inset:0;background:radial-gradient(circle at 70% 40%,rgba(50,175,255,.14),transparent 28%),radial-gradient(circle at 90% 15%,rgba(133,83,255,.15),transparent 22%)}
+.hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(90,180,235,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(90,180,235,.035) 1px,transparent 1px);background-size:58px 58px;mask-image:linear-gradient(to bottom,#000,transparent 88%);pointer-events:none}
+nav{height:92px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:5}
+.logo{display:flex;align-items:center;gap:11px;font-size:26px;font-weight:900;letter-spacing:-1px}
+.logo-mark{width:47px;height:35px;border:3px solid white;border-radius:50%;transform:rotate(-22deg);position:relative;box-shadow:0 0 18px rgba(70,210,255,.28)}
+.logo-mark:after{content:"";position:absolute;width:9px;height:9px;border:2px solid #70dcff;border-radius:50%;left:16px;top:10px}
+.logo small{display:block;font-size:10px;line-height:1.05;color:#c7d8e9;font-weight:600;letter-spacing:0}
+.links{display:flex;gap:28px;align-items:center;color:#dce8f3;font-size:14px}
+.links a{padding:11px 0;position:relative}.links a:first-child:after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:#59d6ff;box-shadow:0 0 14px #59d6ff}
+.join-top,.primary{background:linear-gradient(105deg,#35d2ff,#7550ff);box-shadow:0 14px 36px rgba(52,145,255,.27)}
+.join-top{padding:13px 21px;border-radius:999px}
+.hero-grid{min-height:650px;display:grid;grid-template-columns:1.03fr .97fr;align-items:center;position:relative;z-index:2}
+.pill{display:inline-flex;padding:8px 15px;border:1px solid rgba(150,215,255,.22);background:rgba(5,17,30,.58);border-radius:999px;color:#dceaf7;font-size:12px;backdrop-filter:blur(12px)}
+h1{font-size:clamp(55px,6.6vw,88px);line-height:.91;letter-spacing:-5px;margin:20px 0 24px;text-shadow:0 5px 35px rgba(0,0,0,.35)}
+.grad{background:linear-gradient(100deg,#fff 10%,#72caff 45%,#a366ff 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:620px;color:#c4d3e2;font-size:18px;line-height:1.52}
+.actions{display:flex;gap:13px;margin-top:30px;flex-wrap:wrap}.btn{padding:15px 22px;border-radius:999px;border:1px solid rgba(235,246,255,.55);display:inline-flex;align-items:center;gap:12px;font-weight:800}.primary{border:0!important}.secondary{background:rgba(4,14,27,.42);backdrop-filter:blur(8px)}
+.avatars{display:flex;align-items:center;margin-top:28px;color:#b7c9db;font-size:13px}.avatar{width:37px;height:37px;border-radius:50%;border:2px solid #071321;background:linear-gradient(135deg,#74d7ff,#283c67);margin-left:-7px;display:grid;place-items:center;font-size:11px;font-weight:900}.avatar:first-child{margin-left:0}.avatars span{margin-left:14px;border-left:1px solid #5a738e;padding-left:15px}
+.quote{position:absolute;right:3%;bottom:75px;z-index:4;width:255px;padding:20px;border-left:2px solid #40dfff;background:rgba(3,13,25,.62);backdrop-filter:blur(12px);font-size:15px;line-height:1.5}.quote small{display:block;color:#90a7bd;margin-top:10px}
+.stats{margin-top:-35px;position:relative;z-index:8}.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);padding:18px 22px;border:1px solid var(--line);border-radius:22px;background:rgba(6,19,35,.88);backdrop-filter:blur(20px);box-shadow:0 25px 65px rgba(0,0,0,.38)}
+.stat{display:flex;gap:13px;align-items:center;padding:7px 24px;border-right:1px solid rgba(160,220,255,.1)}.stat:last-child{border:0}.stat-icon{font-size:28px;color:#80d9ff}.stat strong{display:block;font-size:27px}.stat span{color:#8eb5d6;font-size:13px}
+.section{max-width:var(--max);margin:auto;padding:75px 34px}
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.feature{height:205px;position:relative;overflow:hidden;border:1px solid rgba(142,204,248,.28);border-radius:19px;background-position:center;background-size:cover;box-shadow:inset 0 -110px 100px rgba(0,0,0,.82);transition:.25s}
+.feature:hover{transform:translateY(-5px);border-color:rgba(91,211,255,.55)}
+.feature:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(1,7,15,.04),rgba(1,7,15,.9))}
+.feature-content{position:absolute;inset:0;padding:23px;display:flex;flex-direction:column;justify-content:flex-end;z-index:1}
+.feature .kicker{font-size:10px;letter-spacing:3px;color:#61dfff;font-weight:900;position:absolute;top:21px}
+.feature h3{font-size:21px;margin-bottom:6px}.feature p{font-size:13px;color:#c5d2df;max-width:245px}.arrow{position:absolute;right:15px;bottom:14px;width:38px;height:38px;border:1px solid rgba(180,225,255,.65);border-radius:50%;display:grid;place-items:center}
+.innovate{background-image:url("images/innovate.jpg")}.collaborate{background-image:url("images/collaborate.jpg")}.learn{background-image:url("images/learn.jpg")}.impact{background-image:url("images/impact.jpg")}
+.kicker{color:#5ddcff;letter-spacing:4px;font-size:11px;font-weight:900}
+.about{display:grid;grid-template-columns:.9fr 1.1fr;gap:80px;align-items:center;padding-top:105px;padding-bottom:105px}.about h2{font-size:clamp(40px,4.5vw,59px);line-height:1.02;letter-spacing:-3px;margin:15px 0}.about p{color:#a8b9ca;font-size:17px;line-height:1.65}.tags{display:flex;gap:26px;flex-wrap:wrap;margin-top:28px}.tags span{font-size:13px;color:#dce8f3}.tags b{color:#67ddff;margin-right:7px}
+.dark-card{border:1px solid rgba(118,197,247,.16);border-radius:25px;padding:38px;background:linear-gradient(120deg,rgba(24,93,143,.17),rgba(102,67,175,.13))}
+
+.podcast-card{position:relative;overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;border:1px solid rgba(120,201,255,.22);border-radius:28px;padding:42px;background:
+radial-gradient(circle at 85% 25%,rgba(126,82,255,.22),transparent 28%),
+linear-gradient(135deg,rgba(10,37,64,.92),rgba(4,12,25,.98));box-shadow:0 25px 70px rgba(0,0,0,.28)}
+.podcast-card:before{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-100px;top:-130px;border:1px solid rgba(75,218,255,.18);box-shadow:0 0 80px rgba(65,183,255,.08)}
+.podcast-label{display:inline-flex;align-items:center;gap:8px;color:#ff6b8a;font-size:11px;font-weight:900;letter-spacing:3px}
+.podcast-card h2{font-size:clamp(38px,4vw,56px);line-height:1;letter-spacing:-3px;margin:12px 0 16px}
+.podcast-card p{color:#a9bdd0;max-width:620px;line-height:1.65}
+.youtube-btn{display:inline-flex;align-items:center;gap:12px;margin-top:25px;padding:14px 21px;border-radius:999px;background:linear-gradient(105deg,#ff315c,#ff1744);font-weight:850;box-shadow:0 14px 35px rgba(255,39,82,.22)}
+.youtube-icon{width:64px;height:46px;border-radius:13px;background:#ff1744;display:grid;place-items:center;box-shadow:0 18px 45px rgba(255,25,67,.25);position:relative;z-index:1}
+.youtube-icon:after{content:"";width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:14px solid white;margin-left:4px}
+.podcast-art{min-height:245px;border-radius:22px;border:1px solid rgba(120,205,255,.18);background:
+radial-gradient(circle at 52% 48%,rgba(69,220,255,.24),transparent 16%),
+radial-gradient(circle at 50% 50%,rgba(116,83,255,.15),transparent 40%),
+linear-gradient(145deg,#071c32,#020711);display:grid;place-items:center;position:relative;overflow:hidden}
+.podcast-art:before,.podcast-art:after{content:"";position:absolute;border:1px solid rgba(91,215,255,.23);border-radius:50%;width:220px;height:220px}
+.podcast-art:before{transform:scaleX(1.8) rotate(22deg)}
+.podcast-art:after{transform:scaleY(.55) rotate(-28deg)}
+.podcast-orb{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#ff4168,#743eff);box-shadow:0 0 60px rgba(112,74,255,.45);font-size:34px;position:relative;z-index:2}
+@media(max-width:720px){.podcast-card{grid-template-columns:1fr;padding:30px 24px}.podcast-art{min-height:190px}}
+
+footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;color:#71869c;font-size:12px}
+@media(max-width:1050px){.links{gap:15px}.hero-grid{grid-template-columns:1fr}.features{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.container,.section{padding-left:20px;padding-right:20px}.links{display:none}.hero{min-height:790px}.hero-image{background-position:58% center}h1{font-size:53px;letter-spacing:-3px}.quote{display:none}.stats-inner{grid-template-columns:1fr 1fr}.stat{padding:12px;border:0}.features{grid-template-columns:1fr}.about{grid-template-columns:1fr;gap:35px}}
+
+.podcast-card{display:grid;grid-template-columns:1fr 220px;align-items:center;gap:35px;overflow:hidden;position:relative}
+.podcast-card:before{content:"";position:absolute;width:330px;height:330px;border-radius:50%;right:-130px;top:-150px;background:radial-gradient(circle,rgba(71,216,255,.16),transparent 68%);pointer-events:none}
+.podcast-orb{width:170px;height:170px;border-radius:50%;border:1px solid rgba(100,220,255,.35);background:radial-gradient(circle at 35% 30%,rgba(86,226,255,.35),rgba(92,64,190,.15) 45%,rgba(2,8,18,.75) 72%);display:grid;place-items:center;box-shadow:0 0 60px rgba(52,170,255,.18),inset 0 0 35px rgba(82,205,255,.12);position:relative;z-index:1}
+.podcast-orb:before,.podcast-orb:after{content:"";position:absolute;border:1px solid rgba(87,216,255,.3);border-radius:50%}
+.podcast-orb:before{inset:-13px;transform:rotate(25deg) scaleX(1.45)}
+.podcast-orb:after{inset:18px;transform:rotate(-35deg) scaleY(.65)}
+.podcast-orb span{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#36d7ff,#7951ff);box-shadow:0 0 30px rgba(62,190,255,.35);font-size:22px;padding-left:3px}
+@media(max-width:720px){.podcast-card{grid-template-columns:1fr}.podcast-orb{width:135px;height:135px;margin:auto}}
+</style>
 </head>
 <body>
-<header class="hero">
-  <nav>
-    <a class="brand" href="#">
-      <span><span class="logo">Yia</span><small>YOUNG INVENTORS GROUP</small></span>
-    </a>
-    <div class="links">
-      <a href="#home">Home</a><a href="#about">About</a><a href="#fields">Fields</a><a href="#members">Members</a><a href="#join">Join</a>
-    </div>
-  </nav>
-  <div class="hero-inner" id="home">
-    <div>
-      <h1>Young Inventors of <span class="accent">YIA</span></h1>
-      <p class="lead">Working in scientific and research fields to develop science and technology for the benefit of all humanity.</p>
-      <div class="buttons">
-        <a class="btn primary" href="#join">Join the Community →</a>
-        <a class="btn" href="#about">Learn More</a>
-      </div>
-    </div>
-    <div class="orb" aria-label="Abstract technology globe"></div>
-  </div>
-</header>
-
-<div class="fields" id="fields">
-  <div class="field"><b>◫</b>Electronics</div>
-  <div class="field"><b>&lt;/&gt;</b>Software</div>
-  <div class="field"><b>◉</b>Artificial Intelligence</div>
-  <div class="field"><b>✚</b>Medical</div>
-  <div class="field"><b>⚙</b>Robotics</div>
-  <div class="field"><b>⌁</b>Automotive</div>
-  <div class="field"><b>◈</b>Energy</div>
+<header class="hero" id="home">
+<div class="hero-image"></div><div class="hero-glow"></div>
+<div class="container">
+<nav>
+<a class="logo" href="#home"><span class="logo-mark"></span><span>YIA <small>Young Inventors<br>Academy</small></span></a>
+<div class="links"><a href="#home">Home</a><a href="#about">About</a><a href="#fields">Fields</a><a href="#projects">Projects</a><a href="#members">Members</a><a href="#events">Events</a><a href="#podcasts">Podcasts</a><a href="#join">Join</a></div>
+<a class="join-top" href="#join">Join YIA&nbsp; →</a>
+</nav>
+<div class="hero-grid">
+<div>
+<div class="pill">Global Community &nbsp;•&nbsp; Real Impact &nbsp;•&nbsp; For a Better Tomorrow</div>
+<h1>Young Inventors<br><span class="grad">Academy</span></h1>
+<p class="lead">A global community for young inventors, researchers, and technology enthusiasts working to advance science and technology for the benefit of humanity.</p>
+<div class="actions"><a class="btn primary" href="#join">Join Our Community&nbsp; →</a><a class="btn secondary" href="#projects">Explore Projects&nbsp; ◉</a></div>
+<div class="avatars"><i class="avatar">Y</i><i class="avatar">A</i><i class="avatar">I</i><i class="avatar">R</i><i class="avatar">+</i><span>Join a global community<br>of young innovators</span></div>
 </div>
+<div><div class="quote">“A brighter future is built by curious minds today.”<small>— Young Inventors Academy</small></div></div>
+</div></div></header>
 
-<section id="about">
-  <div class="about">
+<div class="container stats"><div class="stats-inner">
+<div class="stat"><div class="stat-icon">♟</div><div><strong>100+</strong><span>Members Worldwide</span></div></div>
+<div class="stat"><div class="stat-icon">⚗</div><div><strong>10+</strong><span>Research Fields</span></div></div>
+<div class="stat"><div class="stat-icon">♢</div><div><strong>50+</strong><span>Ideas & Projects</span></div></div>
+<div class="stat"><div class="stat-icon">◎</div><div><strong>1</strong><span>Global Community</span></div></div>
+</div></div>
+
+<main>
+<section class="section" id="fields"><div class="features">
+<article class="feature innovate"><div class="feature-content"><div class="kicker">01 · INNOVATE</div><h3>Innovate</h3><p>Turn ideas into real solutions for global challenges.</p><div class="arrow">→</div></div></article>
+<article class="feature collaborate"><div class="feature-content"><div class="kicker">02 · COLLABORATE</div><h3>Collaborate</h3><p>Work with young talents and creators from around the world.</p><div class="arrow">→</div></div></article>
+<article class="feature learn"><div class="feature-content"><div class="kicker">03 · LEARN</div><h3>Learn</h3><p>Access knowledge, resources, research and mentorship.</p><div class="arrow">→</div></div></article>
+<article class="feature impact"><div class="feature-content"><div class="kicker">04 · IMPACT</div><h3>Make an Impact</h3><p>Contribute to a smarter, healthier and more sustainable world.</p><div class="arrow">→</div></div></article>
+</div></section>
+
+<section class="section about" id="about"><div><div class="kicker">ABOUT YIA</div><h2>Empowering the Next Generation of <span class="grad">Innovators</span></h2></div>
+<div><p>Young Inventors Academy (YIA) is an international community that brings together young inventors, researchers, and technology enthusiasts to learn, collaborate, and create innovative solutions for real-world challenges.</p><div class="tags"><span><b>⚛</b>Science & Technology</span><span><b>◎</b>Global Collaboration</span><span><b>⌁</b>Real-World Impact</span></div></div></section>
+
+<section class="section" id="projects"><div class="dark-card"><div class="kicker">FIELDS & PROJECTS</div><h2 style="font-size:42px;margin:10px 0 14px">Where ideas become technology.</h2><p style="color:#9eb3c9">Electronics · Software · Artificial Intelligence · Medical · Robotics · Automotive · Energy</p></div></section>
+
+<section class="section" id="podcasts">
+  <div class="dark-card podcast-card">
     <div>
-      <div class="eyebrow">About YIA</div>
-      <h2>A community for ideas that can shape the future.</h2>
-      <p>YIA is a global community focused on scientific research, invention and technological development across disciplines — connecting curious minds and encouraging practical solutions for humanity.</p>
+      <div class="kicker">YIA PODCASTS</div>
+      <h2 style="font-size:42px;margin:10px 0 14px">Ideas, conversations &amp; inspiration.</h2>
+      <p style="color:#9eb3c9;max-width:720px">
+        Explore YIA videos, scientific conversations, interviews and stories from the Young Inventors Academy community.
+      </p>
+      <a class="btn primary" href="https://www.youtube.com/@yiagroup-videos/videos" target="_blank" rel="noopener noreferrer" style="margin-top:22px">
+        Watch YIA on YouTube&nbsp; ↗
+      </a>
     </div>
-    <div class="cards">
-      <article class="card"><div class="icon">◉</div><h3>Our Mission</h3><p>To promote innovation and scientific research for a better future.</p></article>
-      <article class="card"><div class="icon">◇</div><h3>Our Vision</h3><p>A world where young inventors create solutions for real global challenges.</p></article>
-      <article class="card"><div class="icon">◎</div><h3>Global Community</h3><p>Connecting talented minds from around the world.</p></article>
+    <div class="podcast-orb" aria-hidden="true">
+      <span>▶</span>
     </div>
   </div>
 </section>
 
-<section id="join">
-  <div class="join">
-    <div>
-      <div class="eyebrow">Join YIA</div>
-      <h2>Be part of the community.</h2>
-      <p>Enter your name and email to join the Young Inventors Group.</p>
-      <p class="note" style="margin-top:14px">Your information will be used only for membership purposes.</p>
-    </div>
-    <form id="joinForm">
-      <input type="text" name="name" placeholder="Full Name" required>
-      <input type="email" name="email" placeholder="Email Address" required>
-      <button type="submit">Join Now →</button>
-      <p id="formMessage" class="note"></p>
-    </form>
+
+<section class="section" id="podcasts">
+<div class="podcast-card">
+  <div>
+    <div class="podcast-label">● YIA PODCASTS</div>
+    <h2>Listen. Learn.<br><span class="grad">Get Inspired.</span></h2>
+    <p>Explore YIA videos, conversations, scientific ideas, inventions and stories from the world of technology and innovation on our YouTube channel.</p>
+    <a class="youtube-btn" href="https://www.youtube.com/@yiagroup-videos/videos" target="_blank" rel="noopener noreferrer">
+      <span>Watch YIA on YouTube</span> →
+    </a>
   </div>
+  <div class="podcast-art" aria-hidden="true">
+    <div class="youtube-icon"><span></span></div>
+    <div class="podcast-orb">▶</div>
+  </div>
+</div>
 </section>
 
-<footer>© 2026 YIA — Young Inventors Group. Science, technology and innovation for humanity.</footer>
-
-<script>
-document.getElementById("joinForm").addEventListener("submit", function(e){
-  e.preventDefault();
-  document.getElementById("formMessage").textContent =
-    "The form interface is ready. Membership storage will be connected in the next step.";
-});
-</script>
-</body>
-</html>
+<section class="section" id="join"><div class="dark-card"><div class="kicker">JOIN YIA</div><h2 style="font-size:42px;margin:10px 0">Build something that matters.</h2><p style="color:#9eb3c9;max-width:700px">Join the Young Inventors Academy community. The membership form will be connected to the member database in the next step.</p><a class="btn primary" href="#home" style="margin-top:22px">Join YIA →</a></div></section>
+</main>
+<footer>© 2026 Young Inventors Academy (YIA) · Science · Innovation · Humanity</footer>
+</body></html>
