@@ -66,7 +66,7 @@ function memberTable(rows){
 
 function projectTable(rows,map){
  if(!rows.length)return `<div class="empty">No projects have been submitted.</div>`;
- return `<table><thead><tr><th>Project</th><th>Member</th><th>Field</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead><tbody>${rows.map(p=>{const m=map[p.member_id]||{};return `<tr><td><strong>${esc(p.title)}</strong><br><span class="muted">${esc(p.description||"No description")}</span>${p.project_url?`<br><a href="${esc(p.project_url)}" target="_blank" rel="noopener" style="color:var(--cyan)">Project link →</a>`:""}</td><td>${esc(m.full_name||"Unknown")}<br><span class="muted">${esc(m.member_id||"")}</span></td><td>${esc(p.field||"—")}</td><td>${badge(p.status)}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${p.status==="submitted"?`<div class="actions"><button class="btn approve" data-project="${p.id}" data-project-status="approved">Approve</button><button class="btn reject" data-project="${p.id}" data-project-status="rejected">Reject</button></div>`:"—"}</td></tr>`}).join("")}</tbody></table>`;
+ return `<table><thead><tr><th>Project</th><th>Member</th><th>Field</th><th>Status</th><th>Submitted</th><th>Action</th></tr></thead><tbody>${rows.map(p=>{const m=map[p.member_id]||{};return `<tr><td><strong>${esc(p.title)}</strong><br><span class="muted">${esc(p.description||"No description")}</span>${p.project_url?`<br><a href="${esc(p.project_url)}" target="_blank" rel="noopener" style="color:var(--cyan)">Project link →</a>`:""}</td><td>${esc(m.full_name||"Unknown")}<br><span class="muted">${esc(m.member_id||"")}</span></td><td>${esc(p.field||"—")}</td><td>${badge(p.status)}</td><td>${new Date(p.created_at).toLocaleDateString()}</td><td>${p.status==="submitted"?`<div class="actions"><button class="btn approve" data-project="${p.id}" data-project-status="approved">Approve</button><button class="btn reject" data-project="${p.id}" data-project-status="rejected">Reject</button></div>`:p.status==="approved"?`<div class="actions"><input data-reward-amount="${p.id}" type="number" min="1" step="1" value="300" style="width:105px;padding:8px;border-radius:9px;border:1px solid var(--line);background:#04101e;color:var(--text)" aria-label="YIC reward amount"><button class="btn primary" data-project-reward="${p.id}">Reward YIC</button></div>`:"—"}</td></tr>`}).join("")}</tbody></table>`;
 }
 
 function rewardTable(rows,map){
@@ -85,6 +85,13 @@ document.addEventListener("click",async e=>{
  if(b.dataset.project){
   const {error}=await supabase.rpc("admin_update_project_status",{p_project_id:b.dataset.project,p_status:b.dataset.projectStatus});
   if(error){msg.textContent=error.message;msg.className="msg error"}else{msg.textContent=`Project ${b.dataset.projectStatus}.`;msg.className="msg success";await refresh()}
+ }
+ if(b.dataset.projectReward){
+  const input=document.querySelector(`[data-reward-amount="${b.dataset.projectReward}"]`);
+  const amount=Number(input?.value);
+  if(!Number.isInteger(amount)||amount<=0){msg.textContent="Enter a valid positive YIC amount.";msg.className="msg error";return}
+  const {error}=await supabase.rpc("admin_reward_project",{p_project_id:b.dataset.projectReward,p_amount:amount});
+  if(error){msg.textContent=error.message;msg.className="msg error"}else{msg.textContent=`${amount.toLocaleString()} YIC rewarded successfully.`;msg.className="msg success";await refresh()}
  }
  if(b.dataset.reward){
   const {error}=await supabase.rpc("approve_yic_reward",{p_request_id:b.dataset.reward});
