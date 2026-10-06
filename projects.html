@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Explore collaborative projects at Young Inventors Academy.">
+<title>YIA — Projects</title>
+<style>
+:root{--bg:#020712;--panel:rgba(7,19,35,.82);--text:#f5f9ff;--muted:#9eb3c9;--line:rgba(143,209,255,.18);--cyan:#48dcff;--blue:#39aaff;--violet:#8b61ff;--max:1240px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 80% 0%,rgba(62,133,255,.12),transparent 28%),var(--bg);color:var(--text);min-height:100vh}
+a{text-decoration:none;color:inherit}
+.container{max-width:var(--max);margin:auto;padding:0 28px}
+nav{height:86px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(140,190,230,.09)}
+.logo{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:900;letter-spacing:-1px}
+.logo-mark{width:45px;height:34px;border:3px solid white;border-radius:50%;transform:rotate(-22deg);position:relative;box-shadow:0 0 18px rgba(70,210,255,.28)}
+.logo-mark:after{content:"";position:absolute;width:8px;height:8px;border:2px solid #70dcff;border-radius:50%;left:15px;top:9px}
+.logo small{display:block;font-size:9px;line-height:1.05;color:#c7d8e9;font-weight:600;letter-spacing:0}
+.navlinks{display:flex;gap:24px;align-items:center;color:#cbd9e6;font-size:13px}
+.navlinks a:hover{color:#65ddff}
+.portal{padding:11px 17px;border-radius:999px;background:linear-gradient(105deg,#35d2ff,#7550ff);font-weight:800;box-shadow:0 12px 32px rgba(52,145,255,.22)}
+.hero{padding:78px 0 46px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:520px;height:520px;right:-220px;top:-260px;border-radius:50%;background:radial-gradient(circle,rgba(73,202,255,.16),transparent 68%);pointer-events:none}
+.kicker{color:#5ddcff;letter-spacing:4px;font-size:11px;font-weight:900}
+h1{font-size:clamp(48px,7vw,82px);line-height:.94;letter-spacing:-5px;margin:15px 0 18px}
+.grad{background:linear-gradient(100deg,#fff 10%,#72caff 45%,#a366ff 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{max-width:700px;color:#a9bdd0;font-size:17px;line-height:1.7}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:30px 0 24px}
+.search{flex:1 1 300px;min-width:250px;border:1px solid var(--line);border-radius:14px;background:rgba(4,15,28,.75);color:white;padding:14px 16px;outline:none;font:inherit}
+.search:focus{border-color:rgba(72,220,255,.65);box-shadow:0 0 0 3px rgba(72,220,255,.08)}
+select{border:1px solid var(--line);border-radius:14px;background:#071423;color:#eaf5ff;padding:14px 16px;font:inherit;min-width:180px;outline:none}
+.status{color:#728ba3;font-size:13px;margin:5px 0 20px;min-height:20px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding-bottom:70px}
+.card{border:1px solid rgba(118,197,247,.18);border-radius:22px;background:linear-gradient(145deg,rgba(15,46,74,.72),rgba(4,12,25,.94));padding:25px;min-height:300px;display:flex;flex-direction:column;transition:.22s;box-shadow:0 20px 55px rgba(0,0,0,.18)}
+.card:hover{transform:translateY(-5px);border-color:rgba(72,220,255,.48);box-shadow:0 25px 65px rgba(0,0,0,.3)}
+.badges{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:18px}
+.badge{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#68ddff;padding:7px 10px;border-radius:999px;background:rgba(72,220,255,.08);border:1px solid rgba(72,220,255,.14)}
+.badge.status-approved{color:#75edbd}.badge.status-submitted{color:#ffd67b}.badge.status-draft{color:#a9bdd0}
+.card h2{font-size:25px;letter-spacing:-1px;margin-bottom:10px}
+.desc{color:#9eb3c9;line-height:1.65;font-size:14px;flex:1}
+.meta{display:flex;gap:16px;flex-wrap:wrap;color:#7690a9;font-size:12px;margin:20px 0}
+.meta b{color:#cfe0ee}
+.open{display:inline-flex;align-items:center;justify-content:center;padding:12px 17px;border-radius:999px;border:1px solid rgba(235,246,255,.35);background:rgba(4,14,27,.4);font-weight:800;font-size:13px}
+.open:hover{border-color:#5ddcff;color:#69e0ff}
+.empty{grid-column:1/-1;border:1px dashed rgba(118,197,247,.2);border-radius:20px;padding:55px;text-align:center;color:#7890a7}
+.error{color:#ff9ba8}
+footer{border-top:1px solid rgba(140,190,230,.1);padding:26px;text-align:center;color:#71869c;font-size:12px}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.navlinks{gap:12px}.navlinks a:not(.portal){display:none}}
+@media(max-width:620px){.container{padding:0 18px}.grid{grid-template-columns:1fr}.hero{padding-top:55px}h1{font-size:52px;letter-spacing:-3px}.navlinks{display:none}}
+</style>
+</head>
+<body>
+<header class="container">
+<nav>
+<a class="logo" href="index.html"><span class="logo-mark"></span><span>YIA <small>Young Inventors<br>Academy</small></span></a>
+<div class="navlinks">
+<a href="index.html">Home</a>
+<a href="index.html#about">About</a>
+<a href="index.html#fields">Fields</a>
+<a href="projects.html">Projects</a>
+<a href="index.html#podcasts">Podcasts</a>
+<a class="portal" href="member-dashboard.html">Member Portal ↗</a>
+</div>
+</nav>
+</header>
+
+<main class="container">
+<section class="hero">
+<div class="kicker">YIA PROJECTS</div>
+<h1>Ideas become <span class="grad">collaboration.</span></h1>
+<p>Explore open YIA projects, discover unusual challenges, and see how members from different backgrounds are contributing ideas, research, design, planning, and real-world work.</p>
+
+<div class="toolbar">
+<input id="search" class="search" type="search" placeholder="Search projects...">
+<select id="statusFilter">
+<option value="">All statuses</option>
+<option value="submitted">Submitted</option>
+<option value="approved">Approved</option>
+<option value="draft">Draft</option>
+</select>
+</div>
+<div id="status" class="status">Loading projects…</div>
+</section>
+
+<section id="projectsGrid" class="grid"></section>
+</main>
+
+<footer>© 2026 Young Inventors Academy (YIA) · Science · Innovation · Humanity</footer>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-config.js";
+
+const grid = document.getElementById("projectsGrid");
+const statusBox = document.getElementById("status");
+const search = document.getElementById("search");
+const statusFilter = document.getElementById("statusFilter");
+
+const isConfigured =
+  SUPABASE_URL &&
+  SUPABASE_PUBLISHABLE_KEY &&
+  !SUPABASE_URL.includes("YOUR_") &&
+  !SUPABASE_PUBLISHABLE_KEY.includes("YOUR_");
+
+let projects = [];
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+function render() {
+  const query = search.value.trim().toLowerCase();
+  const filter = statusFilter.value;
+
+  const filtered = projects.filter(p => {
+    const text = [
+      p.title,
+      p.description,
+      p.short_description,
+      p.field,
+      p.project_type
+    ].join(" ").toLowerCase();
+
+    return (!query || text.includes(query)) &&
+           (!filter || p.status === filter);
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">No projects match your search.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const description = p.short_description || p.description || "A YIA collaborative project.";
+    const type = p.project_type || "open";
+    const statusClass = `status-${p.status || "draft"}`;
+
+    return `
+      <article class="card">
+        <div class="badges">
+          <span class="badge">${escapeHtml(type)}</span>
+          <span class="badge ${statusClass}">${escapeHtml(p.status || "draft")}</span>
+        </div>
+        <h2>${escapeHtml(p.title)}</h2>
+        <p class="desc">${escapeHtml(description)}</p>
+        <div class="meta">
+          <span>Field: <b>${escapeHtml(p.field || "Open / multidisciplinary")}</b></span>
+          <span>${new Date(p.created_at).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}</span>
+        </div>
+        <a class="open" href="project.html?id=${encodeURIComponent(p.id)}">Explore Project →</a>
+      </article>
+    `;
+  }).join("");
+}
+
+async function loadProjects() {
+  if (!isConfigured) {
+    statusBox.textContent = "Supabase is not configured.";
+    statusBox.className = "status error";
+    grid.innerHTML = '<div class="empty">Project data cannot be loaded until Supabase is configured.</div>';
+    return;
+  }
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  const { data, error } = await supabase
+    .from("projects")
+    .select("id,title,description,short_description,field,project_type,status,created_at")
+    .in("status", ["submitted","approved"])
+    .order("created_at", { ascending:false });
+
+  if (error) {
+    console.error(error);
+    statusBox.textContent = "Could not load projects.";
+    statusBox.className = "status error";
+    grid.innerHTML = '<div class="empty">We could not load the project list. Please try again later.</div>';
+    return;
+  }
+
+  projects = data || [];
+  statusBox.textContent = `${projects.length} project${projects.length === 1 ? "" : "s"} available`;
+  render();
+}
+
+search.addEventListener("input", render);
+statusFilter.addEventListener("change", render);
+loadProjects();
+</script>
+</body>
+</html>
