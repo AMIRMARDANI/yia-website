@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>YIA Admin — Contributions</title>
+<meta name="robots" content="noindex,nofollow">
+<style>
+:root{--bg:#050d19;--panel:#091628;--line:rgba(130,199,240,.16);--text:#eef6ff;--muted:#8fa6bb;--cyan:#31d8ff;--violet:#7655ff;--green:#62e7ad;--red:#ff8292;--yellow:#ffd36b}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 80% 0,#102c4b 0,transparent 35%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+button,input{font:inherit}
+.wrap{max-width:1250px;margin:auto;padding:32px 22px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;font-weight:900;color:#03101d}
+.brand strong{font-size:18px}.brand small{display:block;color:var(--muted)}
+.panel{background:rgba(7,19,35,.78);border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 70px rgba(0,0,0,.28);padding:28px}
+.login{max-width:460px;margin:10vh auto}
+.kicker{letter-spacing:3px;color:var(--cyan);font-size:11px;font-weight:800}
+h1{font-size:38px;line-height:1;margin:10px 0}
+h2{font-size:24px;margin:0 0 7px}
+.muted{color:var(--muted)}
+label{display:block;color:#cfe0ee;font-size:12px;font-weight:750;margin:18px 0 7px}
+input{width:100%;padding:13px 14px;border-radius:12px;border:1px solid var(--line);background:#04101e;color:var(--text);outline:none}
+input:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(49,216,255,.08)}
+.btn{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer}
+.primary{color:#03101b;background:linear-gradient(100deg,var(--cyan),var(--violet))}
+.danger{background:transparent;border:1px solid var(--line);color:#dbe8f3}
+.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0}
+.stat{padding:18px;border:1px solid var(--line);border-radius:16px;background:rgba(2,12,24,.5)}
+.stat span{color:var(--muted);font-size:12px}.stat b{display:block;font-size:28px;margin-top:4px}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}
+.toolbar input{max-width:420px}.toolbar button{background:#071525;color:#dbe8f3;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.card{border:1px solid var(--line);border-radius:19px;background:rgba(2,12,24,.56);padding:22px}
+.card:hover{border-color:rgba(49,216,255,.35)}
+.card-head{display:flex;justify-content:space-between;gap:16px}
+.area{color:var(--cyan);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:900}
+.title{font-size:21px;font-weight:850;margin:6px 0}
+.meta{color:var(--muted);font-size:12px}
+.body-label{font-size:10px;letter-spacing:1.5px;color:#cfe0ee;font-weight:850;margin:18px 0 6px}
+.body{color:#a9bbcb;line-height:1.65;font-size:13px;white-space:pre-wrap}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:850;letter-spacing:1px;text-transform:uppercase}
+.proposed{background:rgba(255,211,107,.12);color:var(--yellow)}
+.discussing{background:rgba(49,216,255,.10);color:var(--cyan)}
+.selected,.in_progress{background:rgba(118,85,255,.14);color:#b5a5ff}
+.completed,.rewarded{background:rgba(98,231,173,.12);color:var(--green)}
+.rejected{background:rgba(255,130,146,.12);color:var(--red)}
+.score{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:15px;border-top:1px solid rgba(130,199,240,.1)}
+.score-item{padding:10px 13px;border-radius:12px;background:#061323;border:1px solid rgba(130,199,240,.1)}
+.score-item strong{display:block;font-size:18px}.score-item span{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.reward{margin-top:17px;padding-top:17px;border-top:1px solid rgba(130,199,240,.1)}
+.reward-row{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.reward input{width:120px}
+.reward-note{color:var(--muted);font-size:12px;margin:7px 0 10px}
+.msg{min-height:22px;margin-top:12px;color:var(--muted)}.error{color:var(--red)}.success{color:var(--green)}
+.empty{grid-column:1/-1;padding:50px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:18px}
+@media(max-width:850px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:550px){.stats{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-config.js";
+
+const app = document.getElementById("app");
+const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
+}
+function badge(s){
+  const x=esc(s||"proposed");
+  return `<span class="badge ${x}">${x.replaceAll("_"," ")}</span>`;
+}
+function loginView(message=""){
+  app.innerHTML=`<div class="wrap"><div class="panel login">
+    <div class="brand"><div class="mark">YIA</div><div><strong>Young Inventors Academy</strong><small>Secure contribution administration</small></div></div>
+    <div class="kicker" style="margin-top:28px">ADMIN ACCESS</div>
+    <h1>Contribution Review</h1>
+    <p class="muted">Sign in with the YIA administrator account.</p>
+    <form id="login-form">
+      <label>Email</label><input id="email" type="email" autocomplete="username" required>
+      <label>Password</label><input id="password" type="password" autocomplete="current-password" required>
+      <button class="btn primary" type="submit" style="width:100%;margin-top:20px">Sign in →</button>
+      <div id="login-msg" class="msg ${message?'error':''}">${message}</div>
+    </form>
+  </div></div>`;
+  document.getElementById("login-form").addEventListener("submit",async e=>{
+    e.preventDefault();
+    const msg=document.getElementById("login-msg");
+    msg.textContent="Signing in…";msg.className="msg";
+    const {error}=await supabase.auth.signInWithPassword({
+      email:document.getElementById("email").value.trim(),
+      password:document.getElementById("password").value
+    });
+    if(error){msg.textContent="Sign-in failed. Check your email and password.";msg.className="msg error";return}
+    loadDashboard();
+  });
+}
+
+async function loadDashboard(){
+  const {data:{session}}=await supabase.auth.getSession();
+  if(!session){loginView();return}
+
+  app.innerHTML=`<div class="wrap">
+    <div class="top">
+      <div>
+        <div class="brand"><div class="mark">YIA</div><div><strong>YIA Admin</strong><small>Contribution review & YIC rewards</small></div></div>
+        <h1 style="margin-top:24px">Contribution Review</h1>
+        <p class="muted">Review community ideas, see their voting score, and approve a one-time YIC reward.</p>
+      </div>
+      <button id="logout" class="btn danger">Sign out</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span>Total Contributions</span><b id="total">—</b></div>
+      <div class="stat"><span>Pending Review</span><b id="pending">—</b></div>
+      <div class="stat"><span>Total Likes</span><b id="likes">—</b></div>
+      <div class="stat"><span>Rewarded</span><b id="rewarded">—</b></div>
+    </div>
+
+    <div id="msg" class="msg"></div>
+
+    <div class="toolbar">
+      <input id="search" placeholder="Search contribution, member, project or area…">
+      <button id="refresh" class="btn">Refresh</button>
+    </div>
+
+    <section id="grid" class="grid"><div class="empty">Loading contributions…</div></section>
+  </div>`;
+
+  document.getElementById("logout").onclick=async()=>{await supabase.auth.signOut();loginView()};
+  document.getElementById("refresh").onclick=refresh;
+  document.getElementById("search").addEventListener("input",refresh);
+  await refresh();
+}
+
+let allRows=[];
+
+async function refresh(){
+  const msg=document.getElementById("msg");
+  msg.textContent="Loading…";msg.className="msg";
+
+  const {data,error}=await supabase
+    .from("project_contribution_scores")
+    .select("contribution_id,project_id,member_id,area,title,idea,why_it_matters,status,created_at,vote_count,community_score,recommended_yic")
+    .order("vote_count",{ascending:false})
+    .order("created_at",{ascending:false});
+
+  if(error){
+    console.error(error);
+    msg.textContent="Could not load contributions. Check the contribution RLS policies.";
+    msg.className="msg error";
+    return;
+  }
+
+  const memberIds=[...new Set((data||[]).map(x=>x.member_id))];
+  const projectIds=[...new Set((data||[]).map(x=>x.project_id))];
+
+  const [{data:members,error:memberError},{data:projects,error:projectError}]=await Promise.all([
+    memberIds.length ? supabase.from("members").select("id,full_name,member_id").in("id",memberIds) : Promise.resolve({data:[],error:null}),
+    projectIds.length ? supabase.from("projects").select("id,title").in("id",projectIds) : Promise.resolve({data:[],error:null})
+  ]);
+
+  if(memberError||projectError){
+    console.error(memberError,projectError);
+  }
+
+  const memberMap={};(members||[]).forEach(x=>memberMap[x.id]=x);
+  const projectMap={};(projects||[]).forEach(x=>projectMap[x.id]=x);
+
+  allRows=(data||[]).map(x=>({
+    ...x,
+    memberName:memberMap[x.member_id]?.full_name||"YIA Member",
+    memberId:memberMap[x.member_id]?.member_id||"—",
+    projectTitle:projectMap[x.project_id]?.title||"YIA Project"
+  }));
+
+  const search=(document.getElementById("search")?.value||"").trim().toLowerCase();
+  const rows=allRows.filter(x=>!search || [
+    x.title,x.area,x.idea,x.why_it_matters,x.memberName,x.memberId,x.projectTitle
+  ].join(" ").toLowerCase().includes(search));
+
+  document.getElementById("total").textContent=allRows.length;
+  document.getElementById("pending").textContent=allRows.filter(x=>["proposed","discussing","selected","in_progress"].includes(x.status)&&!x.rewarded_yic).length;
+  document.getElementById("likes").textContent=allRows.reduce((n,x)=>n+Number(x.vote_count||0),0);
+  document.getElementById("rewarded").textContent=allRows.filter(x=>Number(x.rewarded_yic||0)>0).length;
+
+  const grid=document.getElementById("grid");
+
+  if(!rows.length){
+    grid.innerHTML='<div class="empty">No contributions match your search.</div>';
+    msg.textContent="";
+    return;
+  }
+
+  grid.innerHTML=rows.map(x=>{
+    const recommended=Number(x.recommended_yic||0);
+    const rewarded=Number(x.rewarded_yic||0);
+    const alreadyRewarded=rewarded>0;
+    const date=new Date(x.created_at).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+
+    return `<article class="card">
+      <div class="card-head">
+        <div>
+          <div class="area">${esc(x.area)}</div>
+          <div class="title">${esc(x.title)}</div>
+          <div class="meta">Project: <strong>${esc(x.projectTitle)}</strong><br>By ${esc(x.memberName)} · ${esc(x.memberId)} · ${date}</div>
+        </div>
+        ${badge(x.status)}
+      </div>
+
+      <div class="body-label">THE IDEA</div>
+      <div class="body">${esc(x.idea)}</div>
+
+      ${x.why_it_matters?`<div class="body-label">WHY IT MATTERS</div><div class="body">${esc(x.why_it_matters)}</div>`:""}
+
+      <div class="score">
+        <div class="score-item"><strong>♥ ${Number(x.vote_count||0)}</strong><span>Likes</span></div>
+        <div class="score-item"><strong>${Number(x.community_score||0)}</strong><span>Community Score</span></div>
+        <div class="score-item"><strong>${recommended} YIC</strong><span>Recommended</span></div>
+      </div>
+
+      <div class="reward">
+        ${alreadyRewarded
+          ? `<div class="reward-note" style="color:var(--green)">✓ Rewarded: <strong>${rewarded} YIC</strong>. This contribution cannot be rewarded again.</div>`
+          : `<div class="reward-note">Admin decides the final amount. The recommendation is based on community likes.</div>
+             <div class="reward-row">
+               <input type="number" min="1" step="1" value="${recommended}" data-reward-input="${esc(x.contribution_id)}">
+               <span class="muted">YIC</span>
+               <button class="btn primary reward-btn" data-reward="${esc(x.contribution_id)}">Approve Reward</button>
+             </div>`
+        }
+      </div>
+    </article>`;
+  }).join("");
+
+  grid.querySelectorAll(".reward-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>reward(btn.dataset.reward,btn));
+  });
+
+  msg.textContent="";
+}
+
+async function reward(contributionId,button){
+  const input=document.querySelector(`[data-reward-input="${CSS.escape(contributionId)}"]`);
+  const amount=Number(input?.value||0);
+  const msg=document.getElementById("msg");
+
+  if(!Number.isInteger(amount)||amount<=0){
+    msg.textContent="Enter a valid positive whole-number YIC reward.";
+    msg.className="msg error";
+    return;
+  }
+
+  if(!confirm(`Approve ${amount} YIC for this contribution? This creates a permanent YIC ledger transaction.`)) return;
+
+  button.disabled=true;
+  msg.textContent="Processing reward…";msg.className="msg";
+
+  const {error}=await supabase.rpc("reward_project_contribution",{
+    p_contribution_id:contributionId,
+    p_amount:amount
+  });
+
+  button.disabled=false;
+
+  if(error){
+    console.error(error);
+    msg.textContent=error.message||"Reward could not be processed.";
+    msg.className="msg error";
+    return;
+  }
+
+  msg.textContent=`Reward approved: ${amount} YIC.`;
+  msg.className="msg success";
+  await refresh();
+}
+
+supabase.auth.onAuthStateChange((_event,session)=>{
+  if(session) loadDashboard();
+});
+loadDashboard();
+</script>
+</body>
+</html>
