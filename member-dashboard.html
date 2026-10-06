@@ -165,6 +165,15 @@ async function loadDashboard(){
  const {data:{session}}=await supabase.auth.getSession();if(!session){loginView();return}
  app.innerHTML=`<div class="wrap"><div class="top"><div class="brand"><div class="mark">YIA</div><div><strong>Young Inventors Academy</strong><small>Member dashboard</small></div></div><button id="logout" class="btn danger">Sign out</button></div><div id="content"><div class="panel muted">Loading your dashboard…</div></div></div>`;
  document.getElementById("logout").onclick=async()=>{await supabase.auth.signOut();loginView()};
+
+ // After an email-confirmation redirect, Supabase creates the session but the
+ // member link has not been claimed yet. Claim it before reading the profile.
+ const { error: claimError } = await supabase.rpc("claim_my_member_account");
+ if (claimError) {
+   document.getElementById("content").innerHTML=`<div class="panel"><div class="error"><strong>Member account not linked.</strong><br>${esc(claimError.message || "Please use an email that matches an approved YIA membership.")}</div></div>`;
+   return;
+ }
+
  const {data:members,error:memberError}=await supabase.rpc("get_my_member");
  if(memberError||!members?.length){document.getElementById("content").innerHTML=`<div class="panel"><div class="error"><strong>Member account not linked.</strong><br>Please contact the YIA administrator.</div></div>`;return}
  const member=members[0];
