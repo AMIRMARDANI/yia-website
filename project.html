@@ -38,6 +38,23 @@ h1{font-size:clamp(46px,7vw,78px);line-height:.96;letter-spacing:-5px;margin:13p
 .side-row{padding:13px 0;border-bottom:1px solid rgba(140,190,230,.08);font-size:13px;color:#9eb3c9}
 .side-row:last-child{border:0}
 .side-row strong{display:block;color:#e8f4ff;margin-top:4px}
+
+.team-panel{margin-top:22px;padding:25px}
+.team-head{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:17px}
+.team-head h2{font-size:25px;letter-spacing:-1px}
+.team-head p{color:#7189a1;font-size:12px}
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.team-member{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid rgba(118,197,247,.12);border-radius:14px;background:rgba(3,13,25,.5)}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#35d2ff,#7550ff);color:#03101b;font-weight:900}
+.team-name{font-size:13px;font-weight:850}.team-meta{font-size:11px;color:#7189a1;margin-top:2px}
+.team-status{margin-left:auto;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#72e6b4}
+.join-box{margin-top:17px;padding-top:17px;border-top:1px solid rgba(140,190,230,.08);display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap}
+.join-note{color:#7189a1;font-size:12px;line-height:1.5}
+.join-btn{padding:12px 18px}
+.join-btn.requested{background:rgba(255,211,107,.12);color:#ffd36b;border:1px solid rgba(255,211,107,.25);box-shadow:none}
+.join-btn.member{background:rgba(98,231,173,.1);color:#72e6b4;border:1px solid rgba(98,231,173,.25);box-shadow:none}
+.team-empty{color:#7189a1;font-size:12px;padding:8px 0}
+
 .section{padding:20px 0 75px}
 .section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px}
 .section-head h2{font-size:32px;letter-spacing:-1.5px}
@@ -117,6 +134,23 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:26px;text-align:center;
 <div id="heroContent"><div class="empty">Loading project…</div></div>
 </section>
 
+<section class="panel team-panel">
+  <div class="team-head">
+    <div>
+      <div class="kicker">PROJECT TEAM</div>
+      <h2>People building this project</h2>
+    </div>
+    <p id="teamCount"></p>
+  </div>
+  <div id="teamGrid" class="team-grid">
+    <div class="team-empty">Loading project team…</div>
+  </div>
+  <div class="join-box">
+    <div id="joinNote" class="join-note">Approved YIA members can request to join this project.</div>
+    <button id="joinProjectBtn" class="btn primary join-btn" type="button">Join This Project →</button>
+  </div>
+</section>
+
 <section class="section">
 <div class="section-head">
 <div>
@@ -146,6 +180,10 @@ const heroContent = document.getElementById("heroContent");
 const contributionsBox = document.getElementById("contributions");
 const countBox = document.getElementById("contributionCount");
 const formWrap = document.getElementById("contributionFormWrap");
+const teamGrid = document.getElementById("teamGrid");
+const teamCount = document.getElementById("teamCount");
+const joinBtn = document.getElementById("joinProjectBtn");
+const joinNote = document.getElementById("joinNote");
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, ch => ({
@@ -234,6 +272,141 @@ if (!projectId) {
     `;
 
     return true;
+  }
+
+
+  async function loadProjectTeam() {
+    const { data, error } = await supabase
+      .from("project_members")
+      .select("id,member_id,role,status,joined_at")
+      .eq("project_id", projectId)
+      .in("status", ["approved","active"])
+      .order("joined_at", { ascending:true });
+
+    if (error) {
+      console.error(error);
+      teamGrid.innerHTML = '<div class="team-empty">Project team could not be loaded.</div>';
+      return;
+    }
+
+    const memberIds = [...new Set((data || []).map(x => x.member_id))];
+    let members = {};
+
+    if (memberIds.length) {
+      const { data: memberRows } = await supabase
+        .from("members")
+        .select("id,full_name,member_id")
+        .in("id", memberIds);
+
+      (memberRows || []).forEach(m => members[m.id] = m);
+    }
+
+    teamCount.textContent = `${data.length} ${data.length === 1 ? "member" : "members"}`;
+
+    if (!data.length) {
+      teamGrid.innerHTML = '<div class="team-empty">No active team members yet.</div>';
+    } else {
+      teamGrid.innerHTML = data.map(row => {
+        const member = members[row.member_id] || {};
+        const name = member.full_name || "YIA Member";
+        const initials = name.split(/\s+/).filter(Boolean).slice(0,2).map(x => x[0]).join("").toUpperCase() || "Y";
+        return `
+          <div class="team-member">
+            <div class="avatar">${escapeHtml(initials)}</div>
+            <div>
+              <div class="team-name">${escapeHtml(name)}</div>
+              <div class="team-meta">${escapeHtml(row.role || "Contributor")} · ${escapeHtml(member.member_id || "")}</div>
+            </div>
+            <span class="team-status">${escapeHtml(row.status)}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    await loadMyProjectMembership();
+  }
+
+  async function loadMyProjectMembership() {
+    joinBtn.disabled = false;
+
+    if (!currentMember) {
+      joinBtn.textContent = "Member Login →";
+      joinBtn.className = "btn primary join-btn";
+      joinNote.textContent = "Sign in with an approved YIA account to request membership.";
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("project_members")
+      .select("id,role,status")
+      .eq("project_id", projectId)
+      .eq("member_id", currentMember.id)
+      .maybeSingle();
+
+    if (error) {
+      console.error(error);
+      joinNote.textContent = "Membership status could not be loaded.";
+      return;
+    }
+
+    if (!data) {
+      joinBtn.textContent = "Join This Project →";
+      joinBtn.className = "btn primary join-btn";
+      joinNote.textContent = "Request to join the project team. A project lead or admin can approve the request.";
+      return;
+    }
+
+    if (data.status === "requested") {
+      joinBtn.textContent = "Request Pending";
+      joinBtn.className = "btn join-btn requested";
+      joinBtn.disabled = true;
+      joinNote.textContent = "Your request has been submitted and is waiting for approval.";
+    } else if (["approved","active"].includes(data.status)) {
+      joinBtn.textContent = "You’re on the Team ✓";
+      joinBtn.className = "btn join-btn member";
+      joinBtn.disabled = true;
+      joinNote.textContent = `You are an active ${data.role || "Contributor"} on this project.`;
+    } else if (data.status === "rejected") {
+      joinBtn.textContent = "Request Again →";
+      joinBtn.className = "btn primary join-btn";
+      joinNote.textContent = "Your previous request was not approved. You can submit a new request.";
+    } else {
+      joinBtn.textContent = "Join This Project →";
+      joinBtn.className = "btn primary join-btn";
+      joinNote.textContent = "Request to join the project team.";
+    }
+  }
+
+  async function joinProject() {
+    if (!currentMember) {
+      window.location.href = "member-dashboard.html";
+      return;
+    }
+
+    joinBtn.disabled = true;
+    joinNote.textContent = "Submitting your request…";
+
+    const { error } = await supabase
+      .from("project_members")
+      .insert({
+        project_id: projectId,
+        member_id: currentMember.id,
+        role: "Contributor",
+        status: "requested"
+      });
+
+    if (error) {
+      console.error(error);
+      if (error.code === "23505") {
+        joinNote.textContent = "You already have a membership request for this project.";
+      } else {
+        joinNote.textContent = "We could not submit your request. Please try again.";
+      }
+      await loadMyProjectMembership();
+      return;
+    }
+
+    await loadMyProjectMembership();
   }
 
   async function loadContributions() {
@@ -634,10 +807,13 @@ if (!projectId) {
     window.scrollTo({top:document.querySelector(".section").offsetTop - 30, behavior:"smooth"});
   }
 
+  joinBtn.addEventListener("click", joinProject);
+
   async function init() {
     await loadSession();
     const ok = await loadProject();
     if (!ok) return;
+    await loadProjectTeam();
     await loadContributions();
     renderContributionForm();
   }
