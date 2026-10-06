@@ -39,6 +39,7 @@ function loginView(message=""){
        <label>Confirm password</label><input id="password-confirm" type="password" autocomplete="new-password" minlength="8">
      </div>
      <button id="auth-submit" class="btn primary full" type="submit">Sign in →</button>
+     <button id="resend-confirm" class="btn secondary full" type="button" style="display:none;margin-top:10px">Resend confirmation email</button>
      <div id="msg" class="msg ${message?'error':''}">${esc(message)}</div>
    </form>
    <div class="foot">YIA membership approval is required before a member account can be linked. Use the same email address that was approved by YIA.</div>
@@ -53,6 +54,36 @@ function loginView(message=""){
  const tabSignin = document.getElementById("tab-signin");
  const tabSignup = document.getElementById("tab-signup");
  const msg = document.getElementById("msg");
+ const resendBtn = document.getElementById("resend-confirm");
+
+ const showResend = (show) => {
+   resendBtn.style.display = show ? "block" : "none";
+ };
+
+ resendBtn.onclick = async () => {
+   const email = document.getElementById("email").value.trim().toLowerCase();
+   if (!email) {
+     msg.textContent = "Enter your email address first.";
+     msg.className = "msg error";
+     return;
+   }
+   resendBtn.disabled = true;
+   msg.textContent = "Sending a new confirmation email…";
+   msg.className = "msg";
+   const { error } = await supabase.auth.resend({
+     type: "signup",
+     email,
+     options: { emailRedirectTo: window.location.origin + window.location.pathname }
+   });
+   resendBtn.disabled = false;
+   if (error) {
+     msg.textContent = error.message || "Could not resend the confirmation email.";
+     msg.className = "msg error";
+     return;
+   }
+   msg.textContent = "A new confirmation email has been sent. Use the newest email and click the confirmation link once.";
+   msg.className = "msg success";
+ };
 
  const setMode = (next) => {
    mode.value = next;
@@ -66,6 +97,7 @@ function loginView(message=""){
    submit.textContent = signup ? "Create account →" : "Sign in →";
    tabSignin.classList.toggle("active", !signup);
    tabSignup.classList.toggle("active", signup);
+   showResend(false);
    msg.textContent = "";
    msg.className = "msg";
  };
@@ -90,14 +122,20 @@ function loginView(message=""){
        msg.textContent = "Passwords do not match.";
        msg.className = "msg error"; return;
      }
-     const { data, error } = await supabase.auth.signUp({ email, password });
+     const { data, error } = await supabase.auth.signUp({
+       email,
+       password,
+       options: { emailRedirectTo: window.location.origin + window.location.pathname }
+     });
      if (error) {
        msg.textContent = error.message || "Account creation failed.";
        msg.className = "msg error"; return;
      }
      if (!data.session) {
-       msg.textContent = "Account created. Please verify your email, then return here and sign in.";
-       msg.className = "msg success"; return;
+       msg.textContent = "Account created. Please verify your email, then return here and sign in. If the email link expires, request a new one below.";
+       msg.className = "msg success";
+       showResend(true);
+       return;
      }
      const { error: claimError } = await supabase.rpc("claim_my_member_account");
      if (claimError) {
