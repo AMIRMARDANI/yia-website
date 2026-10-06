@@ -57,6 +57,25 @@ h1{font-size:clamp(46px,7vw,78px);line-height:.96;letter-spacing:-5px;margin:13p
 .like:hover{border-color:#5ddcff;color:#6fe2ff}
 .like.active{background:rgba(72,220,255,.13);border-color:rgba(72,220,255,.65);color:#68e2ff}
 .votes{font-size:12px;color:#7e97ae}
+
+.comments{margin-top:20px;padding-top:18px;border-top:1px solid rgba(140,190,230,.08)}
+.comments-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.comments-title{font-size:12px;font-weight:850;color:#dceaf5;letter-spacing:1px}
+.comment-list{display:grid;gap:9px}
+.comment{padding:12px 13px;border:1px solid rgba(118,197,247,.12);border-radius:13px;background:rgba(3,13,25,.52)}
+.comment-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.comment-author{font-size:12px;color:#dceaf5;font-weight:800}
+.comment-date{font-size:10px;color:#7189a1}
+.comment-body{margin-top:6px;color:#9fb3c5;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.comment-delete{border:0;background:none;color:#7189a1;font-size:10px;cursor:pointer}
+.comment-delete:hover{color:#ff9ba8}
+.comment-empty{color:#7189a1;font-size:12px;padding:8px 0}
+.comment-form{display:flex;gap:9px;margin-top:12px}
+.comment-input{flex:1;min-height:42px;resize:vertical;padding:10px 12px}
+.comment-submit{padding:10px 14px;white-space:nowrap}
+.comment-login{font-size:12px;color:#7189a1;margin-top:10px}
+.comment-login a{color:#63ddff;font-weight:800}
+
 .form-panel{margin-top:24px;padding:27px}
 .form-panel h2{font-size:27px;margin-bottom:7px}
 .form-panel>p{color:#8fa7bd;font-size:13px;line-height:1.6;margin-bottom:22px}
@@ -285,12 +304,205 @@ if (!projectId) {
           </button>
           <span class="votes">${c.vote_count} ${c.vote_count === 1 ? "member likes" : "member likes"}</span>
         </div>
+
+        <div class="comments" data-comments="${c.contribution_id}">
+          <div class="comments-head">
+            <span class="comments-title">💬 DISCUSSION</span>
+            <span class="votes" data-comment-count="${c.contribution_id}">Loading…</span>
+          </div>
+          <div class="comment-list" data-comment-list="${c.contribution_id}">
+            <div class="comment-empty">Loading discussion…</div>
+          </div>
+          ${currentMember ? `
+            <form class="comment-form" data-comment-form="${c.contribution_id}">
+              <textarea class="comment-input" name="content" rows="2" maxlength="1500" required placeholder="Share a question, suggestion, or constructive feedback…"></textarea>
+              <button class="btn primary comment-submit" type="submit">Post</button>
+            </form>
+          ` : `
+            <div class="comment-login">
+              Sign in with an approved YIA account to join the discussion.
+              <a href="member-dashboard.html">Open Member Portal →</a>
+            </div>
+          `}
+        </div>
       </article>
     `).join("");
 
     contributionsBox.querySelectorAll(".like").forEach(button => {
       button.addEventListener("click", () => toggleVote(button.dataset.id, button));
     });
+
+    contributionsBox.querySelectorAll(".comment-form").forEach(form => {
+      form.addEventListener("submit", event => submitComment(event, form.dataset.commentForm));
+    });
+
+    await loadAllComments(data);
+  }
+
+  async function loadAllComments(contributions) {
+    const ids = contributions.map(c => c.contribution_id);
+    if (!ids.length) return;
+
+    const { data, error } = await supabase
+      .from("contribution_comments")
+      .select("id,contribution_id,member_id,content,created_at")
+      .in("contribution_id", ids)
+      .order("created_at", { ascending:true });
+
+    if (error) {
+      console.error(error);
+      contributions.forEach(c => {
+        const box = document.querySelector(`[data-comment-list="${c.contribution_id}"]`);
+        if (box) box.innerHTML = '<div class="comment-empty">Discussion could not be loaded.</div>';
+      });
+      return;
+    }
+
+    const memberIds = [...new Set((data || []).map(x => x.member_id))];
+    let names = {};
+
+    if (memberIds.length) {
+      const { data: members } = await supabase
+        .from("members")
+        .select("id,full_name")
+        .in("id", memberIds);
+
+      (members || []).forEach(m => names[m.id] = m.full_name);
+    }
+
+    const grouped = {};
+    (data || []).forEach(comment => {
+      if (!grouped[comment.contribution_id]) grouped[comment.contribution_id] = [];
+      grouped[comment.contribution_id].push({
+        ...comment,
+        memberName: names[comment.member_id] || "YIA Member"
+      });
+    });
+
+    contributions.forEach(c => {
+      renderComments(c.contribution_id, grouped[c.contribution_id] || []);
+    });
+  }
+
+  function renderComments(contributionId, comments) {
+    const list = document.querySelector(`[data-comment-list="${contributionId}"]`);
+    const count = document.querySelector(`[data-comment-count="${contributionId}"]`);
+    if (!list) return;
+
+    if (count) {
+      count.textContent = `${comments.length} ${comments.length === 1 ? "comment" : "comments"}`;
+    }
+
+    if (!comments.length) {
+      list.innerHTML = '<div class="comment-empty">No discussion yet. Start the conversation.</div>';
+      return;
+    }
+
+    list.innerHTML = comments.map(comment => {
+      const canDelete = currentMember && currentMember.id === comment.member_id;
+      return `
+        <div class="comment">
+          <div class="comment-top">
+            <span class="comment-author">${escapeHtml(comment.memberName)}</span>
+            <span>
+              <span class="comment-date">${new Date(comment.created_at).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}</span>
+              ${canDelete ? `<button class="comment-delete" data-comment-delete="${comment.id}">Delete</button>` : ""}
+            </span>
+          </div>
+          <div class="comment-body">${escapeHtml(comment.content)}</div>
+        </div>
+      `;
+    }).join("");
+
+    list.querySelectorAll("[data-comment-delete]").forEach(button => {
+      button.addEventListener("click", () => deleteComment(button.dataset.commentDelete, contributionId));
+    });
+  }
+
+  async function submitComment(event, contributionId) {
+    event.preventDefault();
+
+    if (!currentMember) return;
+
+    const form = event.currentTarget;
+    const button = form.querySelector("button");
+    const input = form.querySelector("textarea");
+    const content = input.value.trim();
+
+    if (!content) return;
+
+    button.disabled = true;
+
+    const { error } = await supabase
+      .from("contribution_comments")
+      .insert({
+        contribution_id: contributionId,
+        member_id: currentMember.id,
+        content
+      });
+
+    if (error) {
+      console.error(error);
+      alert("We could not post your comment. Please try again.");
+      button.disabled = false;
+      return;
+    }
+
+    input.value = "";
+    button.disabled = false;
+    await loadCommentsForContribution(contributionId);
+  }
+
+  async function loadCommentsForContribution(contributionId) {
+    const { data, error } = await supabase
+      .from("contribution_comments")
+      .select("id,contribution_id,member_id,content,created_at")
+      .eq("contribution_id", contributionId)
+      .order("created_at", { ascending:true });
+
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    const memberIds = [...new Set((data || []).map(x => x.member_id))];
+    let names = {};
+
+    if (memberIds.length) {
+      const { data: members } = await supabase
+        .from("members")
+        .select("id,full_name")
+        .in("id", memberIds);
+
+      (members || []).forEach(m => names[m.id] = m.full_name);
+    }
+
+    renderComments(
+      contributionId,
+      (data || []).map(x => ({
+        ...x,
+        memberName: names[x.member_id] || "YIA Member"
+      }))
+    );
+  }
+
+  async function deleteComment(commentId, contributionId) {
+    if (!currentMember) return;
+    if (!confirm("Delete this comment?")) return;
+
+    const { error } = await supabase
+      .from("contribution_comments")
+      .delete()
+      .eq("id", commentId)
+      .eq("member_id", currentMember.id);
+
+    if (error) {
+      console.error(error);
+      alert("We could not delete the comment.");
+      return;
+    }
+
+    await loadCommentsForContribution(contributionId);
   }
 
   async function toggleVote(contributionId, button) {
