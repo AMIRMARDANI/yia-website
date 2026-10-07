@@ -134,6 +134,24 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
 .podcast-orb:after{inset:18px;transform:rotate(-35deg) scaleY(.65)}
 .podcast-orb span{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#36d7ff,#7951ff);box-shadow:0 0 30px rgba(62,190,255,.35);font-size:22px;padding-left:3px}
 @media(max-width:720px){.podcast-card{grid-template-columns:1fr}.podcast-orb{width:135px;height:135px;margin:auto}}
+
+.member-login-link{
+  color:#f5f8ff !important;
+  border:1px solid rgba(76,210,255,.32);
+  background:rgba(76,210,255,.07);
+  padding:9px 13px;
+  border-radius:999px;
+  transition:.2s ease;
+}
+.member-login-link:hover{
+  border-color:rgba(76,210,255,.72);
+  background:rgba(76,210,255,.14);
+  transform:translateY(-1px);
+}
+@media(max-width:900px){
+  .member-login-link{padding:8px 11px}
+}
+
 </style>
 </head>
 <body>
@@ -142,7 +160,7 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
 <div class="container">
 <nav>
 <a class="logo" href="#home"><span class="logo-mark"></span><span>YIA <small>Young Inventors<br>Academy</small></span></a>
-<div class="links"><a href="#home">Home</a><a href="#about">About</a><a href="#fields">Fields</a><a href="#projects">Projects</a><a href="#members">Members</a><a href="#events">Events</a><a href="#podcasts">Podcasts</a><a href="#join">Join</a></div>
+<div class="links"><a class="member-login-link" href="member-dashboard.html">Member Login ↗</a><a href="#home">Home</a><a href="#about">About</a><a href="#fields">Fields</a><a href="#projects">Projects</a><a href="#members">Members</a><a href="#events">Events</a><a href="#podcasts">Podcasts</a><a href="#join">Join</a></div>
 <a class="join-top" href="#join">Join YIA&nbsp; →</a>
 </nav>
 <div class="hero-grid">
