@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Resource | Young Inventors Academy</title>
+<style>
+:root{--bg:#020916;--panel:#061626;--line:#183a52;--text:#f5f8ff;--muted:#9bb4d0;--cyan:#4cd2ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,rgba(34,132,184,.16),transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}.wrap{max-width:1200px;margin:auto;padding:28px 22px 70px}.top{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-bottom:28px}.brand{display:flex;gap:12px;align-items:center}.mark{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#35c8ff,#7467ff);font-weight:900;color:#06101c}.brand strong{display:block}.brand small{color:var(--muted)}a{color:inherit}.back{border:1px solid var(--line);border-radius:999px;padding:10px 16px;text-decoration:none}.card{border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,rgba(8,31,48,.96),rgba(3,15,27,.96));padding:30px;box-shadow:0 24px 70px rgba(0,0,0,.24)}.kicker{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--cyan);font-weight:850}.title{font-size:clamp(30px,5vw,54px);line-height:1.05;margin:9px 0 12px}.desc{color:#b8cee4;line-height:1.7;max-width:850px}.viewer{margin-top:26px;border:1px solid rgba(118,197,247,.18);border-radius:20px;background:#020b15;overflow:hidden;min-height:360px;display:flex;align-items:center;justify-content:center}.viewer img{max-width:100%;max-height:760px;display:block}.viewer iframe{width:100%;height:760px;border:0}.code{width:100%;max-height:760px;overflow:auto;padding:24px;margin:0;background:#010811;color:#d8edff;font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;white-space:pre-wrap}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.btn{display:inline-flex;padding:12px 17px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-weight:800}.primary{background:linear-gradient(135deg,#36c9ff,#6572ff);color:#06101c;border:0}.muted{color:var(--muted)}.error{text-align:center;color:#ff9aa8;padding:60px 10px}@media(max-width:650px){.wrap{padding:18px 14px 50px}.top{align-items:flex-start}.card{padding:22px 17px}.viewer iframe{height:560px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><div class="brand"><div class="mark">YIA</div><div><strong>Young Inventors Academy</strong><small>Project resource</small></div></div><a id="back" class="back" href="index.html#projects">← Projects</a></header>
+<main id="app" class="card">Loading resource…</main>
+</div>
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-config.js";
+const app=document.getElementById("app"), id=new URLSearchParams(location.search).get("id");
+const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+async function load(){
+ if(!id){app.innerHTML='<div class="error">Resource not found.</div>';return}
+ try{
+  const supabase=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+  const {data,error}=await supabase.from("project_resources").select("id,project_id,title,description,resource_type,file_path,external_url,created_at").eq("id",id).maybeSingle();
+  if(error)throw error;if(!data){app.innerHTML='<div class="error">This resource is not publicly available.</div>';return}
+  const publicUrl=data.file_path?supabase.storage.from("project-assets").getPublicUrl(data.file_path).data.publicUrl:null;
+  const back=`project.html?id=${encodeURIComponent(data.project_id)}`;
+  document.getElementById("back").href=back;
+  let viewer="";
+  if(data.resource_type==="image" && publicUrl) viewer=`<div class="viewer"><img src="${esc(publicUrl)}" alt="${esc(data.title)}"></div>`;
+  else if(data.resource_type==="document" && publicUrl) viewer=`<div class="viewer"><iframe src="${esc(publicUrl)}" title="${esc(data.title)}"></iframe></div>`;
+  else if(data.resource_type==="code" && publicUrl){
+    const text=await fetch(publicUrl).then(r=>r.text()).catch(()=>null);
+    viewer=text!==null?`<div class="viewer"><pre class="code">${esc(text)}</pre></div>`:`<div class="viewer"><a class="btn primary" href="${esc(publicUrl)}" target="_blank" rel="noopener">Open code file ↗</a></div>`;
+  } else if(data.resource_type==="article" && publicUrl){
+    viewer=`<div class="viewer"><iframe src="${esc(publicUrl)}" title="${esc(data.title)}"></iframe></div>`;
+  } else if(data.external_url){
+    viewer=`<div class="viewer"><a class="btn primary" href="${esc(data.external_url)}" target="_blank" rel="noopener noreferrer">Open resource ↗</a></div>`;
+  } else viewer=`<div class="viewer"><div class="muted">No preview is available for this resource.</div></div>`;
+  app.innerHTML=`<div class="kicker">${esc(data.resource_type)}</div><h1 class="title">${esc(data.title)}</h1><p class="desc">${esc(data.description||"")}</p>${viewer}<div class="actions"><a class="btn primary" href="${back}">← Back to Project</a>${publicUrl?`<a class="btn" href="${esc(publicUrl)}" target="_blank" rel="noopener noreferrer">Open original ↗</a>`:""}</div>`;
+ }catch(e){console.error(e);app.innerHTML='<div class="error">We could not load this resource.</div>'}
+}
+load();
+</script>
+</body></html>
