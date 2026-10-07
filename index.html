@@ -69,6 +69,12 @@ linear-gradient(145deg,#071c32,#020711);display:grid;place-items:center;position
 
 
 .projects-heading{margin-bottom:24px}
+.projects-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:24px;margin-bottom:22px}
+.project-filters{display:flex;flex-wrap:wrap;gap:8px}
+.project-filter{border:1px solid rgba(118,197,247,.16);background:rgba(8,23,39,.55);color:#9eb3c9;border-radius:999px;padding:9px 13px;font:inherit;font-size:11px;font-weight:800;letter-spacing:.25px;cursor:pointer;transition:.2s ease}
+.project-filter:hover{border-color:rgba(98,221,255,.42);color:#d8f6ff;transform:translateY(-1px)}
+.project-filter.active{color:#06111c;background:linear-gradient(100deg,#62ddff,#7a7cff);border-color:transparent;box-shadow:0 8px 25px rgba(75,196,255,.16)}
+.project-count{color:#6f879b;font-size:11px;font-weight:750}
 .public-projects{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .public-project{position:relative;border:1px solid rgba(118,197,247,.18);border-radius:22px;padding:24px;background:linear-gradient(145deg,rgba(8,25,43,.92),rgba(3,11,22,.98));min-height:250px;display:flex;flex-direction:column;overflow:hidden;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
 .public-project:before{content:"";position:absolute;inset:-70px auto auto -70px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(49,216,255,.13),transparent 68%);pointer-events:none}
@@ -83,11 +89,12 @@ linear-gradient(145deg,#071c32,#020711);display:grid;place-items:center;position
 .project-lead{font-size:11px;color:#8fa7bc;line-height:1.45}
 .project-lead a{color:#c5dced;text-decoration:none}
 .project-lead a:hover{color:#62ddff}
-.project-link{color:#62ddff;font-size:12px;font-weight:850;text-decoration:none;white-space:nowrap}
-.project-link:hover{text-decoration:underline}
+.project-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.project-profile,.project-link{display:inline-flex;align-items:center;justify-content:center;color:#62ddff;font-size:11px;font-weight:850;text-decoration:none;white-space:nowrap;border:1px solid rgba(98,221,255,.18);border-radius:999px;padding:7px 10px;background:rgba(98,221,255,.04);transition:.2s ease}
+.project-profile:hover,.project-link:hover{border-color:rgba(98,221,255,.45);background:rgba(98,221,255,.08);transform:translateY(-1px)}
 .project-loading,.project-empty{padding:34px;text-align:center;border:1px dashed rgba(118,197,247,.2);border-radius:18px;color:#8299ad;grid-column:1/-1}
 @media(max-width:1000px){.public-projects{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:650px){.public-projects{grid-template-columns:1fr}}
+@media(max-width:650px){.public-projects{grid-template-columns:1fr}.projects-toolbar{align-items:flex-start}.project-actions{justify-content:flex-start}}
 
 .membership-wrap{display:grid;grid-template-columns:.82fr 1.18fr;gap:46px;align-items:start}
 .membership-intro h2{font-size:clamp(38px,4.2vw,58px);line-height:1.02;letter-spacing:-3px;margin:12px 0 17px}
@@ -171,6 +178,10 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
       <h2 style="font-size:42px;margin:10px 0 14px">Where ideas become technology.</h2>
       <p style="color:#9eb3c9">Explore approved projects created by YIA members across science and technology.</p>
     </div>
+  </div>
+  <div class="projects-toolbar">
+    <div id="project-filters" class="project-filters" aria-label="Filter projects by field"></div>
+    <div id="project-count" class="project-count" aria-live="polite"></div>
   </div>
   <div id="public-projects" class="public-projects">
     <div class="project-loading">Loading approved projects…</div>
@@ -282,31 +293,74 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
   import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "./supabase-config.js";
 
   const publicProjectsBox = document.getElementById("public-projects");
+  const projectFiltersBox = document.getElementById("project-filters");
+  const projectCountBox = document.getElementById("project-count");
+  let publicProjectRows = [];
+  let activeProjectField = "All";
 
-  const renderPublicProjects = (rows) => {
+  const esc = (v) => String(v ?? "").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
+
+  const normalizeField = (value) => String(value || "Other").trim() || "Other";
+
+  const renderProjectFilters = () => {
+    if (!projectFiltersBox) return;
+    const fields = [...new Set(publicProjectRows.map(p => normalizeField(p.field)))].sort((a,b) => a.localeCompare(b));
+    const options = ["All", ...fields];
+    if (!options.includes(activeProjectField)) activeProjectField = "All";
+    projectFiltersBox.innerHTML = options.map(field => `
+      <button type="button" class="project-filter ${field === activeProjectField ? "active" : ""}" data-project-field="${esc(field)}">${esc(field)}</button>
+    `).join("");
+    projectFiltersBox.querySelectorAll("[data-project-field]").forEach(button => {
+      button.addEventListener("click", () => {
+        activeProjectField = button.dataset.projectField || "All";
+        renderProjectFilters();
+        renderPublicProjects();
+      });
+    });
+  };
+
+  const renderPublicProjects = () => {
     if (!publicProjectsBox) return;
-    if (!rows || !rows.length) {
-      publicProjectsBox.innerHTML = '<div class="project-empty">No approved projects are available yet. Check back soon.</div>';
+    const rows = activeProjectField === "All"
+      ? publicProjectRows
+      : publicProjectRows.filter(p => normalizeField(p.field) === activeProjectField);
+
+    if (projectCountBox) {
+      const total = publicProjectRows.length;
+      projectCountBox.textContent = activeProjectField === "All"
+        ? `${total} approved ${total === 1 ? "project" : "projects"}`
+        : `${rows.length} ${rows.length === 1 ? "project" : "projects"} in ${activeProjectField}`;
+    }
+
+    if (!rows.length) {
+      publicProjectsBox.innerHTML = `<div class="project-empty">No approved projects found${activeProjectField !== "All" ? ` in ${esc(activeProjectField)}` : ""}. Check back soon.</div>`;
       return;
     }
-    const esc = (v) => String(v ?? "").replace(/[&<>"']/g, m => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[m]));
-    publicProjectsBox.innerHTML = rows.map((p, index) => `
+
+    publicProjectsBox.innerHTML = rows.map((p, index) => {
+      const memberId = p.member_id || "";
+      const profileHref = `member.html?id=${encodeURIComponent(memberId)}`;
+      const hasUrl = Boolean(p.project_url);
+      return `
       <article class="public-project">
         <div class="project-topline">
           <span class="project-number">PROJECT ${String(index + 1).padStart(2,"0")}</span>
           <span class="project-status">Approved</span>
         </div>
-        <div class="project-field" style="margin-top:16px">${esc(p.field || "Other")}</div>
+        <div class="project-field" style="margin-top:16px">${esc(normalizeField(p.field))}</div>
         <h3>${esc(p.title)}</h3>
         ${p.description ? `<p>${esc(p.description)}</p>` : `<p>Innovative work developed within the YIA community.</p>`}
         <div class="project-footer">
-          <div class="project-lead">Project Lead<br><a href="member.html?id=${encodeURIComponent(p.member_id || "")}">${esc(p.member_id || "YIA Member")} ↗</a></div>
-          ${p.project_url ? `<a class="project-link" href="${esc(p.project_url)}" target="_blank" rel="noopener noreferrer">View Project ↗</a>` : `<span class="project-lead">YIA Community</span>`}
+          <div class="project-lead">Project Lead<br><a href="${profileHref}">${esc(memberId || "YIA Member")} ↗</a></div>
+          <div class="project-actions">
+            <a class="project-profile" href="${profileHref}">View Lead ↗</a>
+            ${hasUrl ? `<a class="project-link" href="${esc(p.project_url)}" target="_blank" rel="noopener noreferrer">View Project ↗</a>` : ""}
+          </div>
         </div>
-      </article>
-    `).join("");
+      </article>`;
+    }).join("");
   };
 
   async function loadPublicProjects() {
@@ -315,9 +369,12 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
       const publicClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
       const { data, error } = await publicClient.rpc("get_public_projects");
       if (error) throw error;
-      renderPublicProjects(data || []);
+      publicProjectRows = data || [];
+      renderProjectFilters();
+      renderPublicProjects();
     } catch (error) {
       console.error("Public projects load failed:", error);
+      if (projectCountBox) projectCountBox.textContent = "";
       publicProjectsBox.innerHTML = '<div class="project-empty">Projects are temporarily unavailable. Please try again later.</div>';
     }
   }
