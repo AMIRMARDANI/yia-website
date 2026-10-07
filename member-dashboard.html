@@ -8,10 +8,20 @@
 <meta name="robots" content="noindex,nofollow">
 <style>
 :root{--bg:#040b15;--panel:#09182a;--line:rgba(130,199,240,.18);--text:#eef7ff;--muted:#9ab0c4;--cyan:#31d8ff;--violet:#7655ff;--green:#64e8ae;--red:#ff8292;--yellow:#ffd36b}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 75% 0,#123a5d 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,textarea,select{font:inherit}.wrap{max-width:1100px;margin:auto;padding:30px 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;font-weight:900;color:#03101b}.brand small{display:block;color:var(--muted)}.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer}.danger{background:transparent;border:1px solid var(--line);color:#dbe8f3}.primary{color:#03101b;background:linear-gradient(100deg,var(--cyan),var(--violet))}.panel{background:rgba(7,20,36,.82);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 22px 80px rgba(0,0,0,.3)}.login{max-width:460px;margin:10vh auto}.kicker{letter-spacing:3px;color:var(--cyan);font-size:11px;font-weight:850}.login h1{font-size:42px;line-height:1;margin:12px 0}.muted{color:var(--muted)}label{display:block;color:#cfe0ee;font-size:12px;font-weight:750;margin:17px 0 7px}input,textarea,select{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:#04101e;color:var(--text);outline:none}textarea{min-height:120px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(49,216,255,.08)}.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:22px 0 4px;padding:5px;border:1px solid var(--line);border-radius:14px;background:rgba(2,12,24,.55)}
-.auth-tab{border:0;border-radius:10px;padding:10px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer}
-.auth-tab.active{background:rgba(49,216,255,.12);color:#dff8ff}
-.primary.full{width:100%;margin-top:18px}.msg{min-height:22px;margin-top:12px;color:var(--muted)}.error{color:var(--red)}.success{color:var(--green)}.hero{display:grid;grid-template-columns:1.5fr .8fr;gap:16px}.hero-card{padding:26px;border:1px solid var(--line);border-radius:22px;background:rgba(2,12,24,.45)}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1;margin:10px 0;letter-spacing:-2px}.id{display:inline-block;padding:7px 11px;border-radius:999px;background:rgba(49,216,255,.08);border:1px solid var(--line);color:#bfeeff;font-weight:800;font-size:12px}.status{margin-top:13px;color:var(--green);font-size:12px;font-weight:800}.balance{display:flex;flex-direction:column;justify-content:center}.balance .label{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted)}.balance .value{font-size:38px;font-weight:900;margin-top:5px;background:linear-gradient(100deg,var(--cyan),#a9b5ff,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}.stat{padding:18px;border:1px solid var(--line);border-radius:17px;background:rgba(2,12,24,.45)}.stat .label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted)}.stat b{display:block;margin-top:4px;font-size:22px}.section{margin-top:26px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}.section h2{margin:0;font-size:25px}.project-list{display:grid;gap:12px}.project{padding:18px;border:1px solid var(--line);border-radius:17px;background:rgba(2,12,24,.45)}.project-top{display:flex;justify-content:space-between;gap:15px}.project h3{margin:0 0 5px}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:850}.draft{background:rgba(143,166,187,.12);color:#b8c7d4}.submitted{background:rgba(255,211,107,.12);color:var(--yellow)}.approved{background:rgba(98,231,173,.12);color:var(--green)}.rejected{background:rgba(255,130,146,.12);color:var(--red)}.empty{padding:30px;text-align:center;border:1px dashed var(--line);border-radius:17px;color:var(--muted)}.form-panel{display:none;margin-top:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.ledger{display:grid;gap:10px}.tx{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 16px;border:1px solid var(--line);border-radius:15px;background:rgba(2,12,24,.45)}.tx-title{font-weight:800}.tx-meta{font-size:12px;color:var(--muted);margin-top:3px}.tx-amount{font-size:17px;font-weight:900;white-space:nowrap}.positive{color:var(--green)}.negative{color:var(--red)}.request-list{display:grid;gap:10px}.request{padding:16px;border:1px solid var(--line);border-radius:15px;background:rgba(2,12,24,.45)}.request-top{display:flex;justify-content:space-between;gap:14px}.request-title{font-weight:850}.request-meta{font-size:12px;color:var(--muted);margin-top:4px}.request-amount{font-weight:900;color:var(--cyan);white-space:nowrap}.request-form{display:none;margin-top:14px}.project-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.small-btn{padding:8px 12px;font-size:12px}.secondary{background:rgba(4,14,27,.55);border:1px solid var(--line);color:#dbe8f3}.foot{margin-top:25px;color:var(--muted);font-size:12px}@media(max-width:760px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.top,.section-head,.project-top{align-items:flex-start;flex-direction:column}}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 75% 0,#123a5d 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}button,input,textarea,select{font:inherit}.wrap{max-width:1100px;margin:auto;padding:30px 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--violet));display:grid;place-items:center;font-weight:900;color:#03101b}.brand small{display:block;color:var(--muted)}.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer}.danger{background:transparent;border:1px solid var(--line);color:#dbe8f3}.primary{color:#03101b;background:linear-gradient(100deg,var(--cyan),var(--violet))}.panel{background:rgba(7,20,36,.82);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 22px 80px rgba(0,0,0,.3)}.login{max-width:460px;margin:10vh auto}.kicker{letter-spacing:3px;color:var(--cyan);font-size:11px;font-weight:850}.login h1{font-size:42px;line-height:1;margin:12px 0}.muted{color:var(--muted)}label{display:block;color:#cfe0ee;font-size:12px;font-weight:750;margin:17px 0 7px}input,textarea,select{width:100%;padding:12px 13px;border-radius:12px;border:1px solid var(--line);background:#04101e;color:var(--text);outline:none}textarea{min-height:120px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(49,216,255,.08)}.primary.full{width:100%;margin-top:18px}.msg{min-height:22px;margin-top:12px;color:var(--muted)}.error{color:var(--red)}.success{color:var(--green)}.hero{display:grid;grid-template-columns:1.5fr .8fr;gap:16px}.hero-card{padding:26px;border:1px solid var(--line);border-radius:22px;background:rgba(2,12,24,.45)}.hero h1{font-size:clamp(34px,6vw,58px);line-height:1;margin:10px 0;letter-spacing:-2px}.id{display:inline-block;padding:7px 11px;border-radius:999px;background:rgba(49,216,255,.08);border:1px solid var(--line);color:#bfeeff;font-weight:800;font-size:12px}.status{margin-top:13px;color:var(--green);font-size:12px;font-weight:800}.balance{display:flex;flex-direction:column;justify-content:center}.balance .label{font-size:11px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted)}.balance .value{font-size:38px;font-weight:900;margin-top:5px;background:linear-gradient(100deg,var(--cyan),#a9b5ff,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}.stat{padding:18px;border:1px solid var(--line);border-radius:17px;background:rgba(2,12,24,.45)}.stat .label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted)}.stat b{display:block;margin-top:4px;font-size:22px}.section{margin-top:26px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}.section h2{margin:0;font-size:25px}.project-list{display:grid;gap:12px}.project{padding:18px;border:1px solid var(--line);border-radius:17px;background:rgba(2,12,24,.45)}.project-top{display:flex;justify-content:space-between;gap:15px}.project h3{margin:0 0 5px}.badge{display:inline-block;padding:5px 9px;border-radius:999px;font-size:10px;font-weight:850}.draft{background:rgba(143,166,187,.12);color:#b8c7d4}.submitted{background:rgba(255,211,107,.12);color:var(--yellow)}.approved{background:rgba(98,231,173,.12);color:var(--green)}.rejected{background:rgba(255,130,146,.12);color:var(--red)}.empty{padding:30px;text-align:center;border:1px dashed var(--line);border-radius:17px;color:var(--muted)}.form-panel{display:none;margin-top:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.ledger{display:grid;gap:10px}.tx{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 16px;border:1px solid var(--line);border-radius:15px;background:rgba(2,12,24,.45)}.tx-title{font-weight:800}.tx-meta{font-size:12px;color:var(--muted);margin-top:3px}.tx-amount{font-size:17px;font-weight:900;white-space:nowrap}.positive{color:var(--green)}.negative{color:var(--red)}.request-list{display:grid;gap:10px}.request{padding:16px;border:1px solid var(--line);border-radius:15px;background:rgba(2,12,24,.45)}.request-top{display:flex;justify-content:space-between;gap:14px}.request-title{font-weight:850}.request-meta{font-size:12px;color:var(--muted);margin-top:4px}.request-amount{font-weight:900;color:var(--cyan);white-space:nowrap}.request-form{display:none;margin-top:14px}.foot{margin-top:25px;color:var(--muted);font-size:12px}@media(max-width:760px){.hero,.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.top,.section-head,.project-top{align-items:flex-start;flex-direction:column}}
+
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0 6px;padding:5px;border:1px solid var(--line);border-radius:14px;background:rgba(2,12,24,.5)}
+.auth-tab{border:0;background:transparent;color:var(--muted);padding:10px;border-radius:10px;font-weight:800;cursor:pointer}
+.auth-tab.active{background:linear-gradient(100deg,var(--cyan),var(--violet));color:#03101b}
+.auth-panel{display:none}.auth-panel.active{display:block}
+.auth-note{font-size:12px;color:var(--muted);margin-top:12px}
+.resource-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.small-btn{padding:8px 11px;border-radius:10px;border:1px solid var(--line);background:#071525;color:var(--text);cursor:pointer;font-weight:750;text-decoration:none;display:inline-flex;align-items:center}
+.small-btn:hover{border-color:var(--cyan)}
+.resource-form{display:none;margin-top:12px;padding:15px;border:1px solid var(--line);border-radius:15px;background:rgba(2,12,24,.65)}
+.resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:760px){.resource-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body><div id="app"></div>
@@ -22,158 +32,83 @@ const supabase=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY), app=document
 const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 const badge=s=>{const x=esc(s||"draft");return `<span class="badge ${x}">${x}</span>`};
 
-function loginView(message=""){
+function loginView(message="",tab="signin"){
  app.innerHTML=`<div class="wrap"><div class="panel login">
    <div class="brand"><div class="mark">YIA</div><div><strong>Young Inventors Academy</strong><small>Member portal</small></div></div>
-   <div class="kicker">MEMBER ACCESS</div>
-   <h1 id="auth-title">Member Dashboard</h1>
-   <p id="auth-subtitle" class="muted">Sign in to manage your YIA profile and projects.</p>
+   <div class="kicker">MEMBER ACCESS</div><h1>Member Dashboard</h1>
+   <p class="muted">Sign in or create your YIA member account.</p>
    <div class="auth-tabs">
-     <button type="button" id="tab-signin" class="auth-tab active">Sign in</button>
-     <button type="button" id="tab-signup" class="auth-tab">Create account</button>
+     <button class="auth-tab ${tab==="signin"?"active":""}" data-tab="signin" type="button">Sign in</button>
+     <button class="auth-tab ${tab==="signup"?"active":""}" data-tab="signup" type="button">Create account</button>
    </div>
-   <form id="login-form">
-     <label>Email</label><input id="email" type="email" autocomplete="email" required>
-     <label>Password</label><input id="password" type="password" autocomplete="current-password" minlength="8" required>
-     <div id="confirm-wrap" style="display:none">
-       <label>Confirm password</label><input id="password-confirm" type="password" autocomplete="new-password" minlength="8">
-     </div>
-     <button id="auth-submit" class="btn primary full" type="submit">Sign in →</button>
-     <button id="resend-confirm" class="btn secondary full" type="button" style="display:none;margin-top:10px">Resend confirmation email</button>
-     <div id="msg" class="msg ${message?'error':''}">${esc(message)}</div>
-   </form>
-   <div class="foot">YIA membership approval is required before a member account can be linked. Use the same email address that was approved by YIA.</div>
+   <div id="signin-panel" class="auth-panel ${tab==="signin"?"active":""}">
+     <form id="login-form">
+       <label>Email</label><input id="email" type="email" autocomplete="username" required>
+       <label>Password</label><input id="password" type="password" autocomplete="current-password" required>
+       <button class="btn primary full" type="submit">Sign in →</button>
+       <button id="resend-btn" class="small-btn" style="margin-top:10px;width:100%;justify-content:center" type="button">Resend confirmation email</button>
+       <div id="signin-msg" class="msg ${message?'error':''}">${esc(message)}</div>
+     </form>
+   </div>
+   <div id="signup-panel" class="auth-panel ${tab==="signup"?"active":""}">
+     <form id="signup-form">
+       <label>Email</label><input id="signup-email" type="email" autocomplete="email" required>
+       <label>Password</label><input id="signup-password" type="password" autocomplete="new-password" minlength="8" required>
+       <label>Confirm password</label><input id="signup-confirm" type="password" autocomplete="new-password" minlength="8" required>
+       <button class="btn primary full" type="submit">Create account →</button>
+       <div class="auth-note">Your YIA membership must already be approved with the same email address.</div>
+       <div id="signup-msg" class="msg"></div>
+     </form>
+   </div>
  </div></div>`;
 
- const mode = { value: "signin" };
- const title = document.getElementById("auth-title");
- const subtitle = document.getElementById("auth-subtitle");
- const confirmWrap = document.getElementById("confirm-wrap");
- const confirmInput = document.getElementById("password-confirm");
- const submit = document.getElementById("auth-submit");
- const tabSignin = document.getElementById("tab-signin");
- const tabSignup = document.getElementById("tab-signup");
- const msg = document.getElementById("msg");
- const resendBtn = document.getElementById("resend-confirm");
-
- const showResend = (show) => {
-   resendBtn.style.display = show ? "block" : "none";
- };
-
- resendBtn.onclick = async () => {
-   const email = document.getElementById("email").value.trim().toLowerCase();
-   if (!email) {
-     msg.textContent = "Enter your email address first.";
-     msg.className = "msg error";
-     return;
-   }
-   resendBtn.disabled = true;
-   msg.textContent = "Sending a new confirmation email…";
-   msg.className = "msg";
-   const { error } = await supabase.auth.resend({
-     type: "signup",
-     email,
-     options: { emailRedirectTo: window.location.origin + window.location.pathname }
-   });
-   resendBtn.disabled = false;
-   if (error) {
-     msg.textContent = error.message || "Could not resend the confirmation email.";
-     msg.className = "msg error";
-     return;
-   }
-   msg.textContent = "A new confirmation email has been sent. Use the newest email and click the confirmation link once.";
-   msg.className = "msg success";
- };
-
- const setMode = (next) => {
-   mode.value = next;
-   const signup = next === "signup";
-   title.textContent = signup ? "Create YIA Account" : "Member Dashboard";
-   subtitle.textContent = signup
-     ? "Create your login with the same email used for your approved YIA membership."
-     : "Sign in to manage your YIA profile and projects.";
-   confirmWrap.style.display = signup ? "block" : "none";
-   confirmInput.required = signup;
-   submit.textContent = signup ? "Create account →" : "Sign in →";
-   tabSignin.classList.toggle("active", !signup);
-   tabSignup.classList.toggle("active", signup);
-   showResend(false);
-   msg.textContent = "";
-   msg.className = "msg";
- };
-
- tabSignin.onclick = () => setMode("signin");
- tabSignup.onclick = () => setMode("signup");
+ document.querySelectorAll(".auth-tab").forEach(btn=>btn.onclick=()=>loginView("",btn.dataset.tab));
 
  document.getElementById("login-form").addEventListener("submit",async e=>{
-   e.preventDefault();
-   msg.textContent = mode.value === "signup" ? "Creating account…" : "Signing in…";
-   msg.className = "msg";
-   const email = document.getElementById("email").value.trim().toLowerCase();
-   const password = document.getElementById("password").value;
-
-   if (mode.value === "signup") {
-     const confirm = confirmInput.value;
-     if (password.length < 8) {
-       msg.textContent = "Password must be at least 8 characters.";
-       msg.className = "msg error"; return;
-     }
-     if (password !== confirm) {
-       msg.textContent = "Passwords do not match.";
-       msg.className = "msg error"; return;
-     }
-     const { data, error } = await supabase.auth.signUp({
-       email,
-       password,
-       options: { emailRedirectTo: window.location.origin + window.location.pathname }
-     });
-     if (error) {
-       msg.textContent = error.message || "Account creation failed.";
-       msg.className = "msg error"; return;
-     }
-     if (!data.session) {
-       msg.textContent = "Account created. Please verify your email, then return here and sign in. If the email link expires, request a new one below.";
-       msg.className = "msg success";
-       showResend(true);
-       return;
-     }
-     const { error: claimError } = await supabase.rpc("claim_my_member_account");
-     if (claimError) {
-       await supabase.auth.signOut();
-       msg.textContent = claimError.message || "This account could not be linked to an approved YIA membership.";
-       msg.className = "msg error"; return;
-     }
-     loadDashboard();
-     return;
-   }
-
-   const { error } = await supabase.auth.signInWithPassword({email,password});
-   if(error){
-     msg.textContent="Sign-in failed. Check your email and password.";
-     msg.className="msg error"; return;
-   }
-   const { error: claimError } = await supabase.rpc("claim_my_member_account");
-   if (claimError) {
-     await supabase.auth.signOut();
-     msg.textContent = claimError.message || "Your account is not linked to an approved YIA membership.";
-     msg.className = "msg error"; return;
-   }
+   e.preventDefault(); const msg=document.getElementById("signin-msg");
+   msg.textContent="Signing in…"; msg.className="msg";
+   const email=document.getElementById("email").value.trim().toLowerCase();
+   const password=document.getElementById("password").value;
+   const {error}=await supabase.auth.signInWithPassword({email,password});
+   if(error){msg.textContent="Sign-in failed. Check your email and password.";msg.className="msg error";return}
+   const {error:claimError}=await supabase.rpc("claim_my_member_account");
+   if(claimError){await supabase.auth.signOut();msg.textContent=claimError.message||"No approved YIA membership was found for this email.";msg.className="msg error";return}
    loadDashboard();
+ });
+
+ document.getElementById("signup-form").addEventListener("submit",async e=>{
+   e.preventDefault(); const msg=document.getElementById("signup-msg");
+   msg.textContent="Creating account…";msg.className="msg";
+   const email=document.getElementById("signup-email").value.trim().toLowerCase();
+   const password=document.getElementById("signup-password").value;
+   const confirm=document.getElementById("signup-confirm").value;
+   if(password.length<8){msg.textContent="Password must be at least 8 characters.";msg.className="msg error";return}
+   if(password!==confirm){msg.textContent="Passwords do not match.";msg.className="msg error";return}
+   const {data,error}=await supabase.auth.signUp({email,password,options:{emailRedirectTo:"https://yiac.ir/member-dashboard.html"}});
+   if(error){msg.textContent=error.message||"Account creation failed.";msg.className="msg error";return}
+   if(data.session){
+     const {error:claimError}=await supabase.rpc("claim_my_member_account");
+     if(claimError){await supabase.auth.signOut();msg.textContent=claimError.message||"No approved YIA membership was found for this email.";msg.className="msg error";return}
+     loadDashboard(); return;
+   }
+   msg.textContent="Account created. Please verify your email, then return here and sign in.";
+   msg.className="msg success";document.getElementById("signup-form").reset();
+ });
+
+ document.getElementById("resend-btn").addEventListener("click",async()=>{
+   const msg=document.getElementById("signin-msg");
+   const email=document.getElementById("email").value.trim().toLowerCase();
+   if(!email){msg.textContent="Enter your email first.";msg.className="msg error";return}
+   msg.textContent="Sending confirmation email…";msg.className="msg";
+   const {error}=await supabase.auth.resend({type:"signup",email,options:{emailRedirectTo:"https://yiac.ir/member-dashboard.html"}});
+   if(error){msg.textContent=error.message||"Could not resend confirmation email.";msg.className="msg error";return}
+   msg.textContent="A new confirmation email has been sent. Check your inbox.";msg.className="msg success";
  });
 }
 async function loadDashboard(){
  const {data:{session}}=await supabase.auth.getSession();if(!session){loginView();return}
  app.innerHTML=`<div class="wrap"><div class="top"><div class="brand"><div class="mark">YIA</div><div><strong>Young Inventors Academy</strong><small>Member dashboard</small></div></div><button id="logout" class="btn danger">Sign out</button></div><div id="content"><div class="panel muted">Loading your dashboard…</div></div></div>`;
  document.getElementById("logout").onclick=async()=>{await supabase.auth.signOut();loginView()};
-
- // After an email-confirmation redirect, Supabase creates the session but the
- // member link has not been claimed yet. Claim it before reading the profile.
- const { error: claimError } = await supabase.rpc("claim_my_member_account");
- if (claimError) {
-   document.getElementById("content").innerHTML=`<div class="panel"><div class="error"><strong>Member account not linked.</strong><br>${esc(claimError.message || "Please use an email that matches an approved YIA membership.")}</div></div>`;
-   return;
- }
-
  const {data:members,error:memberError}=await supabase.rpc("get_my_member");
  if(memberError||!members?.length){document.getElementById("content").innerHTML=`<div class="panel"><div class="error"><strong>Member account not linked.</strong><br>Please contact the YIA administrator.</div></div>`;return}
  const member=members[0];
@@ -186,30 +121,9 @@ async function loadDashboard(){
  const balance=(!yicError&&typeof yicData==="number")?yicData:0, projectList=projectError?[]:(projects||[]);
  document.getElementById("content").innerHTML=`<div class="hero"><div class="hero-card"><div class="kicker">YIA MEMBER</div><h1>${esc(member.full_name)}</h1><div class="id">${esc(member.member_id)}</div><div class="status">● ${esc(member.status).toUpperCase()} MEMBER</div></div><div class="hero-card balance"><div class="label">YIA Credits</div><div class="value">🪙 ${balance.toLocaleString()} YIC</div><div class="muted">Current reward balance</div></div></div>
  <div class="stats"><div class="stat"><div class="label">Field</div><b>${esc(member.field||"—")}</b></div><div class="stat"><div class="label">Membership</div><b>${esc(member.membership_type||"—")}</b></div><div class="stat"><div class="label">Projects</div><b>${projectList.length}</b></div></div>
- <section class="section"><div class="section-head"><div><h2>My Projects</h2><div class="muted">Projects where you are the Project Lead. Draft and submitted projects can be managed here.</div></div><button id="show-form" class="btn primary">+ Add New Project</button></div>
+ <section class="section"><div class="section-head"><div><h2>My Projects</h2><div class="muted">Projects connected to your YIA membership.</div></div><button id="show-form" class="btn primary">+ Add New Project</button></div>
  <div id="form-panel" class="panel form-panel"><div class="kicker">NEW PROJECT</div><form id="project-form"><div class="grid"><div><label>Project title</label><input id="p-title" required maxlength="160" placeholder="e.g. AI Medical Assistant"></div><div><label>Field</label><select id="p-field"><option>Electronics</option><option>Software</option><option>Artificial Intelligence</option><option>Medical</option><option>Robotics</option><option>Automotive</option><option>Energy</option><option>Other</option></select></div></div><label>Description</label><textarea id="p-description" placeholder="Describe the project, your contribution, and its purpose."></textarea><label>Project URL <span class="muted">(optional)</span></label><input id="p-url" type="url" placeholder="https://..."><button class="btn primary" type="submit">Submit Project</button><div id="project-msg" class="msg"></div></form></div>
- <div id="projects" class="project-list" style="margin-top:14px"></div>
-  <div id="project-edit-panel" class="panel form-panel">
-    <div class="kicker">PROJECT LEAD · MANAGE PROJECT</div>
-    <form id="project-edit-form">
-      <input id="edit-project-id" type="hidden">
-      <div class="grid">
-        <div><label>Project title</label><input id="edit-p-title" required maxlength="160"></div>
-        <div><label>Field</label><select id="edit-p-field">
-          <option>Electronics</option><option>Software</option><option>Artificial Intelligence</option>
-          <option>Medical</option><option>Robotics</option><option>Automotive</option><option>Energy</option><option>Other</option>
-        </select></div>
-      </div>
-      <label>Description</label><textarea id="edit-p-description"></textarea>
-      <label>Project URL <span class="muted">(optional)</span></label><input id="edit-p-url" type="url" placeholder="https://...">
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-        <button class="btn primary" type="submit">Save Project Changes</button>
-        <button id="cancel-project-edit" class="btn secondary" type="button">Cancel</button>
-      </div>
-      <div id="project-edit-msg" class="msg"></div>
-    </form>
-  </div>
-</section><section class="section">
+ <div id="projects" class="project-list" style="margin-top:14px"></div></section><section class="section">
       <div class="section-head">
         <div><h2>YIC Reward Requests</h2><div class="muted">Request YIC for approved YIA activities and contributions.</div></div>
         <button id="show-reward-form" class="btn primary">+ Request YIC</button>
@@ -245,29 +159,6 @@ async function loadDashboard(){
   p.style.display=p.style.display==="block"?"none":"block";
   if(p.style.display==="block") document.getElementById("r-title").focus();
 };
-
-document.getElementById("project-edit-form").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const msg=document.getElementById("project-edit-msg");
-  msg.textContent="Saving project changes…";msg.className="msg";
-  const projectId=document.getElementById("edit-project-id").value;
-  const payload={
-    title:document.getElementById("edit-p-title").value.trim(),
-    description:document.getElementById("edit-p-description").value.trim()||null,
-    field:document.getElementById("edit-p-field").value,
-    project_url:document.getElementById("edit-p-url").value.trim()||null
-  };
-  if(!payload.title){msg.textContent="Project title is required.";msg.className="msg error";return}
-  const {error}=await supabase.from("projects").update(payload)
-    .eq("id",projectId).eq("member_id",member.id).in("status",["draft","submitted"]);
-  if(error){msg.textContent=error.message||"Could not save project changes.";msg.className="msg error";return}
-  msg.textContent="Project changes saved successfully.";msg.className="msg success";
-  const {data:newProjects}=await supabase.from("projects")
-    .select("id,title,description,field,project_url,status,created_at,updated_at")
-    .eq("member_id",member.id).order("created_at",{ascending:false});
-  renderProjects(newProjects||[]);
-  setTimeout(closeProjectEditor,700);
-});
 
 document.getElementById("reward-request-form").addEventListener("submit",async e=>{
   e.preventDefault();
@@ -326,59 +217,116 @@ function renderLedger(rows,error){
  }).join("");
 }
 
-function closeProjectEditor(){
-  const panel=document.getElementById("project-edit-panel");
-  if(panel){
-    panel.style.display="none";
-    document.getElementById("project-edit-msg").textContent="";
-    document.getElementById("project-edit-msg").className="msg";
-  }
-}
-
-function openProjectEditor(project){
-  if(!project || !["draft","submitted"].includes(project.status)) return;
-  const panel=document.getElementById("project-edit-panel");
-  document.getElementById("edit-project-id").value=project.id;
-  document.getElementById("edit-p-title").value=project.title||"";
-  document.getElementById("edit-p-field").value=project.field||"Other";
-  document.getElementById("edit-p-description").value=project.description||"";
-  document.getElementById("edit-p-url").value=project.project_url||"";
-  document.getElementById("project-edit-msg").textContent="";
-  document.getElementById("project-edit-msg").className="msg";
-  panel.style.display="block";
-  panel.scrollIntoView({behavior:"smooth",block:"center"});
-  document.getElementById("edit-p-title").focus();
-}
-
 function renderProjects(projects){
-  const box=document.getElementById("projects");
-  closeProjectEditor();
-  if(!projects.length){
-    box.innerHTML=`<div class="empty">No projects yet.<br>Use <strong>+ Add New Project</strong> to submit your first project.</div>`;
-    return;
-  }
-  box.innerHTML=projects.map(p=>{
-    const manageable=["draft","submitted"].includes(p.status);
-    return `<article class="project">
-      <div class="project-top">
-        <div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.field||"Other")} · ${new Date(p.created_at).toLocaleDateString()}</div></div>
-        ${badge(p.status)}
-      </div>
-      ${p.description?`<p>${esc(p.description)}</p>`:""}
-      ${p.project_url?`<a href="${esc(p.project_url)}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Open project →</a>`:""}
-      ${manageable?`<div class="project-actions">
-        <span class="muted" style="font-size:12px;align-self:center">Project Lead</span>
-        <button class="btn secondary small-btn manage-project" data-project-id="${esc(p.id)}" type="button">Manage Project →</button>
-      </div>`:""}
-    </article>`;
-  }).join("");
-  box.querySelectorAll(".manage-project").forEach(btn=>{
-    btn.addEventListener("click",()=>{
-      const project=projects.find(p=>p.id===btn.dataset.projectId);
-      openProjectEditor(project);
-    });
-  });
+ const box=document.getElementById("projects");
+ if(!projects.length){box.innerHTML=`<div class="empty">No projects yet.<br>Use <strong>+ Add New Project</strong> to submit your first project.</div>`;return}
+ box.innerHTML=projects.map(p=>`<article class="project">
+   <div class="project-top"><div><h3>${esc(p.title)}</h3><div class="muted">${esc(p.field||"Other")} · ${new Date(p.created_at).toLocaleDateString()}</div></div>${badge(p.status)}</div>
+   ${p.description?`<p>${esc(p.description)}</p>`:""}
+   ${p.project_url?`<a href="${esc(p.project_url)}" target="_blank" rel="noopener noreferrer" style="color:var(--cyan)">Open project →</a>`:""}
+   <div class="resource-actions">
+     <a class="small-btn" href="project.html?id=${encodeURIComponent(p.id)}" target="_blank" rel="noopener">Open Project Page ↗</a>
+     <button class="small-btn" type="button" data-resource-project="${esc(p.id)}">+ Add Puzzle Piece</button>
+   </div>
+   <div class="resource-form" id="resource-form-${esc(p.id)}">
+     <div class="kicker">NEW PROJECT PIECE</div>
+     <div class="muted" style="margin:5px 0 12px">Each contribution adds a new tile to the project puzzle.</div>
+     <form class="resource-upload-form" data-project-id="${esc(p.id)}">
+       <div class="resource-grid">
+         <div><label>Piece title</label><input name="title" required maxlength="160" placeholder="e.g. Research paper"></div>
+         <div><label>Type</label><select name="resource_type"><option value="image">Image</option><option value="article">Article / PDF</option><option value="code">Code</option><option value="document">Document</option><option value="link">External link</option></select></div>
+       </div>
+       <label>Description</label><textarea name="description" maxlength="1000" placeholder="What does this piece contain?"></textarea>
+       <label>File <span class="muted">(image, PDF, code, document)</span></label><input name="file" type="file">
+       <label>External URL <span class="muted">(use this instead of a file for links)</span></label><input name="external_url" type="url" placeholder="https://...">
+       <button class="btn primary" type="submit">Add Puzzle Piece</button><div class="msg resource-msg"></div>
+     </form>
+   </div>
+ </article>`).join("");
+ box.querySelectorAll("[data-resource-project]").forEach(btn=>btn.onclick=()=>{
+   const f=document.getElementById(`resource-form-${btn.dataset.resourceProject}`);
+   f.style.display=f.style.display==="block"?"none":"block";
+ });
+ box.querySelectorAll(".resource-upload-form").forEach(form=>form.addEventListener("submit",e=>submitResource(e,form)));
 }
+
+async function submitResource(event,form){
+ event.preventDefault();
+ const msg=form.querySelector(".resource-msg");
+ msg.textContent="Uploading…";msg.className="msg resource-msg";
+
+ const fd=new FormData(form), projectId=form.dataset.projectId;
+ const title=String(fd.get("title")||"").trim();
+ const description=String(fd.get("description")||"").trim()||null;
+ const type=String(fd.get("resource_type")||"document");
+ const file=form.querySelector('input[name="file"]').files[0]||null;
+ const externalUrl=String(fd.get("external_url")||"").trim()||null;
+
+ if(!file&&!externalUrl){
+   msg.textContent="Choose a file or enter an external URL.";
+   msg.className="msg error resource-msg";
+   return;
+ }
+ if(type==="link"&&!externalUrl){
+   msg.textContent="A link resource needs an external URL.";
+   msg.className="msg error resource-msg";
+   return;
+ }
+
+ try{
+   const {data:{user}}=await supabase.auth.getUser();
+   if(!user) throw new Error("Not authenticated");
+
+   let filePath=null;
+
+   // The database requires file_path OR external_url at INSERT time.
+   // Therefore upload the file first, then create the database row.
+   if(file){
+     const safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"-");
+     const tempId=crypto.randomUUID();
+     filePath=`${projectId}/${tempId}/${Date.now()}-${safe}`;
+
+     const {error:uploadError}=await supabase.storage
+       .from("project-assets")
+       .upload(filePath,file,{upsert:false,contentType:file.type||undefined});
+
+     if(uploadError) throw uploadError;
+   }
+
+   const {data:row,error:insertError}=await supabase
+     .from("project_resources")
+     .insert({
+       project_id:projectId,
+       title,
+       description,
+       resource_type:type,
+       file_path:filePath,
+       external_url:externalUrl,
+       created_by:user.id,
+       status:"approved"
+     })
+     .select("id")
+     .single();
+
+   if(insertError){
+     // Clean up the uploaded file if the database insert fails.
+     if(filePath){
+       await supabase.storage.from("project-assets").remove([filePath]);
+     }
+     throw insertError;
+   }
+
+   msg.textContent="Puzzle piece added successfully.";
+   msg.className="msg success resource-msg";
+   form.reset();
+
+ }catch(e){
+   console.error(e);
+   msg.textContent=e.message||"Could not add this puzzle piece.";
+   msg.className="msg error resource-msg";
+ }
+}
+
 supabase.auth.onAuthStateChange((_event,session)=>{if(session)loadDashboard()});loadDashboard();
 </script>
 </body>
