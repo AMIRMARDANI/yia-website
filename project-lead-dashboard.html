@@ -113,7 +113,8 @@ function memberCard(m){
    <div class="member-main"><div class="avatar">${esc(initials)}</div><div><div class="member-name">${esc(m.full_name)}</div><div class="member-meta">${esc(m.member_code)} · ${esc(m.email)}</div></div></div>
    <div class="actions"><span class="badge ${esc(m.status)}">${esc(m.status)}</span>
    <select data-role-select="${esc(m.membership_id)}">
-     <option>Contributor</option><option>Researcher</option><option>Designer</option><option>AI Research</option><option>Electronics</option><option>Mission Design</option><option>Project Lead</option><option>Other</option>
+     ${m.role==="Project Lead" ? '<option value="Project Lead" selected disabled>Project Lead (managed separately)</option>' : ""}
+     <option>Contributor</option><option>Researcher</option><option>Designer</option><option>AI Research</option><option>Electronics</option><option>Mission Design</option><option>Other</option>
    </select>
    ${m.status==="requested"?`<button class="btn primary" data-member-action="approve" data-id="${esc(m.membership_id)}">Approve</button><button class="btn ghost" data-member-action="reject" data-id="${esc(m.membership_id)}">Reject</button>`:`<button class="btn ghost" data-member-action="leave" data-id="${esc(m.membership_id)}">Mark Left</button>`}
    </div>

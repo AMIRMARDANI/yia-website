@@ -76,7 +76,7 @@ function render(){
  const grid=document.getElementById("grid");
  if(!filtered.length){grid.innerHTML='<div class="empty">No membership records match your search.</div>';return}
  grid.innerHTML=filtered.map(x=>`<article class="card"><div class="card-head"><div><div class="project">${esc(x.projectTitle)}</div><div class="name">${esc(x.memberName)}</div><div class="meta">${esc(x.memberCode)} · Requested ${new Date(x.joined_at).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"})}</div></div><span class="badge ${esc(x.status)}">${esc(x.status)}</span></div>
- <div class="actions"><label>Role<select data-role="${x.id}"><option>Contributor</option><option>Researcher</option><option>Designer</option><option>AI Research</option><option>Electronics</option><option>Mission Design</option><option>Project Lead</option><option>Other</option></select></label>
+ <div class="actions"><label>Role<select data-role="${x.id}">${x.role==="Project Lead" ? '<option value="Project Lead" selected disabled>Project Lead (manage on Project Leads page)</option>' : ""}<option>Contributor</option><option>Researcher</option><option>Designer</option><option>AI Research</option><option>Electronics</option><option>Mission Design</option><option>Other</option></select></label>
  <button class="btn primary" data-action="approve" data-id="${x.id}">Approve</button><button class="btn ghost" data-action="reject" data-id="${x.id}">Reject</button></div></article>`).join("");
  filtered.forEach(x=>{const s=document.querySelector(`[data-role="${CSS.escape(x.id)}"]`);if(s)s.value=x.role||"Contributor"});
  grid.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>update(b.dataset.id,b.dataset.action));
