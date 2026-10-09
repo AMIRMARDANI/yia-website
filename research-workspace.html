@@ -30,7 +30,7 @@ window.addEventListener("unhandledrejection", function(e) {
 });
 </script>
 <script type="module">
-import { supabase, listWorkspace, createWorkspaceRecord, logWorkspaceActivity, getWorkspaceSession, TABLES } from "./assets/js/workspace-data.js?v=20261009-2";
+import { supabase, listWorkspace, createWorkspaceRecord, logWorkspaceActivity, getWorkspaceSession, TABLES } from "./assets/js/workspace-data.js?v=20261009-3";
 const $=id=>document.getElementById(id);
 const defs={
  tasks:{label:"Tasks",entity:"tasks",fields:[["title","Title","text",true],["description","Description","textarea"],["status","Status","select",true,["todo","in_progress","blocked","done","cancelled"]],["priority","Priority","select",true,["low","medium","high","urgent"]],["due_at","Due date","datetime-local"]]},
