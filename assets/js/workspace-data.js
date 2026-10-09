@@ -50,7 +50,7 @@ export async function listWorkspace(projectId, entity, { limit = 100, offset = 0
   let query = supabase.from(table).select("*").range(boundedOffset, boundedOffset + boundedLimit - 1);
   if (entity !== "datasetVersions") query = query.eq("project_id", projectId);
   else query = query.in("dataset_id", (await listWorkspace(projectId, "datasets", {limit:500})).map(x => x.id));
-  if (entity === "activity") query = query.order("created_at", { ascending: false });
+  if (entity === "activity" || entity === "datasetVersions") query = query.order("created_at", { ascending: false });
   else query = query.order("updated_at", { ascending: false, nullsFirst: false }).order("created_at", {ascending:false});
   return throwIfError(await query);
 }
