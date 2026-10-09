@@ -97,4 +97,3 @@ export async function deleteWorkspaceRecord(projectId, entity, id) {
 export async function logWorkspaceActivity(projectId, event) {
   return createWorkspaceRecord(projectId, "activity", event);
 }
-export { TABLES };
