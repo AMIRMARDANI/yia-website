@@ -15,8 +15,16 @@ as $$
     from public.projects p
     where p.id = p_project_id
       and (
-        p.created_by = (select auth.uid())
-        or p.project_lead = (select auth.uid())
+        exists (
+          select 1 from public.members owner_member
+          where owner_member.id = p.created_by
+            and owner_member.auth_user_id = (select auth.uid())
+        )
+        or exists (
+          select 1 from public.members lead_member
+          where lead_member.id = coalesce(p.project_lead_member_id, p.project_lead)
+            and lead_member.auth_user_id = (select auth.uid())
+        )
         or exists (
           select 1
           from public.project_members pm
