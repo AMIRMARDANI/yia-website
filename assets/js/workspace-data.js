@@ -1,7 +1,7 @@
 // V20 Research Workspace data access layer.
 // Browser-safe: uses only the publishable key and relies on database RLS.
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
-import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "../supabase-config.js";
+import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY } from "../../supabase-config.js";
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
