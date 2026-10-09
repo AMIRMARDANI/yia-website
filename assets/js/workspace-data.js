@@ -58,14 +58,15 @@ export async function createWorkspaceRecord(projectId, entity, payload) {
   assertProjectId(projectId);
   const table = assertEntity(entity);
   if (!payload || typeof payload !== "object" || Array.isArray(payload)) throw new TypeError("A record payload is required.");
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+  if (userError) throw userError;
+  if (!userData.user) throw new Error("Please sign in before creating workspace records.");
   if (entity === "activity") {
-    const safe = { ...payload, project_id: projectId };
-    delete safe.actor_user_id;
+    const safe = { ...payload, project_id: projectId, actor_user_id: userData.user.id };
     return throwIfError(await supabase.from(table).insert(safe).select("*").single());
   }
-  const safe = { ...payload };
+  const safe = { ...payload, created_by: userData.user.id };
   delete safe.id;
-  delete safe.created_by;
   if (entity === "datasetVersions") {
     if (!safe.dataset_id) throw new TypeError("dataset_id is required for a dataset version.");
     const dataset = throwIfError(await supabase.from(TABLES.datasets).select("id,project_id").eq("id", safe.dataset_id).eq("project_id", projectId).single());
