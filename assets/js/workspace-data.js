@@ -20,7 +20,7 @@ const TABLES = Object.freeze({
 });
 
 function assertProjectId(projectId) {
-  if (typeof projectId !== "string" || !/^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(projectId)) {
+  if (typeof projectId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(projectId)) {
     throw new TypeError("A valid project UUID is required.");
   }
 }
