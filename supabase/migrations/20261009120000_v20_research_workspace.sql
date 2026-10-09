@@ -1,9 +1,9 @@
 -- V20 Research Workspace backend foundation
 -- Additive migration: does not alter existing project, membership, YIC, or public asset tables.
-create schema if not exists private;
-revoke all on schema private from public, anon, authenticated;
+create schema if not exists workspace_private;
+revoke all on schema workspace_private from public, anon, authenticated;
 
-create or replace function private.can_access_workspace(p_project_id uuid)
+create or replace function workspace_private.can_access_workspace(p_project_id uuid)
 returns boolean
 language sql
 stable
@@ -28,9 +28,9 @@ as $$
       )
   );
 $$;
-revoke all on function private.can_access_workspace(uuid) from public, anon;
-grant usage on schema private to authenticated;
-grant execute on function private.can_access_workspace(uuid) to authenticated;
+revoke all on function workspace_private.can_access_workspace(uuid) from public, anon;
+grant usage on schema workspace_private to authenticated;
+grant execute on function workspace_private.can_access_workspace(uuid) to authenticated;
 
 create table if not exists public.workspace_datasets (
   id uuid primary key default gen_random_uuid(),
@@ -184,45 +184,45 @@ grant select, insert, update, delete on public.workspace_datasets, public.worksp
   public.workspace_knowledge_resources, public.workspace_tasks, public.workspace_entity_links to authenticated;
 grant select, insert on public.workspace_activity_events to authenticated;
 
-create policy workspace_datasets_select on public.workspace_datasets for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_datasets_insert on public.workspace_datasets for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_datasets_update on public.workspace_datasets for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_datasets_delete on public.workspace_datasets for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_datasets_select on public.workspace_datasets for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_datasets_insert on public.workspace_datasets for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_datasets_update on public.workspace_datasets for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_datasets_delete on public.workspace_datasets for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_versions_select on public.workspace_dataset_versions for select to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select private.can_access_workspace(d.project_id))));
-create policy workspace_versions_insert on public.workspace_dataset_versions for insert to authenticated with check (created_by = (select auth.uid()) and exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select private.can_access_workspace(d.project_id))));
-create policy workspace_versions_update on public.workspace_dataset_versions for update to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select private.can_access_workspace(d.project_id)))) with check (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select private.can_access_workspace(d.project_id))));
-create policy workspace_versions_delete on public.workspace_dataset_versions for delete to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select private.can_access_workspace(d.project_id))));
+create policy workspace_versions_select on public.workspace_dataset_versions for select to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select workspace_private.can_access_workspace(d.project_id))));
+create policy workspace_versions_insert on public.workspace_dataset_versions for insert to authenticated with check (created_by = (select auth.uid()) and exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select workspace_private.can_access_workspace(d.project_id))));
+create policy workspace_versions_update on public.workspace_dataset_versions for update to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select workspace_private.can_access_workspace(d.project_id)))) with check (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select workspace_private.can_access_workspace(d.project_id))));
+create policy workspace_versions_delete on public.workspace_dataset_versions for delete to authenticated using (exists(select 1 from public.workspace_datasets d where d.id = dataset_id and (select workspace_private.can_access_workspace(d.project_id))));
 
-create policy workspace_analyses_select on public.workspace_analyses for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_analyses_insert on public.workspace_analyses for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_analyses_update on public.workspace_analyses for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_analyses_delete on public.workspace_analyses for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_analyses_select on public.workspace_analyses for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_analyses_insert on public.workspace_analyses for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_analyses_update on public.workspace_analyses for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_analyses_delete on public.workspace_analyses for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_experiments_select on public.workspace_experiments for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_experiments_insert on public.workspace_experiments for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_experiments_update on public.workspace_experiments for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_experiments_delete on public.workspace_experiments for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_experiments_select on public.workspace_experiments for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_experiments_insert on public.workspace_experiments for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_experiments_update on public.workspace_experiments for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_experiments_delete on public.workspace_experiments for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_findings_select on public.workspace_findings for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_findings_insert on public.workspace_findings for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_findings_update on public.workspace_findings for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_findings_delete on public.workspace_findings for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_findings_select on public.workspace_findings for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_findings_insert on public.workspace_findings for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_findings_update on public.workspace_findings for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_findings_delete on public.workspace_findings for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_knowledge_select on public.workspace_knowledge_resources for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_knowledge_insert on public.workspace_knowledge_resources for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_knowledge_update on public.workspace_knowledge_resources for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_knowledge_delete on public.workspace_knowledge_resources for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_knowledge_select on public.workspace_knowledge_resources for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_knowledge_insert on public.workspace_knowledge_resources for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_knowledge_update on public.workspace_knowledge_resources for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_knowledge_delete on public.workspace_knowledge_resources for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_tasks_select on public.workspace_tasks for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_tasks_insert on public.workspace_tasks for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_tasks_update on public.workspace_tasks for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_tasks_delete on public.workspace_tasks for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_tasks_select on public.workspace_tasks for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_tasks_insert on public.workspace_tasks for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_tasks_update on public.workspace_tasks for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_tasks_delete on public.workspace_tasks for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
 
-create policy workspace_activity_select on public.workspace_activity_events for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_activity_insert on public.workspace_activity_events for insert to authenticated with check ((select private.can_access_workspace(project_id)) and actor_user_id = (select auth.uid()));
+create policy workspace_activity_select on public.workspace_activity_events for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_activity_insert on public.workspace_activity_events for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and actor_user_id = (select auth.uid()));
 
-create policy workspace_links_select on public.workspace_entity_links for select to authenticated using ((select private.can_access_workspace(project_id)));
-create policy workspace_links_insert on public.workspace_entity_links for insert to authenticated with check ((select private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
-create policy workspace_links_update on public.workspace_entity_links for update to authenticated using ((select private.can_access_workspace(project_id))) with check ((select private.can_access_workspace(project_id)));
-create policy workspace_links_delete on public.workspace_entity_links for delete to authenticated using ((select private.can_access_workspace(project_id)));
+create policy workspace_links_select on public.workspace_entity_links for select to authenticated using ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_links_insert on public.workspace_entity_links for insert to authenticated with check ((select workspace_private.can_access_workspace(project_id)) and created_by = (select auth.uid()));
+create policy workspace_links_update on public.workspace_entity_links for update to authenticated using ((select workspace_private.can_access_workspace(project_id))) with check ((select workspace_private.can_access_workspace(project_id)));
+create policy workspace_links_delete on public.workspace_entity_links for delete to authenticated using ((select workspace_private.can_access_workspace(project_id)));
