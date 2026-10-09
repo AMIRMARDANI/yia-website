@@ -7,7 +7,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
 });
 
-const TABLES = Object.freeze({
+export const TABLES = Object.freeze({
   datasets: "workspace_datasets",
   datasetVersions: "workspace_dataset_versions",
   analyses: "workspace_analyses",
