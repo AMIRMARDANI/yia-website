@@ -68,11 +68,11 @@ function parseCsvPreview(source){
   if(quoted){if(ch==='"'&&source[i+1]==='"'){cell+='"';i++}else if(ch==='"')quoted=false;else cell+=ch}
   else if(ch==='"'&&cell==="")quoted=true;
   else if(ch===","){row.push(cell);cell=""}
-  else if(ch==="\\n"){row.push(cell.replace(/\\r$/,""));rows.push(row);row=[];cell=""}
+  else if(ch==="\n"){row.push(cell.replace(/\r$/,""));rows.push(row);row=[];cell=""}
   else cell+=ch;
  }
  if(quoted)throw new Error("CSV contains an unclosed quoted field.");
- if(cell.length||row.length){row.push(cell.replace(/\\r$/,""));rows.push(row)}
+ if(cell.length||row.length){row.push(cell.replace(/\r$/,""));rows.push(row)}
  while(rows.length&&rows[rows.length-1].every(v=>!String(v).trim()))rows.pop();
  if(!rows.length)throw new Error("CSV file is empty.");
  return rows;
