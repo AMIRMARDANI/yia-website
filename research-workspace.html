@@ -126,14 +126,22 @@ function validateActiveCsv(){
 }
 function analyzeActiveCsv(){
  if(!activeCsvPreview)return;
- const {headers,rows}=activeCsvPreview,idxPre=csvColumnIndex(headers,"pre_score"),idxPost=csvColumnIndex(headers,"post_score");
+ const {headers,rows}=activeCsvPreview;
+ const idxPre=csvColumnIndex(headers,"pre_score"),idxPost=csvColumnIndex(headers,"post_score"),idxGroup=csvColumnIndex(headers,"study_group");
  const result=$("csv-analysis-results");result.classList.remove("hidden");
  if(idxPre<0||idxPost<0){result.innerHTML="<h4>Descriptive analysis</h4><p>Could not find both pre_score and post_score columns.</p>";return}
- const pairs=rows.map((r,i)=>({row:i+2,pre:Number(String(r[idxPre]??"").trim()),post:Number(String(r[idxPost]??"").trim()),preRaw:String(r[idxPre]??"").trim(),postRaw:String(r[idxPost]??"").trim()})).filter(x=>x.preRaw!==""&&x.postRaw!==""&&Number.isFinite(x.pre)&&Number.isFinite(x.post));
+ const pairs=rows.map((r,i)=>({row:i+2,pre:Number(String(r[idxPre]??"").trim()),post:Number(String(r[idxPost]??"").trim()),preRaw:String(r[idxPre]??"").trim(),postRaw:String(r[idxPost]??"").trim(),group:String(r[idxGroup]??"").trim()||"Unspecified"})).filter(x=>x.preRaw!==""&&x.postRaw!==""&&Number.isFinite(x.pre)&&Number.isFinite(x.post));
  if(!pairs.length){result.innerHTML="<h4>Descriptive analysis</h4><p>No valid paired pre/post scores found.</p>";return}
- const mean=xs=>xs.reduce((a,b)=>a+b,0)/xs.length,preMean=mean(pairs.map(x=>x.pre)),postMean=mean(pairs.map(x=>x.post)),deltas=pairs.map(x=>x.post-x.pre),deltaMean=mean(deltas),min=Math.min(preMean,postMean,0),max=Math.max(preMean,postMean,0),range=max-min||1;
- const bar=(label,value)=>'<div style="margin:8px 0"><div>'+esc(label)+': <strong>'+value.toFixed(2)+'</strong></div><div style="height:12px;background:#10243a;border-radius:6px;overflow:hidden"><div style="height:12px;width:'+Math.max(2,Math.min(100,(value-min)/range*100))+'%;background:linear-gradient(90deg,#50dfff,#9874ff)"></div></div></div>';
- result.innerHTML='<h4>Descriptive pre/post analysis</h4><p>Valid paired records: <strong>'+pairs.length+'</strong> of '+rows.length+'</p>'+bar("Mean pre_score",preMean)+bar("Mean post_score",postMean)+'<p>Mean change (post − pre): <strong>'+deltaMean.toFixed(2)+'</strong></p><p class="notice">Descriptive statistics only; no significance test or causal conclusion is implied. Source data remains unchanged.</p>';
+ const mean=xs=>xs.reduce((a,b)=>a+b,0)/xs.length;
+ const preMean=mean(pairs.map(x=>x.pre)),postMean=mean(pairs.map(x=>x.post)),deltas=pairs.map(x=>x.post-x.pre),deltaMean=mean(deltas);
+ const bar=(label,value,maxAbs)=>'<div style="margin:8px 0"><div>'+esc(label)+': <strong>'+value.toFixed(2)+'</strong></div><div style="height:12px;background:#10243a;border-radius:6px;overflow:hidden"><div style="height:12px;width:'+Math.max(2,Math.min(100,Math.abs(value)/(maxAbs||1)*100))+'%;background:linear-gradient(90deg,#50dfff,#9874ff)"></div></div></div>';
+ const maxScore=Math.max(1,...pairs.flatMap(x=>[Math.abs(x.pre),Math.abs(x.post)]));
+ let groupHtml="";
+ if(idxGroup>=0){
+  const groups=[...new Set(pairs.map(x=>x.group))];
+  groupHtml='<h4>By study group</h4><div style="overflow:auto"><table style="border-collapse:collapse;width:100%;font-size:13px"><thead><tr>'+["Group","n","Mean pre","Mean post","Mean change"].map(h=>'<th style="text-align:left;padding:7px;border:1px solid var(--line)">'+h+'</th>').join("")+'</tr></thead><tbody>'+groups.map(g=>{const xs=pairs.filter(x=>x.group===g),p=mean(xs.map(x=>x.pre)),q=mean(xs.map(x=>x.post)),d=mean(xs.map(x=>x.post-x.pre));return '<tr>'+[g,String(xs.length),p.toFixed(2),q.toFixed(2),(d>0?"+":"")+d.toFixed(2)].map(v=>'<td style="padding:7px;border:1px solid var(--line)">'+esc(v)+'</td>').join("")+'</tr>'}).join("")+'</tbody></table></div>';
+ }
+ result.innerHTML='<h4>Descriptive pre/post analysis</h4><p>Valid paired records: <strong>'+pairs.length+'</strong> of '+rows.length+'</p>'+bar("Mean pre_score",preMean,maxScore)+bar("Mean post_score",postMean,maxScore)+'<p>Mean change (post − pre): <strong>'+(deltaMean>0?"+":"")+deltaMean.toFixed(2)+'</strong></p>'+groupHtml+'<p class="notice">Descriptive statistics only. Group summaries are unadjusted and do not establish statistical significance or causality. Source data remains unchanged.</p>';
  result.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 $("csv-validate-button").onclick=validateActiveCsv;
