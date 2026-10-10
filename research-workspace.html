@@ -15,7 +15,7 @@ input,select,textarea,button{font:inherit;border-radius:10px;border:1px solid va
 <section class="panel hidden" id="auth-panel"><h2 id="auth-title">Sign in to YIA</h2><p class="muted">Use the email and password for your existing YIA account.</p><form id="auth-form"><label for="auth-email">Email</label><input id="auth-email" type="email" autocomplete="username" required placeholder="you@example.com"><div style="height:10px"></div><label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" required><div class="row" style="margin-top:14px"><button class="primary" id="auth-submit" type="submit">Sign in</button><button id="auth-cancel" type="button">Cancel</button><button id="auth-reset" type="button">Forgot password?</button></div><div id="auth-message" class="status muted" role="status"></div></form></section>
 <section class="panel"><div class="row"><div><label for="project">Project</label><select id="project"><option value="">Starting workspace…</option></select></div><div><label for="project-id">Or enter project UUID</label><input id="project-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"></div><div style="flex:0 0 auto"><button class="primary" id="load">Load workspace</button></div></div><div class="status muted" id="status" role="status">Starting workspace connection…</div></section>
 <nav class="tabs" id="tabs"></nav>
-<section class="layout"><div class="panel"><h2 id="form-title">Add a task</h2><p class="muted" id="form-help">Records are saved to Supabase and access is enforced by database policies.</p><form id="create-form"><div id="fields"></div><p><button class="primary" type="submit">Save record</button></p></form><div id="ai-answer" class="panel hidden" aria-live="polite"></div><section id="task-proposals" class="panel hidden"><h3>Proposed tasks</h3><p class="notice">Review and select tasks. Nothing is saved until you confirm below.</p><div id="proposal-list"></div><button type="button" id="save-proposals" class="primary">Save selected tasks</button><div id="proposal-status" class="status muted" role="status"></div></section></div>
+<section class="layout"><div class="panel"><h2 id="form-title">Add a task</h2><p class="muted" id="form-help">Records are saved to Supabase and access is enforced by database policies.</p><form id="create-form"><div id="fields"></div><p><button class="primary" type="submit">Save record</button></p></form><div id="ai-answer" class="panel hidden" aria-live="polite"></div><section id="dataset-inspector" class="panel hidden" style="margin-top:16px"><h3>Inspect dataset</h3><p class="notice">Enter only details verified from the actual source. Unknown fields can stay blank.</p><form id="dataset-profile-form"><input type="hidden" name="dataset_id"><label>Dataset title<input name="title" required maxlength="180"></label><div style="height:8px"></div><label>Description / purpose<textarea name="description"></textarea></label><div style="height:8px"></div><label>Source URL (optional)<input name="source_uri" type="url" placeholder="https://…"></label><div style="height:8px"></div><div class="row"><label>File format<input name="format" placeholder="CSV, XLSX, JSON…"></label><label>Rows / records<input name="row_count" type="number" min="0" step="1"></label></div><div style="height:8px"></div><div class="row"><label>Columns / variables<input name="column_count" type="number" min="0" step="1"></label><label>Missing values<input name="missing_values" placeholder="Verified count or details"></label></div><div style="height:8px"></div><label>Column names / schema<textarea name="columns" placeholder="One column per line; verified names and types only"></textarea></label><div style="height:8px"></div><label>Provenance and notes<textarea name="provenance" placeholder="Origin, collection method, permissions, limitations…"></textarea></label><p><button class="primary" type="submit" id="save-dataset-profile">Save verified profile</button> <button type="button" id="cancel-dataset-profile">Cancel</button></p></form><div id="dataset-profile-status" class="status muted" role="status"></div></section><section id="task-proposals" class="panel hidden"><h3>Proposed tasks</h3><p class="notice">Review and select tasks. Nothing is saved until you confirm below.</p><div id="proposal-list"></div><button type="button" id="save-proposals" class="primary">Save selected tasks</button><div id="proposal-status" class="status muted" role="status"></div></section></div>
 <div class="panel"><div class="row"><div><h2 id="list-title">Tasks</h2><div class="muted" id="count">No records loaded</div></div><button id="refresh">Refresh</button></div><div id="records"><div class="empty">Choose a project and load records.</div></div></div></section>
 <p class="notice">Workspace records are private to authenticated project members with access. AI task proposals are drafts only; records are created only after you select tasks and confirm saving.</p>
 </main>
@@ -48,48 +48,35 @@ function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&l
 function renderTabs(){$("tabs").innerHTML=Object.entries(defs).map(([key,d])=>'<button data-tab="'+key+'" class="'+(key===active?"active":"")+'">'+d.label+'</button>').join("");$("tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{active=b.dataset.tab;renderTabs();renderForm();refresh()})}
 function renderForm(){const d=defs[active];let proposalButton=document.getElementById("generate-proposals");if(active==="assistant"){if(!proposalButton){proposalButton=document.createElement("button");proposalButton.type="button";proposalButton.id="generate-proposals";proposalButton.className="primary";proposalButton.style.marginTop="8px";proposalButton.textContent="Generate task proposals";proposalButton.onclick=generateTaskProposals;document.getElementById("create-form").after(proposalButton)}}else if(proposalButton){proposalButton.remove();$("task-proposals").classList.add("hidden")}const submit=$("create-form").querySelector('button[type="submit"]');if(submit)submit.textContent=active==="assistant"?"Ask AI":"Save record";$("ai-answer").classList.add("hidden");$("task-proposals").classList.add("hidden");$("form-title").textContent=active==="assistant"?"AI Assistant":"Add "+d.label.toLowerCase().replace(/s$/,"");$("form-help").textContent=active==="activity"?"Append a workspace activity event.":"New records are saved to the selected project."; $("fields").innerHTML=d.fields.map(([name,label,type,required,opts])=>'<label>'+label+(required?' *':'')+(type==="textarea"?'<textarea name="'+name+'" '+(required?'required':'')+'></textarea>':type==="select"?'<select name="'+name+'" '+(required?'required':'')+'>'+opts.map(o=>'<option value="'+o+'">'+o.replaceAll("_"," ")+'</option>').join("")+'</select>':'<input name="'+name+'" type="'+(type==="datetime-local"?"datetime-local":type)+'" '+(required?'required':'')+' '+(type==="number"?'min="0" max="1" step="0.001"':'')+'/>')+'</label>').join('<div style="height:10px"></div>')}
 async function refresh(){if(!projectId){$("records").innerHTML='<div class="empty">Select a project first.</div>';return}if(active==="assistant"){$("list-title").textContent="AI Assistant";$("count").textContent="AI responses are not saved as records";$("records").innerHTML='<div class="empty">Ask a question or generate task proposals. Review proposals before saving selected tasks.</div>';return}try{const rows=await listWorkspace(projectId,defs[active].entity);$("list-title").textContent=defs[active].label;$("count").textContent=rows.length+" record(s)";$("records").innerHTML=rows.length?rows.map(r=>'<div class="item"><strong>'+esc(r.title||r.summary||r.event_type||"Untitled record")+'</strong><div class="muted">'+esc(r.description||r.body||r.outcome||r.content||r.status||"")+'</div><div class="row" style="margin-top:7px"><span class="pill">'+esc(r.status||r.resource_type||r.event_type||defs[active].label)+'</span><span class="muted" style="font-size:12px">'+esc(r.created_at?new Date(r.created_at).toLocaleString():"")+'</span></div>'+(active!=="activity"?'<div class="row" style="margin-top:8px"><button type="button" data-edit="'+esc(r.id)+'">Edit</button><button type="button" data-delete="'+esc(r.id)+'">Delete</button>'+(active==="datasets"?'<button type="button" data-inspect="'+esc(r.id)+'">Inspect</button>':'')+'</div>':'')+'</div>').join(""):'<div class="empty">No saved records yet.</div>';$("records").querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>editRecord(rows.find(r=>r.id===b.dataset.edit)));$("records").querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>removeRecord(b.dataset.delete));$("records").querySelectorAll("[data-inspect]").forEach(b=>b.onclick=()=>inspectDataset(rows.find(r=>r.id===b.dataset.inspect)))}catch(e){$("records").innerHTML='<div class="empty">Could not load records.</div>';setStatus(e.message||"Load failed. Check project access and sign-in.","error")}}
-async function inspectDataset(dataset){
- if(!dataset)return;
- const meta=dataset.metadata&&typeof dataset.metadata==="object"?dataset.metadata:{};
- const title=prompt("Dataset title (verify against the actual source)",dataset.title||"");
- if(title===null)return;
- const description=prompt("Description / research purpose (verified facts only)",dataset.description||"");
- if(description===null)return;
- const sourceUri=prompt("Source URL or reference (leave blank if unknown)",dataset.source_uri||"");
- if(sourceUri===null)return;
- const format=prompt("Actual file format (CSV, XLSX, JSON, etc.; leave blank if unknown)",meta.format||"");
- if(format===null)return;
- const rowCount=prompt("Verified row / record count (leave blank if unknown)",meta.row_count??"");
- if(rowCount===null)return;
- const columnCount=prompt("Verified column / variable count (leave blank if unknown)",meta.column_count??"");
- if(columnCount===null)return;
- const columns=prompt("Verified column names and types (comma-separated; leave blank if unknown)",Array.isArray(meta.columns)?meta.columns.join(", "):meta.columns||"");
- if(columns===null)return;
- const provenance=prompt("Data origin, collection method, permissions, limitations (verified facts only)",meta.provenance||"");
- if(provenance===null)return;
- const metadata={...meta,profiled_at:new Date().toISOString(),profile_status:"user_reviewed"};
- for(const [key,value] of [["format",format],["provenance",provenance],["columns",columns]]){
-  if(value.trim())metadata[key]=key==="columns"?value.split(",").map(x=>x.trim()).filter(Boolean):value.trim();
-  else delete metadata[key];
- }
- for(const [key,value] of [["row_count",rowCount],["column_count",columnCount]]){
-  if(!value.trim()){delete metadata[key];continue}
-  const number=Number(value);
-  if(!Number.isSafeInteger(number)||number<0){setStatus(key+" must be a non-negative whole number.","error");return}
-  metadata[key]=number;
- }
- const cleanSource=sourceUri.trim();
- if(cleanSource&&!/^https?:\/\/\S+$/i.test(cleanSource)){setStatus("Source URL must start with http:// or https://.","error");return}
- const saveButton=document.querySelector('[data-inspect="'+CSS.escape(dataset.id)+'"]');
- if(saveButton)saveButton.disabled=true;
- try{
-  await updateWorkspaceRecord(projectId,"datasets",dataset.id,{title:title.trim(),description:description.trim()||null,source_uri:cleanSource||null,metadata});
-  await logWorkspaceActivity(projectId,{event_type:"datasets.profiled",summary:"Updated verified dataset profile: "+title.trim()});
-  setStatus("Dataset profile saved. The source file itself was not changed.","ok");
-  await refresh();
- }catch(error){setStatus(error.message||"Could not save dataset profile.","error")}
- finally{if(saveButton)saveButton.disabled=false}
+let inspectingDataset=null;
+function inspectDataset(dataset){
+ if(!dataset)return;inspectingDataset=dataset;
+ const form=$("dataset-profile-form"),meta=dataset.metadata&&typeof dataset.metadata==="object"?dataset.metadata:{};
+ form.elements.dataset_id.value=dataset.id;form.elements.title.value=dataset.title||"";
+ form.elements.description.value=dataset.description||"";form.elements.source_uri.value=dataset.source_uri||"";
+ form.elements.format.value=meta.format||"";form.elements.row_count.value=meta.row_count??"";
+ form.elements.column_count.value=meta.column_count??"";form.elements.missing_values.value=meta.missing_values??"";
+ form.elements.columns.value=Array.isArray(meta.columns)?meta.columns.map(x=>typeof x==="string"?x:JSON.stringify(x)).join("\n"):meta.columns||"";
+ form.elements.provenance.value=meta.provenance||meta.notes||"";
+ $("dataset-profile-status").textContent="Review verified source details. Saving changes only the dataset record metadata, not the source file.";
+ $("dataset-inspector").classList.remove("hidden");$("dataset-inspector").scrollIntoView({behavior:"smooth",block:"start"});
 }
+$("cancel-dataset-profile").onclick=()=>{$("dataset-inspector").classList.add("hidden");inspectingDataset=null};
+$("dataset-profile-form").onsubmit=async e=>{
+ e.preventDefault();if(!inspectingDataset||!projectId)return;
+ const form=e.currentTarget,btn=$("save-dataset-profile");btn.disabled=true;
+ try{
+  const fd=new FormData(form),old=inspectingDataset.metadata&&typeof inspectingDataset.metadata==="object"?inspectingDataset.metadata:{},metadata={...old,profiled_at:new Date().toISOString(),profile_status:"user_reviewed"};
+  for(const key of ["format","missing_values","provenance"]){const value=String(fd.get(key)||"").trim();if(value)metadata[key]=value;else delete metadata[key]}
+  for(const key of ["row_count","column_count"]){const value=String(fd.get(key)||"").trim();if(value==="")delete metadata[key];else{const n=Number(value);if(!Number.isSafeInteger(n)||n<0)throw new Error(key+" must be a non-negative whole number.");metadata[key]=n}}
+  const columns=String(fd.get("columns")||"").split("\n").map(x=>x.trim()).filter(Boolean);if(columns.length)metadata.columns=columns;else delete metadata.columns;
+  const source=String(fd.get("source_uri")||"").trim();if(source&&!/^https?:\/\/\S+$/i.test(source))throw new Error("Source URL must start with http:// or https://.");
+  const changes={title:String(fd.get("title")||"").trim(),description:String(fd.get("description")||"").trim()||null,source_uri:source||null,metadata};
+  await updateWorkspaceRecord(projectId,"datasets",inspectingDataset.id,changes);
+  await logWorkspaceActivity(projectId,{event_type:"datasets.profiled",summary:"Updated verified dataset profile: "+changes.title});
+  $("dataset-profile-status").textContent="Dataset profile saved. Source file was not changed.";setStatus("Verified dataset profile saved.","ok");$("dataset-inspector").classList.add("hidden");inspectingDataset=null;await refresh();
+ }catch(err){$("dataset-profile-status").textContent=err.message||"Could not save profile.";setStatus(err.message||"Profile save failed.","error")}finally{btn.disabled=false}
+};
 async function editRecord(record){if(!record)return;const fields=defs[active].fields.filter(([name])=>["title","description","summary","body","content","hypothesis","outcome","status","priority","analysis_type","source_type","source_uri","resource_type","uri","event_type","confidence","due_at"].includes(name));const changes={};for(const [name,label] of fields){const value=prompt("Edit "+label,record[name]??"");if(value===null)return;if(value!==String(record[name]??""))changes[name]=name==="confidence"&&value!==""?Number(value):name==="due_at"&&value?new Date(value).toISOString():value}if(!Object.keys(changes).length)return;try{await updateWorkspaceRecord(projectId,defs[active].entity,record.id,changes);setStatus("Record updated.","ok");await refresh()}catch(e){setStatus(e.message||"Update failed.","error")}}
 async function removeRecord(id){const title=$("records").querySelector('[data-delete="'+CSS.escape(id)+'"]')?.closest(".item")?.querySelector("strong")?.textContent||"this record";if(!confirm('Delete "'+title+'"? This cannot be undone.'))return;try{await deleteWorkspaceRecord(projectId,defs[active].entity,id);setStatus("Record deleted.","ok");await refresh()}catch(e){setStatus(e.message||"Delete failed.","error")}}
 async function loadProjects(){setStatus("Connecting to Supabase and loading projects…");try{const {data,error}=await supabase.from("projects").select("id,title").order("title");if(error)throw error;$("project").innerHTML='<option value="">Choose a project…</option>'+data.map(p=>'<option value="'+esc(p.id)+'">'+esc(p.title)+'</option>').join("");setStatus("Connection ready. Sign in to load private workspace records.","ok")}catch(e){$("project").innerHTML='<option value="">Enter a project UUID instead</option>';setStatus("Could not list projects: "+(e.message||"request failed"),"error")}}
