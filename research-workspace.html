@@ -53,7 +53,22 @@ async function viewSavedProjectBrief(record){
  if(!record)return;let p;try{p=JSON.parse(record.summary||"{}")}catch{setStatus("Saved brief is unreadable.","error");return}const box=$("ai-answer");box.classList.remove("hidden");box.innerHTML=p.html_snapshot||"<p>Snapshot unavailable.</p>";const n=document.createElement("p");n.className="notice";n.textContent="Saved version "+(p.version||"")+" · "+(p.generated_at?new Date(p.generated_at).toLocaleString():"");box.prepend(n);const print=document.createElement("button");print.textContent="Print / Save as PDF";print.onclick=()=>{document.body.classList.add("print-report");window.addEventListener("afterprint",()=>document.body.classList.remove("print-report"),{once:true});window.print()};box.appendChild(print)
 }
 async function compareProjectBriefVersions(){
- const rs=(await listWorkspace(projectId,defs.analyses.entity)).filter(x=>x.analysis_type==="project_brief_version").map(r=>{let p={};try{p=JSON.parse(r.summary||"{}")}catch{}return p}).sort((a,b)=>(b.version||0)-(a.version||0));const box=$("ai-answer");box.classList.remove("hidden");if(rs.length<2){box.innerHTML="<h3>Compare versions</h3><p>Save at least two versions first.</p>";return}const a=rs[1],b=rs[0],ks=[...new Set([...Object.keys(a.counts||{}),...Object.keys(b.counts||{})])];box.innerHTML="<h3>Project brief comparison</h3><table><thead><tr><th>Record type</th><th>Older</th><th>Newer</th><th>Change</th></tr></thead><tbody>"+ks.map(k=>{const x=Number(a.counts?.[k]||0),y=Number(b.counts?.[k]||0);return "<tr><td>"+esc(defs[k]?.label||k)+"</td><td>"+x+"</td><td>"+y+"</td><td>"+(y-x>0?"+":"")+(y-x)+"</td></tr>"}).join("")+"</tbody></table><p>Counts only; not full text differences.</p>"
+ if(!projectId||!loaded){setStatus("Load a project first.","error");return}
+ try{
+  const rs=(await listWorkspace(projectId,defs.analyses.entity)).filter(x=>x.analysis_type==="project_brief_version").map(r=>{let p={};try{p=JSON.parse(r.summary||"{}")}catch{}return {record:r,payload:p}}).sort((a,b)=>(b.payload.version||0)-(a.payload.version||0));
+  const box=$("ai-answer");box.classList.remove("hidden");
+  if(rs.length<2){box.innerHTML="<h3>Compare versions</h3><p>Save at least two versions first.</p>";return}
+  const older=rs[1].payload,newer=rs[0].payload;
+  const keys=[...new Set([...Object.keys(older.counts||{}),...Object.keys(newer.counts||{})])];
+  const counts="<h4>Record counts</h4><table><thead><tr><th>Record type</th><th>Older</th><th>Newer</th><th>Change</th></tr></thead><tbody>"+keys.map(k=>{const x=Number(older.counts?.[k]||0),y=Number(newer.counts?.[k]||0);return "<tr><td>"+esc(defs[k]?.label||k)+"</td><td>"+x+"</td><td>"+y+"</td><td>"+(y-x>0?"+":"")+(y-x)+"</td></tr>"}).join("")+"</tbody></table>";
+  const paragraphs=p=>{const d=document.createElement("div");d.innerHTML=p.html_snapshot||"";return (d.innerText||d.textContent||"").split(/\\n+/).map(x=>x.replace(/\\s+/g," ").trim()).filter(x=>x&&x!=="Print / Save as PDF"&&x!=="Close brief")};
+  const oldLines=paragraphs(older),newLines=paragraphs(newer);
+  const oldSet=new Set(oldLines),newSet=new Set(newLines);
+  const removed=oldLines.filter(x=>!newSet.has(x)),added=newLines.filter(x=>!oldSet.has(x));
+  const render=(arr,empty)=>arr.length?"<ul>"+arr.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>":"<p>"+empty+"</p>";
+  box.innerHTML="<h3>Project brief comparison</h3><p>Comparing version "+esc(older.version)+" with version "+esc(newer.version)+".</p>"+counts+
+   "<h4>Content changes</h4><p>Compared as paragraph-level text. Identical paragraphs are omitted.</p><div class=\\"row\\"><div><h5>Added / changed in newer version ("+added.length+")</h5>"+render(added,"No new paragraphs detected.")+"</div><div><h5>Removed / changed from older version ("+removed.length+")</h5>"+render(removed,"No removed paragraphs detected.")+"</div></div><p class=\\"notice\\">Paragraph-level comparison is a text diff, not a scientific-validity assessment. Small wording changes may appear as a removed paragraph and an added paragraph.</p>";
+ }catch(e){setStatus(e.message||"Could not compare versions.","error")}
 }
 async function generateProjectBrief(){
  const btn=$("generate-project-brief");if(!projectId||!loaded){setStatus("Load a project first.","error");return}
