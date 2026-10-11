@@ -59,10 +59,10 @@ async function compareProjectBriefVersions(){
  const box=$("ai-answer");box.classList.remove("hidden");if(rs.length<2){box.innerHTML="<h3>Compare versions</h3><p>Save at least two versions first.</p>";return}
  const old=rs[1],fresh=rs[0],keys=[...new Set([...Object.keys(old.counts||{}),...Object.keys(fresh.counts||{})])];
  const counts=keys.map(k=>{const x=Number(old.counts?.[k]||0),y=Number(fresh.counts?.[k]||0);return "<tr><td>"+esc(defs[k]?.label||k)+"</td><td>"+x+"</td><td>"+y+"</td><td>"+(y>x?"+":"")+(y-x)+"</td></tr>"}).join("");
- const textLines=p=>{const d=document.createElement("div");d.innerHTML=p.html_snapshot||"";return (d.textContent||"").split(/[.!?\\n]+/).map(s=>s.replace(/\\s+/g," ").trim()).filter(Boolean)};
- const os=textLines(old),ns=textLines(fresh),nset=new Set(ns),oset=new Set(os);const added=ns.filter(s=>!oset.has(s)),removed=os.filter(s=>!nset.has(s));
+ const lines=p=>{const d=document.createElement("div");d.innerHTML=p.html_snapshot||"";return (d.innerText||d.textContent||"").split(/\\n+/).map(s=>s.replace(/\\s+/g," ").trim()).filter(Boolean)};
+ const os=lines(old),ns=lines(fresh),oset=new Set(os),nset=new Set(ns);const added=ns.filter(s=>!oset.has(s)),removed=os.filter(s=>!nset.has(s));
  const list=arr=>arr.length?"<ul>"+arr.map(s=>"<li>"+esc(s)+"</li>").join("")+"</ul>":"<p>None detected.</p>";
- box.innerHTML="<h3>Project brief comparison</h3><p>Version "+esc(old.version)+" compared with version "+esc(fresh.version)+".</p><h4>Record counts</h4><table><thead><tr><th>Record type</th><th>Older</th><th>Newer</th><th>Change</th></tr></thead><tbody>"+counts+"</tbody></table><h4>Added or changed in newer version ("+added.length+")</h4>"+list(added)+"<h4>Removed or changed from older version ("+removed.length+")</h4>"+list(removed)+"<p>Text is compared in sentence-sized segments; wording changes may appear as removals and additions.</p>";
+ box.innerHTML="<h3>Project brief comparison</h3><p>Version "+esc(old.version)+" compared with version "+esc(fresh.version)+".</p><h4>Record counts</h4><table><thead><tr><th>Record type</th><th>Older</th><th>Newer</th><th>Change</th></tr></thead><tbody>"+counts+"</tbody></table><h4>Added or changed in newer version ("+added.length+")</h4>"+list(added)+"<h4>Removed or changed from older version ("+removed.length+")</h4>"+list(removed)+"<p>Comparison uses whole text lines to avoid splitting words; small edits can appear as a removal and an addition.</p>";
  }catch(e){setStatus(e.message||"Could not compare versions.","error")}
 }
 async function generateProjectBrief(){
