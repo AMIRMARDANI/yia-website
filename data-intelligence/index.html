@@ -6,6 +6,46 @@
 <style>
 :root{color-scheme:dark;--bg:#06101d;--panel:#0b1a2b;--line:#203950;--text:#eff7ff;--muted:#9bb1c6;--cyan:#55dcff;--violet:#9b7cff;--green:#70e6b1;--red:#ff9aa8;--amber:#ffd28a}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 80% -20%,#173c61,transparent 45%),var(--bg);color:var(--text);font:15px/1.5 system-ui,sans-serif}main{max-width:1200px;margin:auto;padding:24px 16px 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}.brand{font-size:24px;font-weight:900}.brand span{color:var(--cyan)}.muted{color:var(--muted)}.panel{background:#0b1a2bdc;border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:16px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.col-4{grid-column:span 4}.col-5{grid-column:span 5}.col-7{grid-column:span 7}.col-8{grid-column:span 8}.col-12{grid-column:span 12}label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}input,select,textarea,button{font:inherit;border-radius:10px;border:1px solid var(--line);background:#071321;color:var(--text);padding:11px 12px;width:100%}textarea{min-height:78px;resize:vertical}button{cursor:pointer;font-weight:750}button:disabled{opacity:.5;cursor:not-allowed}.primary{background:linear-gradient(110deg,#50dfff,#9874ff);color:#06101d;border:0}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.row>*{flex:1;min-width:120px}.status{min-height:24px;margin-top:8px}.ok{color:var(--green)}.error{color:var(--red)}.notice{font-size:13px;color:var(--muted)}.pill{display:inline-block;border:1px solid var(--line);padding:3px 8px;border-radius:99px;color:var(--cyan);font-size:12px}.statgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.stat{border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:22px}.tablewrap{overflow:auto;max-width:100%;border:1px solid var(--line);border-radius:10px}table{border-collapse:collapse;width:100%;font-size:13px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}th{background:#10243a;position:sticky;top:0}tr:last-child td{border-bottom:0}.hidden{display:none!important}.review{border-left:3px solid var(--amber);padding:10px 12px;background:#332a1a55;border-radius:8px;margin:8px 0}.tabs{display:flex;gap:8px;flex-wrap:wrap}.tabs button{width:auto}.tabs .active{border-color:var(--cyan);color:var(--cyan)}.drop{border:1px dashed #42627e;border-radius:12px;padding:18px;text-align:center}.small{font-size:12px}@media(max-width:760px){.col-4,.col-5,.col-7,.col-8{grid-column:span 12}.statgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* YIA friendly studio refresh */
+:root{color-scheme:light;--bg:#f5f7ff;--panel:#fff;--line:#e5e9f4;--text:#202746;--muted:#737b99;--cyan:#3c6ff0;--violet:#8b5cf6;--green:#148b68;--red:#d74761;--amber:#b7791f}
+body{background:radial-gradient(ellipse at 12% 0%,#e4e9ff 0,transparent 38%),radial-gradient(ellipse at 95% 28%,#e4f8f4 0,transparent 30%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,sans-serif}
+main{max-width:1320px;padding:28px 22px 70px}.brand{font-size:25px;letter-spacing:-.7px}.brand span{color:#5c55e7}.panel{background:#ffffffed;border:1px solid #e7eaf5;border-radius:22px;box-shadow:0 10px 35px #26345d0a;padding:22px;margin-top:18px}
+input,select,textarea,button{background:#f8f9ff;color:#202746;border-color:#e2e6f2;border-radius:13px}input:focus,select:focus,textarea:focus{outline:3px solid #8b5cf622;border-color:#8b5cf6}button{transition:transform .18s,box-shadow .18s}button:hover{transform:translateY(-2px);box-shadow:0 8px 18px #303b6812}.primary{background:linear-gradient(110deg,#6575f5,#9a6cf4);color:#fff}.muted{color:#737b99}.notice{color:#737b99}.pill{color:#5b55dc;border-color:#e2e1ff;background:#f4f3ff}.stat{border-color:#e7eaf5;background:#fafbff}.stat b{color:#343b68}.tablewrap{border-color:#e7eaf5}th{background:#f0f2ff;color:#454c78}th,td{border-bottom-color:#e7eaf5}.drop{background:#fafaff;border-color:#c9c9f5}.review{background:#fff8e8;border-left-color:#e8b34d;color:#6b5325}
+#project-config{display:none!important}
+#data-add-panel,#mapping-panel,#project-table-panel{display:none}
+.studio-hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:24px;align-items:center;margin:24px 0 20px}
+.welcome-card{background:linear-gradient(125deg,#fff 0%,#f5f3ff 100%);border:1px solid #e7e4ff;border-radius:28px;padding:30px;box-shadow:0 18px 50px #5146a10d}
+.eyebrow{font-size:12px;font-weight:850;letter-spacing:1.5px;text-transform:uppercase;color:#7770e8}
+.welcome-card h1{font-size:clamp(30px,4vw,48px);letter-spacing:-1.6px;line-height:1.06;margin:12px 0;color:#26294c;max-width:650px}
+.welcome-card p{color:#6c7290;max-width:590px;font-size:16px}
+.project-pick{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;margin-top:22px}.project-pick .field label{color:#6c7290}
+.robot-stage{position:relative;min-height:260px;display:flex;align-items:center;justify-content:center}
+.robot{position:relative;width:190px;height:205px;animation:floaty 3.8s ease-in-out infinite;filter:drop-shadow(0 18px 15px #4e54a122)}
+.robot-head{position:absolute;left:30px;top:18px;width:130px;height:116px;border:5px solid #6d6cf0;border-radius:39px;background:linear-gradient(145deg,#fff,#e9eaff);box-shadow:inset -8px -9px 0 #d9dcff}
+.robot-antenna{position:absolute;left:92px;top:0;width:6px;height:25px;background:#7770ee;border-radius:8px}.robot-antenna:after{content:"";position:absolute;top:-8px;left:-6px;width:18px;height:18px;border-radius:50%;background:#ffbe68;border:3px solid #fff}
+.robot-eye{position:absolute;top:48px;width:16px;height:20px;border-radius:50%;background:#363b70;animation:blink 5s infinite}.robot-eye.left{left:31px}.robot-eye.right{right:31px}
+.robot-mouth{position:absolute;left:48px;top:79px;width:28px;height:13px;border-bottom:4px solid #7770ee;border-radius:0 0 22px 22px}
+.robot-ear{position:absolute;top:53px;width:15px;height:29px;border-radius:7px;background:#aaa5ff;border:3px solid #fff}.robot-ear.left{left:20px}.robot-ear.right{right:20px}
+.robot-body{position:absolute;left:52px;top:135px;width:88px;height:60px;border-radius:22px 22px 18px 18px;background:linear-gradient(135deg,#7a79f5,#a78bfa);border:4px solid #fff;box-shadow:0 0 0 3px #7770ee}
+.robot-body:after{content:"Y";position:absolute;inset:8px;text-align:center;color:#fff;font-size:26px;font-weight:900}
+.speech{position:absolute;top:0;right:-18px;max-width:240px;background:#fff;border:1px solid #e7e4ff;border-radius:18px 18px 18px 4px;padding:13px 15px;color:#45486e;font-size:13px;box-shadow:0 12px 30px #4b4d8b13;animation:floaty 4s ease-in-out infinite reverse}
+.speech:after{content:"";position:absolute;bottom:-8px;left:20px;width:14px;height:14px;background:#fff;border-left:1px solid #e7e4ff;border-bottom:1px solid #e7e4ff;transform:rotate(-45deg)}
+.speech strong{display:block;color:#655fe4;margin-bottom:3px}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}@keyframes blink{0%,45%,49%,100%{transform:scaleY(1)}47%{transform:scaleY(.12)}}
+.section-heading{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:26px 0 13px}.section-heading h2{font-size:22px;margin:0;letter-spacing:-.5px}.section-heading p{margin:4px 0 0;color:#737b99}
+.category-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.category-card{border:1px solid #e8eaf4;border-radius:21px;background:#fff;padding:20px;text-align:left;min-height:158px;cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s;position:relative;overflow:hidden}
+.category-card:before{content:"";position:absolute;width:110px;height:110px;right:-34px;top:-35px;border-radius:50%;background:var(--tint);opacity:.7}
+.category-card:hover{transform:translateY(-5px);box-shadow:0 18px 34px #353e7114;border-color:var(--accent)}.cat-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:15px;background:var(--tint);font-size:25px;margin-bottom:17px;position:relative}.cat-title{font-size:16px;font-weight:850;color:#303655;display:block;position:relative}.cat-sub{font-size:12px;color:#8187a0;display:block;margin-top:5px;position:relative}
+.uploaded-panel{margin-top:26px}.uploaded-list{display:grid;gap:9px}.uploaded-item{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid #e8eaf4;border-radius:15px;background:#fff}.file-badge{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:#f0efff;font-size:20px}.uploaded-item strong{display:block;font-size:14px}.uploaded-item small{color:#8187a0}.empty-state{padding:25px;text-align:center;color:#8a90a7;background:#fafbff;border:1px dashed #dfe3f0;border-radius:15px}
+.bottom-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;background:linear-gradient(120deg,#302e6e,#655fe4);border-radius:24px;padding:22px 24px;margin-top:24px;color:#fff}.bottom-actions h3{margin:0;font-size:19px}.bottom-actions p{margin:4px 0 0;color:#dedcff;font-size:13px}.bottom-actions button{background:#fff;color:#514ad1;border:0;width:auto;min-width:205px}
+.modal-backdrop{position:fixed;inset:0;z-index:1000;background:#1c214b78;backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.open{display:flex;animation:fadein .2s ease}.modal-window{width:min(820px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:25px;box-shadow:0 30px 100px #16163c35;padding:24px;animation:rise .22s ease}.modal-head{display:flex;justify-content:space-between;gap:15px;align-items:start;margin-bottom:16px}.modal-head h2{margin:0;font-size:23px}.modal-close{width:42px;height:42px;padding:0;font-size:22px;background:#f3f3ff;border:0;color:#5554b9}.modal-note{background:#f6f5ff;border-radius:13px;padding:12px;color:#73749a;font-size:13px;margin-bottom:16px}
+@keyframes fadein{from{opacity:0}to{opacity:1}}@keyframes rise{from{transform:translateY(12px);opacity:.6}to{transform:translateY(0);opacity:1}}
+#auth-panel{margin-bottom:15px}#status{font-size:13px}
+@media(max-width:900px){.category-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.studio-hero{grid-template-columns:1fr .75fr}.speech{right:-10px;max-width:195px}}
+@media(max-width:620px){main{padding:16px 12px 40px}.studio-hero{grid-template-columns:1fr}.robot-stage{min-height:220px;order:-1}.robot{transform:scale(.88)}.speech{right:2%;top:4px}.welcome-card{padding:23px}.category-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.category-card{padding:14px;min-height:145px}.bottom-actions{align-items:stretch;flex-direction:column}.bottom-actions button{width:100%}.project-pick{grid-template-columns:1fr}.top{align-items:flex-start}}
+
 </style>
 </head>
 <body><main>
@@ -20,6 +60,66 @@
 </div>
 <footer class="panel notice">YIA supports research workflows, not autonomous clinical diagnosis. Associations in uploaded data do not prove causation. Do not use this prototype to make individual treatment decisions. Clinical data should be de-identified and handled under approved privacy, consent, and access controls.</footer>
 </main>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+ const main=document.querySelector("main");
+ const header=main.querySelector("header");
+ const sections=[...main.querySelectorAll(":scope > section")];
+ const authPanel=document.getElementById("auth-panel");
+ const projectPanel=sections.find(s=>s.querySelector("#project"));
+ const objectivePanel=sections.find(s=>s.querySelector("#objective"));
+ const addPanel=sections.find(s=>s.querySelector("#file"));
+ const mappingPanel=sections.find(s=>s.querySelector("#mapping"));
+ const tablePanel=sections.find(s=>s.querySelector("#table"));
+ if(!projectPanel||!objectivePanel||!addPanel||!mappingPanel||!tablePanel)return;
+ projectPanel.id="project-config";addPanel.id="data-add-panel";mappingPanel.id="mapping-panel";tablePanel.id="project-table-panel";
+ const wrap=document.createElement("div");wrap.className="studio-hero";
+ wrap.innerHTML='<section class="welcome-card"><div class="eyebrow">Your research, one step at a time</div><h1>Let’s turn your data into discoveries.</h1><p>Share the data you already have. I’ll help you organise it, review the parameters and prepare it for research analysis.</p><div class="project-pick"><div class="field"><label for="studio-project">Choose your research project</label><select id="studio-project"><option value="">Choose a project…</option></select></div><button class="primary" id="studio-load">Open project</button></div><div id="studio-status" class="notice" style="margin-top:8px">Sign in and choose a project to get started.</div></section><div class="robot-stage"><div class="speech"><strong>Hi, I’m YIA!</strong>Share the data you have with me, and let’s grow this research project together.</div><div class="robot" aria-label="Animated friendly research robot"><div class="robot-antenna"></div><div class="robot-head"><div class="robot-eye left"></div><div class="robot-eye right"></div><div class="robot-mouth"></div></div><div class="robot-ear left"></div><div class="robot-ear right"></div><div class="robot-body"></div></div></div>';
+ header.after(wrap);
+ const heading=document.createElement("div");heading.className="section-heading";heading.innerHTML='<div><h2>What kind of data would you like to add?</h2><p>Choose a category to open the upload window.</p></div><span class="pill">Step 1 · Add data</span>';wrap.after(heading);
+ const cards=document.createElement("div");cards.className="category-grid";cards.innerHTML=[
+ ["🩸","Blood & lab tests","Glucose, blood counts, biomarkers","#fff0f0","#e45d79","blood"],
+ ["🩺","Vital signs","Heart rate, blood pressure, SpO₂","#e8f8f2","#2aaf8d","vitals"],
+ ["🥗","Nutrition & diet","Food diaries and nutrient intake","#fff4df","#e9a23b","nutrition"],
+ ["💊","Symptoms & medication","Symptoms, diagnoses, prescriptions","#f0eaff","#8c6cf1","prescriptions"],
+ ["🌿","Environmental data","Air quality, region, exposures","#e5f7f2","#37a98e","environment"],
+ ["🔬","Medical images","Microscopy and image files","#e8f2ff","#548be8","images"],
+ ["📊","Other spreadsheets","CSV and Excel research tables","#fff0e4","#e18a4d","general"]
+ ].map(c=>'<button class="category-card" data-domain="'+c[5]+'" style="--tint:'+c[3]+';--accent:'+c[4]+'"><span class="cat-icon">'+c[0]+'</span><span class="cat-title">'+c[1]+'</span><span class="cat-sub">'+c[2]+'</span></button>').join("");heading.after(cards);
+ const uploadHead=document.createElement("div");uploadHead.className="section-heading";uploadHead.innerHTML='<div><h2>Your uploaded data</h2><p>Saved batches for the selected project will appear here.</p></div><button id="studio-refresh" style="width:auto">↻ Refresh</button>';cards.after(uploadHead);
+ const uploaded=document.createElement("section");uploaded.className="panel uploaded-panel";uploaded.style.marginTop="0";uploaded.innerHTML='<div id="uploaded-list" class="uploaded-list"><div class="empty-state">Choose a project to see your uploaded batches.</div></div>';uploadHead.after(uploaded);
+ const actions=document.createElement("div");actions.className="bottom-actions";actions.innerHTML='<div><h3>Ready to explore your data?</h3><p>Open the research results page for the project summary and available statistics.</p></div><button id="go-results">View analysis results →</button>';uploaded.after(actions);
+ const modal=document.createElement("div");modal.className="modal-backdrop";modal.id="upload-modal";modal.innerHTML='<div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-head"><div><div class="eyebrow">Add to your project</div><h2 id="modal-title">Upload your data</h2></div><button class="modal-close" id="close-modal" aria-label="Close">×</button></div><div class="modal-note">Use de-identified data only. Review every suggested parameter and unit before saving. Medical images can be recorded here, but image interpretation is not available yet.</div><div id="modal-content"></div></div>';document.body.append(modal);
+ const modalContent=modal.querySelector("#modal-content");
+ const objectiveHeading=objectivePanel.querySelector("label[for=objective]");
+ objectivePanel.style.marginTop="14px";objectivePanel.querySelector(".grid").style.gap="12px";
+ const addTitle=addPanel.querySelector("h2");if(addTitle)addTitle.remove();
+ const addDesc=addPanel.querySelector("p");if(addDesc)addDesc.remove();
+ const mappingTitle=mappingPanel.querySelector("h2");if(mappingTitle)mappingTitle.textContent="Review detected parameters";
+ const mappingDesc=mappingPanel.querySelector("p");if(mappingDesc)mappingDesc.textContent="Check meanings and units before saving.";
+ const oldGrid=main.querySelector(".grid:has(#data-add-panel)");
+ if(oldGrid)oldGrid.remove();
+ modalContent.append(objectivePanel,addPanel,mappingPanel);
+ const config=document.createElement("details");config.style.cssText="margin-top:18px;color:#737b99;font-size:13px";config.innerHTML='<summary style="cursor:pointer">Project details & account</summary>';config.append(projectPanel);actions.after(config);
+ main.querySelector("footer")?.remove();
+ function openModal(domain){document.getElementById("domain").value=domain;const labels={blood:"Blood & lab tests",vitals:"Vital signs",nutrition:"Nutrition & diet",prescriptions:"Symptoms & medication",environment:"Environmental data",images:"Medical images",general:"Other spreadsheets"};document.getElementById("modal-title").textContent="Add "+labels[domain];modal.classList.add("open");document.body.style.overflow="hidden"}
+ function closeModal(){modal.classList.remove("open");document.body.style.overflow=""}
+ cards.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>openModal(b.dataset.domain)));
+ document.getElementById("close-modal").onclick=closeModal;modal.addEventListener("click",e=>{if(e.target===modal)closeModal()});document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+ const oldLoad=document.getElementById("load");document.getElementById("studio-load").onclick=()=>oldLoad.click();
+ document.getElementById("studio-project").addEventListener("change",e=>{document.getElementById("project").value=e.target.value;document.getElementById("project-id").value=e.target.value});
+ const selectObserver=new MutationObserver(()=>{document.getElementById("studio-project").innerHTML=document.getElementById("project").innerHTML;document.getElementById("studio-project").value=document.getElementById("project").value});selectObserver.observe(document.getElementById("project"),{childList:true,subtree:true});
+ oldLoad.addEventListener("click",()=>setTimeout(()=>{document.getElementById("studio-status").textContent=document.getElementById("status").textContent;setTimeout(renderUploaded,500)},300));
+ document.getElementById("studio-refresh").onclick=()=>document.getElementById("refresh").click();
+ document.getElementById("go-results").onclick=()=>{const id=document.getElementById("project").value||document.getElementById("project-id").value;location.href="./results.html?project="+encodeURIComponent(id)};
+ function renderUploaded(){const list=document.getElementById("uploaded-list");const rows=[...document.querySelectorAll("#table tbody tr")];if(!rows.length){list.innerHTML='<div class="empty-state">No saved data batches yet. Choose a colourful card above to upload your first batch.</div>';return}list.innerHTML=rows.slice(0,8).map((tr,i)=>{const cells=[...tr.querySelectorAll("td")].map(td=>td.textContent);return '<div class="uploaded-item"><div class="file-badge">📄</div><div><strong>'+((cells.find(x=>x.includes("Data batch")))||("Saved data record "+(i+1)))+'</strong><small>Record '+(i+1)+' · saved in this project</small></div><span class="pill" style="margin-left:auto">Needs review</span></div>'}).join("")}
+ const oldRefresh=document.getElementById("refresh");oldRefresh.addEventListener("click",()=>setTimeout(renderUploaded,350));
+ document.getElementById("analyze").addEventListener("click",()=>setTimeout(()=>{renderUploaded();if(!document.getElementById("upload-status").classList.contains("error"))closeModal()},700));
+ const observer=new MutationObserver(renderUploaded);observer.observe(document.getElementById("table"),{childList:true,subtree:true});
+});
+</script>
+
 <script type="module">
 import {supabase,listWorkspace,createWorkspaceRecord,logWorkspaceActivity,getWorkspaceSession} from "./assets/js/workspace-data.js?v=20261011-1";
 const $=id=>document.getElementById(id);let projectId="",loaded=false,parsedRows=[],headers=[],mapped=[],batches=[],manualRows=[],currentFileName="",fileHeaders=[],fileRows=[];
