@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 </script>
 
 <script type="module">
-import {supabase,listWorkspace,createWorkspaceRecord,logWorkspaceActivity,getWorkspaceSession} from "./assets/js/workspace-data.js?v=20261011-1";
+import {supabase,listWorkspace,createWorkspaceRecord,logWorkspaceActivity,getWorkspaceSession} from "../assets/js/workspace-data.js?v=20261012-1";
 const $=id=>document.getElementById(id);let projectId="",loaded=false,parsedRows=[],headers=[],mapped=[],batches=[],manualRows=[],currentFileName="",fileHeaders=[],fileRows=[];
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function status(msg,kind="muted"){const n=$("status");n.className="status "+kind;n.textContent=msg}
