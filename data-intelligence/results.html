@@ -10,7 +10,7 @@
 <section class="panel"><h2>Uploaded records</h2><p class="muted">Search and review the data rows stored in this project.</p><div class="bar"><input id="search" placeholder="Search across rows and parameters…"><button id="refresh">Refresh</button><button id="export">Export visible rows (CSV)</button></div><div id="data-table" class="tablewrap"><div class="empty">No project loaded.</div></div><p class="note">This prototype provides descriptive summaries only. It does not yet perform validated clinical association modelling or AI interpretation. Do not use for individual diagnosis or treatment decisions.</p></section>
 </main>
 <script type="module">
-import {supabase,listWorkspace,getWorkspaceSession} from "./assets/js/workspace-data.js?v=20261011-1";
+import {supabase,listWorkspace,getWorkspaceSession} from "../assets/js/workspace-data.js?v=20261012-1";
 const $=id=>document.getElementById(id);let batches=[],rows=[],cols=[];
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const num=v=>v!==null&&v!==""&&Number.isFinite(Number(v));
