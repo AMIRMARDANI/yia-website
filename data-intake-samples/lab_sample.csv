@@ -1,0 +1,6 @@
+sample_id,age_years,glucose_mg_dl,sex,site
+S001,34,92,F,North
+S002,51,118,M,South
+S003,46,,F,North
+S004,29,87,M,West
+S005,63,132,F,South
