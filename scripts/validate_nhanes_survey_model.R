@@ -40,15 +40,6 @@ des <- survey::svydesign(
   nest = TRUE, data = design_base
 )
 
-analytic <- with(des$variables,
-  RIDAGEYR >= 20 &
-  !is.na(smoking_group) &
-  !is.na(SPXNFEV1) &
-  !is.na(BMXHT) &
-  quality %in% c("A", "B") &
-  SPXNSTAT == 1 &
-  !is.na(RIAGENDR) &
-  !is.na(age_c) & !is.na(height_c))
 # Add the quality variable explicitly to the design data for domain selection.
 des$variables$quality <- quality[match(des$variables$SEQN, dat$SEQN)]
 analytic <- with(des$variables,
