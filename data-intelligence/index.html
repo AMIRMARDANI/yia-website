@@ -65,13 +65,13 @@ input,select,textarea,button{background:#f8f9ff;color:#202746;border-color:#e2e6
 document.addEventListener("DOMContentLoaded",()=>{
  const main=document.querySelector("main");
  const header=main.querySelector("header");
- const sections=[...main.querySelectorAll(":scope > section")];
+ const sections=[...main.querySelectorAll("section")];
  const authPanel=document.getElementById("auth-panel");
  const projectPanel=sections.find(s=>s.querySelector("#project"));
  const objectivePanel=sections.find(s=>s.querySelector("#objective"));
- const addPanel=sections.find(s=>s.querySelector("#file"));
- const mappingPanel=sections.find(s=>s.querySelector("#mapping"));
- const tablePanel=sections.find(s=>s.querySelector("#table"));
+ const addPanel=main.querySelector("section.panel:has(#file)");
+ const mappingPanel=main.querySelector("section.panel:has(#mapping)");
+ const tablePanel=main.querySelector("section.panel:has(#table)");
  if(!projectPanel||!objectivePanel||!addPanel||!mappingPanel||!tablePanel)return;
  projectPanel.id="project-config";addPanel.id="data-add-panel";mappingPanel.id="mapping-panel";tablePanel.id="project-table-panel";
  const wrap=document.createElement("div");wrap.className="studio-hero";
