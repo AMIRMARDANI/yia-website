@@ -269,7 +269,7 @@ async function createResearchProject(event){
   setStatus("Project created successfully. Loading workspace…","ok");
   const {data:verify,error:verifyError}=await supabase.from("projects").select("id,title").eq("id",project.id).single();
   if(verifyError)throw verifyError;
-  loaded=true;await refresh();await logWorkspaceActivity(projectId,{event_type:"project_created",summary:"Created project: "+project.title,entity_type:"project",entity_id:project.id});
+  loaded=true;await refresh();try{await logWorkspaceActivity(projectId,{event_type:"project_created",summary:"Created project: "+project.title,entity_type:"project",entity_id:project.id})}catch(activityError){console.warn("Project created; activity log was not saved.",activityError)}
   setStatus("Project created and workspace loaded: "+verify.title,"ok");
  }catch(e){msg.className="status error";msg.textContent=e.message||"Could not create project.";setStatus(e.message||"Could not create project.","error")}
  finally{btn.disabled=false}
