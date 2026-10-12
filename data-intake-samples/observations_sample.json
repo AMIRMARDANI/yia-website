@@ -1,0 +1,23 @@
+[
+  {
+    "sample_id": "S001",
+    "age_years": 34,
+    "heart_rate_bpm": 72,
+    "spo2_percent": 98,
+    "site": "North"
+  },
+  {
+    "sample_id": "S002",
+    "age_years": 51,
+    "heart_rate_bpm": 84,
+    "spo2_percent": 96,
+    "site": "South"
+  },
+  {
+    "sample_id": "S003",
+    "age_years": 46,
+    "heart_rate_bpm": null,
+    "spo2_percent": 97,
+    "site": "North"
+  }
+]
