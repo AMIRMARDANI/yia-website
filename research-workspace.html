@@ -259,7 +259,7 @@ async function createResearchProject(event){
   if(memberError)throw memberError;
   if(!member)throw new Error("No YIA member profile is linked to this account. Ask an administrator to link your account before creating a project.");
   const fd=new FormData(form);
-  const payload={member_id:member.id,title:String(fd.get("title")||"").trim(),description:String(fd.get("description")||"").trim(),short_description:String(fd.get("description")||"").trim().slice(0,240),field:String(fd.get("field")||"").trim()||null,status:"draft",project_type:"open",created_by:user.id,project_lead_member_id:member.id};
+  const payload={member_id:member.id,title:String(fd.get("title")||"").trim(),description:String(fd.get("description")||"").trim(),short_description:String(fd.get("description")||"").trim().slice(0,240),field:String(fd.get("field")||"").trim()||null,status:"draft",project_type:"open",created_by:member.id,project_lead_member_id:member.id};
   if(!payload.title||!payload.description)throw new Error("Project title and research question are required.");
   const {data:project,error}=await supabase.from("projects").insert(payload).select("id,title").single();
   if(error)throw error;
