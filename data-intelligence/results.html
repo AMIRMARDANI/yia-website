@@ -65,6 +65,34 @@ main{max-width:1440px;padding:18px 22px 36px}
 @media(max-width:760px){main{padding:15px 12px 40px}.hero{grid-template-columns:1fr}.robotbox{order:-1}.stats{grid-template-columns:repeat(2,1fr)}}
 .analysis-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.analysis-tabs button{width:auto;font-size:12px}.analysis-section{margin-top:12px}.analysis-chart{display:grid;gap:9px;margin-top:12px}.analysis-bar-row{display:grid;grid-template-columns:minmax(85px,1fr) minmax(80px,2fr) minmax(55px,auto);gap:9px;align-items:center;font-size:12px}.analysis-bar-row>span{overflow-wrap:anywhere}.analysis-track{height:12px;background:#eeedff;border-radius:99px;overflow:hidden}.analysis-track i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#6d70ef,#a18af5)}.missing-track{background:#fff0d8}.missing-track i{background:linear-gradient(90deg,#e8aa43,#f0cb78)}.analysis-bar-row b{text-align:right;font-variant-numeric:tabular-nums}
 /* YIA hospital research map */
+
+/* Clickable transparent hotspots over the original hospital artwork */
+.hospital-building{cursor:default;background-color:#d8f1f3}
+.hospital-building>.hospital-room{display:none!important}
+.hospital-hotspots{position:absolute;inset:0;z-index:3;pointer-events:none}
+.hospital-hotspot{position:absolute;display:flex;align-items:flex-start;justify-content:center;pointer-events:auto;border:2px solid transparent;border-radius:14px;background:transparent;color:transparent;cursor:pointer;transition:background .18s,border-color .18s,box-shadow .18s}
+.hospital-hotspot:hover,.hospital-hotspot:focus-visible{background:#d8f7ff22;border-color:#fff9;box-shadow:inset 0 0 0 2px #2ba4bc80,0 0 24px #3dbbd855;outline:none}
+.hospital-hotspot .hotspot-label{position:absolute;top:8px;left:8px;right:8px;padding:7px 10px;border-radius:9px;background:#ffffffed;color:#24566b;font-weight:850;font-size:clamp(8px,.85vw,12px);text-align:center;opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .15s;box-shadow:0 3px 12px #1a4d6020}
+.hospital-hotspot:hover .hotspot-label,.hospital-hotspot:focus-visible .hotspot-label{opacity:1;transform:translateY(0)}
+.hospital-hotspot .hotspot-count{position:absolute;bottom:6px;right:6px;border-radius:999px;background:#655ddcf0;color:#fff;font-size:11px;font-weight:800;padding:4px 8px;opacity:0;transition:opacity .15s}
+.hospital-hotspot.has-data .hotspot-count{opacity:1}
+.hospital-department-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;padding:22px;background:#0c25378a;backdrop-filter:blur(8px);z-index:1200}
+.hospital-department-backdrop.open{display:flex}
+.hospital-department-window{width:min(760px,100%);max-height:min(82vh,900px);overflow:auto;background:#f8fdff;border:1px solid #b9e0e6;border-radius:22px;box-shadow:0 24px 90px #061e3540;padding:22px;color:#183d51}
+.department-heading{display:flex;gap:14px;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #d7ebee;padding-bottom:14px;margin-bottom:16px}
+.department-heading h2{font-size:22px;margin:2px 0 5px}.department-heading p{margin:0;color:#668292;font-size:13px;line-height:1.5}
+.department-close{border:1px solid #cbe3e8;border-radius:10px;background:#fff;padding:9px 13px;color:#2b5c70;font-weight:800;cursor:pointer}
+.department-datasets{display:grid;gap:9px}
+.department-dataset{display:flex;align-items:center;justify-content:space-between;gap:14px;text-align:left;border:1px solid #d0e7ea;background:#fff;border-radius:13px;padding:13px;color:#26495e;cursor:pointer}
+.department-dataset:hover{border-color:#54a8b9;background:#f0fbfc}
+.department-dataset strong{display:block;font-size:14px;overflow-wrap:anywhere}.department-dataset small{display:block;color:#718b98;margin-top:5px;line-height:1.45}
+.department-count{flex:0 0 auto;border-radius:99px;background:#e2f5f4;color:#277b78;font-size:11px;font-weight:800;padding:6px 9px}
+.department-empty{border:1px dashed #c3dfe4;border-radius:13px;padding:20px;color:#6d8794;line-height:1.55;background:#fff}
+.department-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.department-actions a,.department-actions button{border:1px solid #cce4e8;border-radius:11px;background:#fff;color:#28677b;padding:10px 13px;font-weight:800;text-decoration:none;cursor:pointer}
+.department-actions .department-primary{color:#fff;background:linear-gradient(100deg,#655de0,#9576ed);border-color:transparent}
+@media(max-width:600px){.hospital-hotspot .hotspot-label{font-size:9px;left:3px;right:3px;padding:5px 3px}.hospital-hotspot .hotspot-count{font-size:9px;padding:3px 5px}.hospital-department-window{padding:15px}.department-heading h2{font-size:19px}.department-dataset{padding:10px}}
+
 .hospital-scene{position:relative;max-width:none;margin:auto;background:linear-gradient(#e7f8fa,#d7eff1);border-radius:18px;overflow:hidden;filter:none}
 .hospital-building{position:relative;display:block!important;min-height:0!important;aspect-ratio:1586 / 992;border:0!important;padding:0!important;gap:0!important;grid-template-columns:none!important;grid-template-rows:none!important;background-image:url('../images/yia-research-hospital.png');background-size:100% 100%;background-position:center;background-repeat:no-repeat;isolation:isolate;overflow:hidden}
 .hospital-building>.hospital-room{position:absolute!important;min-height:0!important;display:flex;gap:5px;padding:8px;background:#faffffed;border:1px solid #66aab899;border-radius:12px;box-shadow:0 4px 16px #16435b20;opacity:.94;cursor:pointer}
@@ -156,7 +184,7 @@ main{max-width:1440px;padding:18px 22px 36px}
   <div class="hospital-footer"><span id="bubble-total">No datasets connected</span><span>Choose a dataset card to open its details</span><button id="review-output" class="analysis-output-bubble review-bubble" type="button">✓ Review data quality</button></div>
   <button type="button" id="core-robot-button" class="hospital-hidden-analyze" aria-label="Run research analysis" title="Analyze all connected data">Analyze with YIA</button>
   <span id="core-status" class="hospital-core-status">Ready to explore your data</span>
-</div></section><div id="detail-backdrop" class="detail-backdrop"><div class="detail-window" role="dialog" aria-modal="true"><div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><h3 id="detail-title">Dataset details</h3><p class="muted" id="detail-subtitle"></p></div><button id="detail-close" style="width:auto">Close ×</button></div><div id="detail-body"></div></div></div></main>
+</div></section><div id="department-backdrop" class="hospital-department-backdrop" aria-hidden="true"><section class="hospital-department-window" role="dialog" aria-modal="true" aria-labelledby="department-title"><div class="department-heading"><div><h2 id="department-title">Research department</h2><p id="department-subtitle"></p></div><button type="button" class="department-close" id="department-close">Close ×</button></div><div id="department-content"></div><div class="department-actions"><a href="../data-intelligence/index.html" id="department-upload-link">Upload or review files ↗</a><button type="button" class="department-primary" id="department-analyze">Analyze connected data</button></div></section></div><div id="detail-backdrop" class="detail-backdrop"><div class="detail-window" role="dialog" aria-modal="true"><div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><h3 id="detail-title">Dataset details</h3><p class="muted" id="detail-subtitle"></p></div><button id="detail-close" style="width:auto">Close ×</button></div><div id="detail-body"></div></div></div></main>
 <script type="module">
 import {supabase,listWorkspace,getWorkspaceSession} from "../assets/js/workspace-data.js?v=20261012-1";
 const $=id=>document.getElementById(id);let batches=[],rows=[],cols=[],activeProjectId="",projectTitle="",autoAnalyzing=new Set();
@@ -174,33 +202,43 @@ function renderConstellation(){
  const reviewButton=$("review-output");if(reviewButton)reviewButton.classList.toggle("visible",batches.length>0);
  const container=$("bubble-container");
  const rooms=[
-  {id:"blood",title:"BLOOD LAB",icon:"🩸",desc:"Hematology, blood tests and laboratory measurements",cls:"room-blood",match:/blood|glucose|cbc|hematolog|bmx|lab[_ -]?sample|serum|plasma|biochem|cholesterol|hemoglobin|haemoglobin|hba1c/},
-  {id:"imaging",title:"MEDICAL IMAGING",icon:"🩻",desc:"Radiology, scans, X-rays and medical images",cls:"room-imaging",match:/image|imaging|radiolog|mri|ct[_ -]?scan|xray|x-ray|ultrasound|dicom|scan|mammogra/},
-  {id:"patient",title:"PATIENT DATA",icon:"🧑‍⚕️",desc:"Patient profiles, demographics and medical history",cls:"room-patient",match:/patient|demograph|medical[_ -]?record|clinical[_ -]?record|age[_ -]?sex|survey|questionnaire/},
-  {id:"genomics",title:"GENOMICS",icon:"🧬",desc:"Genetic, molecular and sequencing datasets",cls:"room-genomics",match:/genom|genetic|gene|dna|rna|sequenc|variant|molecular|protein/},
-  {id:"environment",title:"ENVIRONMENT",icon:"🌿",desc:"Weather, air quality, geography and city-level signals",cls:"room-environment",match:/environment|weather|temperature|climate|air[_ -]?quality|pollution|city|urban|geospatial|geograph|sensor|humidity|pm2.?5/},
-  {id:"clinical",title:"CLINICAL DATA",icon:"♡",desc:"Vitals, outcomes, diagnoses and treatment records",cls:"room-clinical",match:/clinical|diagnos|outcome|treatment|hospital|vital|blood[_ -]?pressure|heart[_ -]?rate|ecg|ehr|icd/},
-  {id:"public",title:"PUBLIC HEALTH",icon:"🌍",desc:"Population studies, epidemiology and public datasets",cls:"room-public",match:/public[_ -]?health|epidemi|population|nhanes|cohort|prevalence|incidence|mortality|registry/},
-  {id:"intake",title:"DATA INTAKE",icon:"⇧",desc:"New files, mixed datasets and uncategorized uploads",cls:"room-intake",match:/.*/}
+  {id:"blood",title:"Blood laboratory",icon:"🩸",short:"BLOOD LAB",desc:"Blood tests, glucose, hematology and laboratory measurements",match:/blood|glucose|cbc|hematolog|bmx|lab[_ -]?sample|serum|plasma|biochem|cholesterol|hemoglobin|haemoglobin|hba1c/,box:[7,17,26,20]},
+  {id:"imaging",title:"Medical imaging",icon:"🩻",short:"IMAGING",desc:"Radiology, MRI, CT, X-rays and medical images",match:/image|imaging|radiolog|mri|ct[_ -]?scan|xray|x-ray|ultrasound|dicom|scan|mammogra/,box:[34,17,31,20]},
+  {id:"patient",title:"Patient data",icon:"🧑‍⚕️",short:"PATIENT DATA",desc:"Patient profiles, demographics and medical history",match:/patient|demograph|medical[_ -]?record|clinical[_ -]?record|age[_ -]?sex|survey|questionnaire/,box:[67,17,25,20]},
+  {id:"genomics",title:"Genomics",icon:"🧬",short:"GENOMICS",desc:"Genetic, molecular and sequencing datasets",match:/genom|genetic|gene|dna|rna|sequenc|variant|molecular|protein/,box:[7,39,26,20]},
+  {id:"ai",title:"YIA AI Core",icon:"🤖",short:"AI CORE",desc:"Central research intelligence connected to every department",match:null,box:[34,37,31,23]},
+  {id:"environment",title:"Environmental data",icon:"🌿",short:"ENVIRONMENT",desc:"Weather, temperature, air quality, sensors and city-level data",match:/environment|weather|temperature|climate|air[_ -]?quality|pollution|city|urban|geospatial|geograph|sensor|humidity|pm2.?5/,box:[67,39,25,20]},
+  {id:"clinical",title:"Clinical data",icon:"♡",short:"CLINICAL DATA",desc:"Vitals, diagnoses, outcomes and treatment records",match:/clinical|diagnos|outcome|treatment|hospital|vital|blood[_ -]?pressure|heart[_ -]?rate|ecg|ehr|icd/,box:[7,62,26,20]},
+  {id:"public",title:"Public health",icon:"🌍",short:"PUBLIC HEALTH",desc:"Population studies, epidemiology and public datasets",match:/public[_ -]?health|epidemi|population|nhanes|cohort|prevalence|incidence|mortality|registry/,box:[34,62,31,20]},
+  {id:"intake",title:"Data intake",icon:"⇧",short:"DATA INTAKE",desc:"New uploads and datasets that do not yet fit a specific department",match:/.*/,box:[67,62,25,20]}
  ];
  const getName=b=>{const x=parseResults(b);return String(x.source_file||b.title||b.name||"Dataset")};
- const cardData=batches.map((b,i)=>{const x=parseResults(b),name=getName(b),hay=(name+" "+(b.title||"")+" "+(b.description||"")+" "+(x.description||"")+" "+(x.source_type||"")).toLowerCase(),rowCount=Number(x.row_count||(x.rows||[]).length||0),paramCount=Array.isArray(x.columns)?x.columns.length:0,pending=["draft","needs_review"].includes(String(b.status||"").toLowerCase())||x.review_status==="needs_human_review";let room=rooms.find(r=>r.id!=="intake"&&r.match.test(hay))||rooms[7];return {b,x,i,name,rowCount,paramCount,pending,roomId:room.id}});
- if(!batches.length){
-  container.innerHTML=rooms.map(r=>'<section class="hospital-room '+r.cls+'"><div class="room-header"><span class="room-icon">'+r.icon+'</span><span class="room-title">'+r.title+'</span></div><p class="room-desc">'+r.desc+'</p><div class="room-empty">No datasets here yet. Connect a project or upload data from Data Intake.</div></section>').join("")+'<section class="hospital-room room-ai"><div class="room-header">✦ YIA AI CORE</div><div class="ai-robot"><i class="ai-eye"></i><i class="ai-eye"></i><span class="ai-smile">⌣</span></div><div class="ai-core-text">CENTRAL RESEARCH CORE</div><p class="ai-core-note">The AI core connects research departments and helps inspect connected datasets.</p><button class="ai-analyze" type="button" disabled>Connect a project first</button></section>';
-  $("constellation-status").textContent="Waiting for project";$("stage-subtitle").textContent="Choose a department to explore its datasets";$("bubble-total").textContent="No datasets connected";$("core-status").textContent="Ready to explore your data";return;
+ const cardData=batches.map((b,i)=>{const x=parseResults(b),name=getName(b),hay=(name+" "+(b.title||"")+" "+(b.description||"")+" "+(x.description||"")+" "+(x.source_type||"")).toLowerCase(),rowCount=Number(x.row_count||(x.rows||[]).length||0),paramCount=Array.isArray(x.columns)?x.columns.length:0,pending=["draft","needs_review"].includes(String(b.status||"").toLowerCase())||x.review_status==="needs_human_review";let room=rooms.find(r=>r.id!=="ai"&&r.id!=="intake"&&r.match&&r.match.test(hay))||rooms.find(r=>r.id==="intake");return {b,x,i,name,rowCount,paramCount,pending,roomId:room.id}});
+ const countFor=id=>cardData.filter(d=>d.roomId===id).length;
+ container.innerHTML='<div class="hospital-hotspots" role="group" aria-label="Hospital departments">'+rooms.map(r=>'<button type="button" class="hospital-hotspot '+(countFor(r.id)?'has-data':'')+'" data-room-id="'+r.id+'" aria-label="Open '+esc(r.title)+'" title="'+esc(r.title)+'" style="left:'+r.box[0]+'%;top:'+r.box[1]+'%;width:'+r.box[2]+'%;height:'+r.box[3]+'%"><span class="hotspot-label">'+r.icon+' '+r.short+'</span>'+(countFor(r.id)?'<span class="hotspot-count">'+countFor(r.id)+' dataset'+(countFor(r.id)===1?'':'s')+'</span>':'')+'</button>').join("")+'</div>';
+ container.querySelectorAll("[data-room-id]").forEach(el=>el.addEventListener("click",()=>openDepartment(el.dataset.roomId)));
+ const modal=$("department-backdrop");
+ const closeDepartment=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};
+ $("department-close").onclick=closeDepartment;
+ modal.onclick=e=>{if(e.target===modal)closeDepartment()};
+ $("department-analyze").onclick=()=>{closeDepartment();if(!batches.length){const intro=document.querySelector(".hero .intro");if(intro)intro.classList.add("project-picker-open");const input=$("project-id");if(input)input.focus();return}openAnalysisOutput()};
+ function openDepartment(id){
+  const room=rooms.find(r=>r.id===id);if(!room)return;
+  const items=cardData.filter(d=>d.roomId===id);
+  $("department-title").textContent=room.icon+" "+room.title;
+  $("department-subtitle").textContent=room.desc;
+  $("department-content").innerHTML=items.length?'<div class="department-datasets">'+items.map(d=>'<button type="button" class="department-dataset" data-open-dataset="'+d.i+'"><span><strong>'+esc(d.name)+'</strong><small>'+(d.pending?'Needs human review':'Connected · ready to inspect')+'</small></span><span class="department-count">'+d.rowCount.toLocaleString()+' rows · '+d.paramCount+' fields</span></button>').join("")+'</div>':'<div class="department-empty">'+(!activeProjectId?'Connect a project to see available datasets in this department.':'No datasets are currently categorized here. You can upload a file or assign one to this department from Data Intake.')+'</div>';
+  $("department-content").querySelectorAll("[data-open-dataset]").forEach(el=>el.onclick=()=>{closeDepartment();openDetails(Number(el.dataset.openDataset))});
+  const up=$("department-upload-link");up.href="../index.html";up.textContent=id==="intake"?"Open Data Intake ↗":"Upload or review files ↗";
+  $("department-analyze").textContent=id==="ai"?"Analyze connected data":"Analyze project with YIA";
+  $("department-analyze").disabled=!batches.length; $("department-analyze").style.opacity=batches.length?"1":".65";
+  modal.classList.add("open");modal.setAttribute("aria-hidden","false");
  }
- const roomHtml=rooms.map(r=>{
-  const items=cardData.filter(c=>c.roomId===r.id);
-  const itemHtml=items.length?items.map(c=>'<button type="button" class="room-dataset '+(c.pending?'pending':'')+'" data-bubble-index="'+c.i+'"><strong>'+esc(c.name)+'</strong><small>'+(c.pending?'Needs human review':'Connected · ready to inspect')+'</small><span class="room-count">'+c.rowCount.toLocaleString()+' rows · '+c.paramCount+' fields</span></button>').join(""):'<div class="room-empty">No matching datasets yet<br><span>Upload a relevant file through Data Intake</span></div>';
-  return '<section class="hospital-room '+r.cls+'"><div class="room-header"><span class="room-icon">'+r.icon+'</span><span class="room-title">'+r.title+'</span></div><p class="room-desc">'+r.desc+'</p><div class="room-datasets">'+itemHtml+'</div></section>';
- }).join("");
- const core='<section class="hospital-room room-ai"><div class="room-header"><span class="room-icon">✦</span><span class="room-title">YIA AI CORE</span></div><div class="ai-robot"><i class="ai-eye"></i><i class="ai-eye"></i><span class="ai-smile">⌣</span></div><div class="ai-core-text">CENTRAL RESEARCH CORE</div><p class="ai-core-note">Connected to '+batches.length+' datasets across the hospital. Select Analyze to inspect the combined research workspace.</p><button class="ai-analyze" type="button" data-analyze>✦ Analyze connected data</button></section>';
- container.innerHTML=roomHtml.replace(/<section class="hospital-room room-environment"[\s\S]*?<\/section>/,m=>m)+core;
- /* Place the AI core in the center cell regardless of department markup order. */
- const coreEl=container.querySelector(".room-ai");if(coreEl){const imaging=container.querySelector(".room-imaging");if(imaging)imaging.after(coreEl);}
- container.querySelectorAll("[data-bubble-index]").forEach(el=>el.onclick=()=>openDetails(Number(el.dataset.bubbleIndex)));
- const analyze=container.querySelector("[data-analyze]");if(analyze)analyze.onclick=()=>openAnalysisOutput();
- $("constellation-status").textContent=batches.length+" datasets connected";$("stage-subtitle").textContent="Select a department or dataset to explore its contents";$("core-status").textContent="Connected · ready to inspect";$("bubble-total").textContent=batches.length+" datasets · "+rows.length.toLocaleString()+" rows loaded";
+ if(!batches.length){
+  $("constellation-status").textContent="Waiting for project";$("stage-subtitle").textContent="Select a room in the hospital to explore its purpose";$("bubble-total").textContent="No datasets connected";$("core-status").textContent="Ready to explore your data";
+ } else {
+  $("constellation-status").textContent=batches.length+" datasets connected";$("stage-subtitle").textContent="Select a department or dataset to explore its contents";$("core-status").textContent="Connected · ready to inspect";$("bubble-total").textContent=batches.length+" datasets · "+rows.length.toLocaleString()+" rows loaded";
+ }
 }
 async function renderAutoReportHistory(){const box=$("auto-report-history");if(!box||!activeProjectId)return;box.innerHTML="<p class=\"note\">Loading saved AI reviews…</p>";try{const all=await listWorkspace(activeProjectId,"analyses",{limit:500});const reports=all.filter(a=>a.analysis_type==="yia_ai_auto_report");box.innerHTML=reports.length?reports.map(r=>'<article style="padding:13px;border:1px solid #e6e8f6;border-radius:13px;background:#fafaff"><strong>'+esc(r.title||"Automatic AI review")+'</strong><p class="note">'+esc(r.created_at?new Date(r.created_at).toLocaleString():"Saved report")+'</p><p style="white-space:pre-wrap;overflow-wrap:anywhere">'+esc(r.results?.answer||r.summary||"No report text stored.")+'</p></article>').join(""):'<p class="note">No automatic AI reviews saved yet. New batches will be checked while this page is open.</p>'}catch(e){box.textContent="Could not load saved AI reviews: "+(e.message||"unknown error")}}
 function openAnalysisOutput(){
