@@ -162,10 +162,10 @@ main{max-width:1440px;padding:18px 22px 36px}
 /* SVG hospital: crisp vector geometry and real, keyboard-accessible room targets */
 .hospital-panel .hospital-stage{min-height:0!important;height:auto!important;padding:clamp(12px,2.5vw,26px)!important;background:linear-gradient(180deg,#f7fdfd,#edf8f8 75%,#e4f3f2)!important}
 .hospital-panel .hospital-scene{position:relative!important;max-width:1120px!important;width:100%!important;margin:0 auto!important;filter:none!important;overflow:visible!important;background:transparent!important}
-.hospital-panel #bubble-container.hospital-building{position:relative!important;display:block!important;width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;aspect-ratio:1000 / 650!important;border:0!important;padding:0!important;gap:0!important;background:transparent!important;background-image:none!important;overflow:visible!important;isolation:isolate}
+.hospital-panel #bubble-container.hospital-building{position:relative!important;inset:auto!important;right:auto!important;bottom:auto!important;left:auto!important;top:auto!important;z-index:auto!important;pointer-events:auto!important;display:block!important;width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;aspect-ratio:1000 / 650!important;border:0!important;padding:0!important;gap:0!important;background:transparent!important;background-image:none!important;overflow:visible!important;isolation:isolate}
 .hospital-panel #bubble-container>.hospital-room{display:none!important}
 .hospital-svg{display:block;width:100%;height:auto;overflow:visible;touch-action:manipulation}
-.svg-room{cursor:pointer;outline:none}
+.svg-room{cursor:pointer;outline:none;pointer-events:all}
 .svg-room-hit{stroke:#a8d8dd;stroke-width:2;transition:fill .16s,stroke .16s,filter .16s}
 .svg-room:hover .svg-room-hit,.svg-room:focus .svg-room-hit{fill:#c7f0ef;stroke:#159caa;stroke-width:4;filter:drop-shadow(0 4px 5px #1b7f8b24)}
 .svg-room:focus-visible .svg-room-hit{stroke:#087f91;stroke-width:5}
