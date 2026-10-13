@@ -158,6 +158,18 @@ main{max-width:1440px;padding:18px 22px 36px}
 .hospital-links{display:none}.hospital-building .orbit-empty{grid-column:1/-1;padding:50px;text-align:center;color:#517b89}
 @media(max-width:850px){.hospital-stage{padding:13px}.hospital-building{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto;gap:0}.hospital-room{grid-column:auto!important;grid-row:auto!important;min-height:175px}.room-ai{min-height:220px}.room-intake{grid-column:span 2!important}.hospital-roof{font-size:10px;letter-spacing:.07em}.roof-green{display:none}.hospital-entrance{height:95px}}
 @media(max-width:560px){.hospital-building{grid-template-columns:1fr}.hospital-room,.room-intake{grid-column:1!important}.hospital-topbar .stage-tools{width:100%}.hospital-topbar .stage-tools button{flex:1}.hospital-roof{height:58px;gap:7px;font-size:9px}.roof-mark{font-size:23px;padding:1px 8px}.hospital-footer{align-items:stretch}.hospital-footer>span{width:100%;text-align:center}.entrance-sign{font-size:12px}.entrance-sign span{display:block}.entrance-note{max-width:90%;text-align:center}}
+
+/* Final overrides: preserve original artwork behind transparent room hotspots */
+.hospital-panel .hospital-stage{min-height:0!important;height:auto!important;padding:22px!important}
+.hospital-panel .hospital-scene{max-width:none!important;width:100%!important;margin:0 auto!important;filter:none!important;overflow:visible}
+.hospital-panel .hospital-building{position:relative!important;display:block!important;width:100%!important;min-width:0!important;min-height:0!important;height:auto!important;aspect-ratio:1586 / 992!important;border:0!important;padding:0!important;gap:0!important;background-color:#e6f6f8!important;background-image:url('../images/yia-research-hospital.png')!important;background-size:100% 100%!important;background-position:center center!important;background-repeat:no-repeat!important;overflow:hidden!important;isolation:isolate}
+.hospital-panel .hospital-building>.hospital-room{display:none!important}
+.hospital-panel .hospital-hotspots{position:absolute!important;inset:0!important;z-index:4!important;display:block!important;pointer-events:none!important}
+.hospital-panel .hospital-hotspot{display:flex!important;pointer-events:auto!important}
+.hospital-panel .hospital-hotspot .hotspot-label{opacity:.94;transform:none;background:#ffffffd9;border:1px solid #ffffffed}
+.hospital-panel .hospital-hotspot:hover .hotspot-label,.hospital-panel .hospital-hotspot:focus-visible .hotspot-label{opacity:1;transform:none;background:#fff}
+.hospital-panel .hospital-footer{margin-top:12px}
+@media(max-width:760px){.hospital-panel .hospital-stage{padding:10px!important}.hospital-panel .hospital-scene{overflow-x:auto!important}.hospital-panel .hospital-building{min-width:680px!important;width:680px!important;aspect-ratio:1586 / 992!important}}
 </style></head><body><main>
 <header class="top"><div class="brand"><span>YIA</span> Research results</div><div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span id="auth-status" class="pill" role="status" aria-live="polite">Checking sign-in…</span><button id="auth-toggle" type="button" style="width:auto" onclick="var p=document.getElementById('auth-panel');if(p){p.classList.remove('hidden');p.scrollIntoView({behavior:'smooth',block:'center'});var e=document.getElementById('auth-email');if(e)e.focus()}">Sign in</button><button id="auth-signout" type="button" class="hidden" style="width:auto">Sign out</button><a href="./">← Back to data intake</a> &nbsp; <a href="./research-workspace.html">Research workspace ↗</a></div></header>
 <section class="hero"><div class="intro"><div class="bar"><input id="project-id" placeholder="Project UUID"><button id="load" class="primary" type="button" onclick="var s=document.getElementById('status');if(s)s.textContent='Connecting to project…';">Connect project</button></div><div id="status" class="note">Choose a project from Data Intelligence, or enter the project ID to connect.</div></div></section>
@@ -229,7 +241,7 @@ function renderConstellation(){
   $("department-subtitle").textContent=room.desc;
   $("department-content").innerHTML=items.length?'<div class="department-datasets">'+items.map(d=>'<button type="button" class="department-dataset" data-open-dataset="'+d.i+'"><span><strong>'+esc(d.name)+'</strong><small>'+(d.pending?'Needs human review':'Connected · ready to inspect')+'</small></span><span class="department-count">'+d.rowCount.toLocaleString()+' rows · '+d.paramCount+' fields</span></button>').join("")+'</div>':'<div class="department-empty">'+(!activeProjectId?'Connect a project to see available datasets in this department.':'No datasets are currently categorized here. You can upload a file or assign one to this department from Data Intake.')+'</div>';
   $("department-content").querySelectorAll("[data-open-dataset]").forEach(el=>el.onclick=()=>{closeDepartment();openDetails(Number(el.dataset.openDataset))});
-  const up=$("department-upload-link");up.href="../index.html";up.textContent=id==="intake"?"Open Data Intake ↗":"Upload or review files ↗";
+  const up=$("department-upload-link");up.href="index.html";up.textContent=id==="intake"?"Open Data Intake ↗":"Upload or review files ↗";
   $("department-analyze").textContent=id==="ai"?"Analyze connected data":"Analyze project with YIA";
   $("department-analyze").disabled=!batches.length; $("department-analyze").style.opacity=batches.length?"1":".65";
   modal.classList.add("open");modal.setAttribute("aria-hidden","false");
