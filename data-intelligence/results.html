@@ -196,7 +196,10 @@ main{max-width:1440px;padding:18px 22px 36px}
 <section class="panel orbital-panel hospital-panel">
 <div class="hospital-stage" id="orbital-stage">
   <div class="hospital-topbar"><div><strong>YIA · Research Hospital</strong><small id="stage-subtitle">Choose a department to explore its datasets</small></div><div class="stage-tools"><span class="pill" id="constellation-status">Waiting for project</span><button id="change-project" type="button" onclick="var p=document.querySelector('.hero .intro');if(p){p.classList.add('project-picker-open');p.style.display='block';p.style.position='relative';p.style.zIndex='20';var i=document.getElementById('project-id');if(i){i.focus();i.scrollIntoView({behavior:'smooth',block:'center'})}}">Choose project</button><button id="refresh">↻ Refresh</button></div></div>
-  <div class="hospital-scene">
+  <div class="hospital-original-embed" aria-label="Original interactive YIA hospital project">
+  <iframe src="./index.html" title="Original YIA three-floor hospital with nine rooms and AI basement" loading="eager" style="display:block;width:100%;height:clamp(760px,78vh,1120px);border:0;border-radius:16px;background:#e7f4f1" allowfullscreen></iframe>
+</div>
+<div class="hospital-scene" style="display:none!important">
     <div id="bubble-container" class="hospital-building">
 <section class="hospital-room room-blood"><div class="room-header"><span class="room-icon">🩸</span><span class="room-title">BLOOD LAB</span></div><p class="room-desc">Blood tests, glucose and laboratory measurements</p><div class="room-empty">No datasets yet. Connect a project to populate this room.</div></section>
 <section class="hospital-room room-imaging"><div class="room-header"><span class="room-icon">🩻</span><span class="room-title">MEDICAL IMAGING</span></div><p class="room-desc">Radiology, scans and medical images</p><div class="room-empty">Imaging datasets will appear here.</div></section>
