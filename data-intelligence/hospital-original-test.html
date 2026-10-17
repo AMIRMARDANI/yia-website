@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#d8eeee">
+  <title>YIA Research Hospital — Original Scene Test</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">YIA RESEARCH HOSPITAL · ISOLATED TEST</p>
+      <h1>Research Hospital — Original Interactive Model</h1>
+      <p class="subtitle">Original SVG scene · three floors · nine departments · underground AI control suite</p>
+    </div>
+    <div class="status"><span class="status-dot"></span> No background photos</div>
+  </header>
+
+  <main class="layout">
+    <section class="scene-card" aria-label="Animated hospital building">
+      <div class="scene-toolbar">
+        <span>Hospital cutaway</span>
+        <span class="hint">Select a room or medical object</span>
+      </div>
+      <div class="svg-wrap">
+      <svg id="hospital-scene" viewBox="0 0 1200 1320" role="img" aria-labelledby="scene-title scene-desc">
+        <title id="scene-title">Four-level vector hospital with nine main-floor rooms and three underground rooms</title>
+        <desc id="scene-desc">A pastel cutaway hospital with three main floors of three rooms each and one large underground monitor-and-robot control suite, made from editable SVG shapes.</desc>
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#eaf8f7"/><stop offset="1" stop-color="#d4eeeb"/>
+          </linearGradient>
+          <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d9f0ec"/><stop offset="1" stop-color="#bde2dc"/>
+          </linearGradient>
+          <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#eee8dd"/><stop offset="1" stop-color="#d7cec0"/>
+          </linearGradient>
+          <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#244d58"/><stop offset="1" stop-color="#102d3b"/>
+          </linearGradient>
+          <filter id="shadow" x="-30%" y="-30%" width="160%" height="170%">
+            <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#315d59" flood-opacity=".16"/>
+          </filter>
+        </defs>
+        <rect width="1200" height="1320" rx="18" fill="url(#sky)"/>
+        <g fill="#f8ffff" opacity=".75">
+          <g transform="translate(85 95)"><circle cx="0" cy="15" r="25"/><circle cx="30" cy="0" r="34"/><circle cx="63" cy="18" r="25"/><rect x="-3" y="14" width="68" height="27" rx="13"/></g>
+          <g transform="translate(1030 120)"><circle cx="0" cy="15" r="24"/><circle cx="30" cy="0" r="33"/><circle cx="63" cy="18" r="25"/><rect x="-3" y="14" width="68" height="27" rx="13"/></g>
+        </g>
+        <!-- Roof and outer shell -->
+        <path d="M120 150L600 55L1080 150Z" fill="#6b9f99"/>
+        <path d="M175 145L600 76L1025 145Z" fill="#8fc2bb"/>
+        <rect x="125" y="145" width="950" height="1075" rx="8" fill="#4f8983"/>
+        <rect x="150" y="165" width="900" height="1055" rx="3" fill="#e7f5f2"/>
+        <rect x="280" y="104" width="640" height="68" rx="5" fill="#f5fcfa" stroke="#a9d3cc" stroke-width="4"/>
+        <text x="600" y="148" text-anchor="middle" font-size="42" font-family="Arial, sans-serif" fill="#345d59" letter-spacing="4">HOSPITAL</text>
+        <!-- Floor slabs, including the basement ceiling -->
+        <rect x="150" y="420" width="900" height="18" fill="#fffaf0"/>
+        <rect x="150" y="685" width="900" height="18" fill="#fffaf0"/>
+        <!-- Ground line and visible earth cross-section above the basement ceiling -->
+        <rect x="125" y="950" width="950" height="20" fill="#a77d57" stroke="#765638" stroke-width="2"/>
+        <path d="M135 955H1065M135 962H1065" stroke="#d4b18b" stroke-width="2" stroke-dasharray="12 7" opacity=".9"/>
+        <rect x="125" y="970" width="950" height="263" fill="#596d7b" opacity=".12"/>
+        <rect x="150" y="1215" width="900" height="18" fill="#fffaf0"/>
+        <g id="rooms"></g>
+        <rect x="360" y="1239" width="480" height="29" rx="5" fill="#263f50" stroke="#a77d57" stroke-width="2"/>
+        <text x="600" y="1258" text-anchor="middle" font-size="15" font-family="Arial, sans-serif" fill="#ffffff" font-weight="bold" letter-spacing="2">B1 • UNDERGROUND LEVEL</text>
+        <text x="600" y="1287" text-anchor="middle" font-size="13" font-family="Arial, sans-serif" fill="#678984">VECTOR SCENE • HTML + CSS + SVG + JAVASCRIPT</text>
+      </svg>
+      </div>
+      <div class="scene-footer">
+        <span><i class="dot mint"></i> Rooms & walls</span>
+        <span><i class="dot blue"></i> Beds & equipment</span>
+        <span><i class="dot green"></i> Animated monitors</span>
+      </div>
+    </section>
+
+    <aside class="controls">
+
+      <section class="control-card visual-editor">
+        <h2>Visual Editor</h2>
+        <p class="muted">Turn on edit mode, then click and drag a room or SVG object. Drag a corner handle to resize it.</p>
+        <button id="editor-toggle" class="primary" type="button" aria-pressed="false">Enable edit mode</button>
+        <div class="editor-selection" id="editor-selection">Nothing selected</div>
+        <label class="editor-label" for="editor-fill">Fill color</label>
+        <div class="editor-color-row">
+          <input id="editor-fill" type="color" value="#d9f0ec" aria-label="Selected element fill color">
+          <button id="editor-apply-fill" type="button">Apply color</button>
+        </div>
+        <div class="button-grid">
+          <button id="editor-smaller" type="button">Smaller</button>
+          <button id="editor-larger" type="button">Larger</button>
+          <button id="editor-reset-item" type="button">Reset selected</button>
+          <button id="editor-save" class="primary" type="button">Save changes</button>
+        </div>
+        <h3>Export</h3>
+        <div class="button-grid">
+          <button id="editor-export-js" type="button">Export script.js</button>
+          <button id="editor-export-css" type="button">Export style.css</button>
+          <button id="editor-export-svg" type="button">Export SVG scene</button>
+          <button id="editor-export-json" type="button">Export layout JSON</button>
+        </div>
+        <p class="editor-note">Tip: run with VS Code Live Server for reliable export. Saved edits are kept in this browser; Export script.js embeds them into the code file.</p>
+      </section>
+
+      <section class="control-card">
+        <h2>Scene controls</h2>
+        <p class="muted">Pause the movement or restore the scene.</p>
+        <button id="toggle-animation" class="primary" type="button">Pause animation</button>
+        <button id="reset-scene" type="button">Reset scene</button>
+      </section>
+      <section class="control-card">
+        <h2>Choose a floor</h2>
+        <p class="muted">Highlight one floor of the building.</p>
+        <div class="button-grid">
+          <button data-floor="all" type="button">All floors</button>
+          <button data-floor="3" type="button">Floor 3</button>
+          <button data-floor="2" type="button">Floor 2</button>
+          <button data-floor="1" type="button">Floor 1</button>
+          <button data-floor="B" type="button">Basement</button>
+        </div>
+      </section>
+      <section class="control-card">
+        <h2>Choose a room</h2>
+        <p class="muted">Select any room or a medical object.</p>
+        <div id="room-buttons" class="button-grid"></div>
+        <div class="object-grid">
+          <button data-object="monitor" type="button">Monitors</button>
+          <button data-object="bed" type="button">Beds</button>
+        </div>
+        <div id="selection-info" class="selection-info" aria-live="polite">Nothing selected yet.</div>
+      </section>
+      <section class="control-card notes">
+        <h2>What is editable?</h2>
+        <ul>
+          <li>Four levels: nine rooms above ground plus one large shared basement control suite</li>
+          <li>Each room has its own palette, specialty label and vector motif</li>
+          <li>Independent beds, monitors, IV stands and medical equipment</li>
+          <li>Separate vector parts for windows and equipment</li>
+          <li>Animated ECG lines and equipment-focused view</li>
+          <li>Room selection and floor highlighting</li>
+        </ul>
+      </section>
+    </aside>
+  </main>
+  <footer class="page-footer">Built from vector shapes — no photographic background assets.</footer>
+  <script src="script.js"></script>
+  <script src="editor.js"></script>
+</body>
+</html>
