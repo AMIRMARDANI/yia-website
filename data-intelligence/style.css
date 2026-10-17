@@ -30,7 +30,7 @@ button.primary { background:var(--teal); border-color:var(--teal); color:white; 
 .selection-info { margin-top:12px; min-height:50px; padding:10px; border-radius:9px; background:#edf7f4; color:#5a827b; font-size:11px; line-height:1.7; }
 .notes ul { margin:10px 0 0; padding-left:19px; color:#66847f; font-size:12px; line-height:2; }
 .page-footer { padding:0 18px 25px; text-align:center; color:#75938e; font-size:11px; }
-.room-hit { cursor:pointer; }
+.room-hit { cursor:pointer; }\n.room-dimmed{opacity:.16!important;filter:grayscale(.75);transition:opacity .22s,filter .22s}.room-active{opacity:1!important;filter:drop-shadow(0 0 7px rgba(32,142,127,.95))!important;transition:opacity .22s,filter .22s}.room-active>rect:first-child{stroke:#20a99c!important;stroke-width:5!important}
 .room-hit:focus-visible { outline:none; filter:drop-shadow(0 0 5px #42a99a); }
 .selected-object { filter:drop-shadow(0 0 7px rgba(32,142,127,.95)) !important; }
 .floor-dim { opacity:.18; transition:opacity .25s; }
