@@ -185,10 +185,14 @@ main{max-width:1440px;padding:18px 22px 36px}
 @media(max-width:700px){.premium-hospital-art{max-height:none}.premium-hotspot-label{font-size:10px;padding:5px 7px}.premium-hotspot-count{font-size:9px}.premium-hospital-hotspot{border-radius:10px}.hospital-panel .hospital-stage{padding:5px!important}}
 
 
-/* Research hospital side rails: team roster + live Gemini workspace assistant */
+/* Hospital left, AI at top-right, team directly below */
 .hospital-stage{overflow:visible!important}
-.hospital-layout{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;gap:14px;align-items:stretch;min-width:0}
-.hospital-side{background:rgba(255,255,255,.96);border:1px solid #dce9ef;border-radius:18px;padding:15px;box-shadow:0 8px 24px #1c52600b;min-width:0;align-self:start}
+.hospital-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;align-items:start;min-width:0}
+.hospital-center{min-width:0;overflow:hidden}
+.hospital-center .hospital-original-embed{width:100%;min-width:0}
+.hospital-center iframe{width:100%;min-width:0}
+.hospital-right-stack{display:flex;flex-direction:column;gap:14px;min-width:0;align-self:start}
+.hospital-side{background:rgba(255,255,255,.96);border:1px solid #dce9ef;border-radius:18px;padding:15px;box-shadow:0 8px 24px #1c52600b;min-width:0;align-self:stretch}
 .hospital-side-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:13px}
 .hospital-side-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#e5f5f5;font-size:17px;flex:none}
 .hospital-side h2{font-size:15px;line-height:1.35;margin:0;color:#183d51}
@@ -199,22 +203,19 @@ main{max-width:1440px;padding:18px 22px 36px}
 .team-member strong{display:block;font-size:11px;line-height:1.4;color:#244c5d}
 .team-member small{display:block;font-size:10px;color:#718995;line-height:1.45;margin-top:2px}
 .team-note{font-size:10px;color:#718995;line-height:1.6;margin:12px 1px 0}
-.hospital-center{min-width:0}
-.hospital-center .hospital-original-embed{width:100%;min-width:0}
-.hospital-center iframe{width:100%;min-width:0}
-.yia-chat-panel{display:flex;flex-direction:column;min-height:520px;max-height:calc(100vh - 42px);position:sticky;top:14px}
+.yia-chat-panel{display:flex;flex-direction:column;min-height:380px;max-height:calc(100vh - 42px);position:sticky;top:14px}
 .yia-chat-state{font-size:10px;color:#688493;background:#f2f8fa;border-radius:9px;padding:7px 9px;margin-bottom:10px}
-.yia-chat-log{display:flex;flex-direction:column;gap:9px;overflow:auto;min-height:190px;max-height:calc(100vh - 300px);padding:3px 1px 12px;flex:1}
+.yia-chat-log{display:flex;flex-direction:column;gap:9px;overflow:auto;min-height:150px;max-height:calc(100vh - 390px);padding:3px 1px 12px;flex:1}
 .yia-chat-message{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;padding:10px 11px;border-radius:13px;max-width:100%}
 .yia-chat-message.assistant{background:#f0f8fa;border:1px solid #dcebef;color:#234a5a;align-self:stretch}
 .yia-chat-message.user{background:#e8e9ff;border:1px solid #d8d9ff;color:#353b77;align-self:flex-end}
 .yia-chat-compose{display:grid;gap:8px;margin-top:10px}
-.yia-chat-compose textarea{width:100%;min-height:90px;resize:vertical;border:1px solid #d7e6eb;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#183d51;background:#fff}
+.yia-chat-compose textarea{width:100%;min-height:76px;resize:vertical;border:1px solid #d7e6eb;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#183d51;background:#fff}
 .yia-chat-compose button{width:100%;border:0;border-radius:11px;padding:11px;background:linear-gradient(110deg,#347f8d,#5b8ee8);color:white;font-weight:800}
 .yia-chat-compose button:disabled{opacity:.55;cursor:wait}
 .yia-chat-footnote{font-size:10px;line-height:1.5;color:#748b98;margin:9px 1px 0}
-@media(max-width:1100px){.hospital-layout{grid-template-columns:190px minmax(0,1fr)}.yia-chat-panel{grid-column:1/-1;position:static;max-height:none;min-height:360px}.yia-chat-log{max-height:380px}}
-@media(max-width:760px){.hospital-stage{padding:10px!important}.hospital-layout{grid-template-columns:minmax(0,1fr)}.hospital-side,.hospital-center{grid-column:1}.hospital-center{overflow-x:auto}.hospital-center iframe{min-width:560px}.yia-chat-panel{grid-column:1;min-height:420px}.team-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:1100px){.hospital-layout{grid-template-columns:minmax(0,1fr) 270px}.yia-chat-panel{position:static;max-height:none;min-height:350px}.yia-chat-log{max-height:320px}}
+@media(max-width:760px){.hospital-stage{padding:10px!important}.hospital-layout{grid-template-columns:minmax(0,1fr)}.hospital-center{grid-column:1;overflow-x:auto}.hospital-center iframe{min-width:560px}.hospital-right-stack{grid-column:1}.yia-chat-panel{min-height:390px}.team-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 </style></head><body>
 <div id="hospital-prototype-notice" style="position:relative;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;background:linear-gradient(100deg,#08283c,#10465b);border-bottom:1px solid #2e91a7;color:#eafaff;font:600 14px/1.4 system-ui,sans-serif">
@@ -229,24 +230,14 @@ main{max-width:1440px;padding:18px 22px 36px}
 <div class="hospital-stage" id="orbital-stage">
   <div class="hospital-topbar"><div><strong>YIA · Research Hospital</strong><small id="stage-subtitle">Choose a department to explore its datasets</small></div><div class="stage-tools"><span class="pill" id="constellation-status">Waiting for project</span><button id="change-project" type="button" onclick="var p=document.querySelector('.hero .intro');if(p){p.classList.add('project-picker-open');p.style.display='block';p.style.position='relative';p.style.zIndex='20';var i=document.getElementById('project-id');if(i){i.focus();i.scrollIntoView({behavior:'smooth',block:'center'})}}">Choose project</button><button id="refresh">↻ Refresh</button></div></div>
   <div class="hospital-layout">
-  <aside class="hospital-side" aria-labelledby="yia-team-title">
-    <div class="hospital-side-head"><div class="hospital-side-icon" aria-hidden="true">👥</div><div><h2 id="yia-team-title">Project team</h2><p class="side-subtitle">Team members will be added when confirmed</p></div></div>
-    <div class="team-list">
-      <div class="team-member"><div class="team-avatar">01</div><div><strong>Project lead</strong><small>Member not assigned yet</small></div></div>
-      <div class="team-member"><div class="team-avatar">02</div><div><strong>Clinical research</strong><small>Member not assigned yet</small></div></div>
-      <div class="team-member"><div class="team-avatar">03</div><div><strong>Data science</strong><small>Member not assigned yet</small></div></div>
-      <div class="team-member"><div class="team-avatar">04</div><div><strong>AI / engineering</strong><small>Member not assigned yet</small></div></div>
-      <div class="team-member"><div class="team-avatar">05</div><div><strong>Data governance</strong><small>Member not assigned yet</small></div></div>
-    </div>
-    <p class="team-note">These are role placeholders only, not confirmed people. Names and responsibilities can be updated once the team is finalized.</p>
-  </aside>
-  <div class="hospital-center">
+    <div class="hospital-center">
   <div class="hospital-original-embed" aria-label="Original interactive YIA hospital project" style="width:100%;margin:0;padding:0">
   <iframe src="./index.html" title="Original YIA three-floor hospital with nine rooms and AI basement" loading="eager" style="display:block;width:100%;height:1500px;max-height:none;border:0;border-radius:16px;background:#e7f4f1" allowfullscreen></iframe>
   <div style="display:flex;justify-content:flex-end;padding:10px 2px 0"><a href="./index.html" target="_blank" rel="noopener" style="font-size:13px;color:#367d77;font-weight:700">Open original hospital in a full page ↗</a></div>
 </div>
   </div>
-  <aside class="hospital-side yia-chat-panel" aria-labelledby="yia-chat-title">
+  <div class="hospital-right-stack">
+      <aside class="hospital-side yia-chat-panel" aria-labelledby="yia-chat-title">
     <div class="hospital-side-head"><div class="hospital-side-icon" aria-hidden="true">✦</div><div><h2 id="yia-chat-title">Ask YIA AI</h2><p class="side-subtitle">Research workspace assistant</p></div></div>
     <div id="yia-chat-state" class="yia-chat-state" role="status" aria-live="polite">Sign in and connect a project to start.</div>
     <div id="yia-chat-log" class="yia-chat-log" aria-live="polite">
@@ -258,6 +249,18 @@ main{max-width:1440px;padding:18px 22px 36px}
     </form>
     <p class="yia-chat-footnote">Uses the existing secured Supabase AI function. Answers depend on the signed-in account's project access and the context available to the assistant.</p>
   </aside>
+      <aside class="hospital-side" aria-labelledby="yia-team-title">
+    <div class="hospital-side-head"><div class="hospital-side-icon" aria-hidden="true">👥</div><div><h2 id="yia-team-title">Project team</h2><p class="side-subtitle">Team members will be added when confirmed</p></div></div>
+    <div class="team-list">
+      <div class="team-member"><div class="team-avatar">01</div><div><strong>Project lead</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">02</div><div><strong>Clinical research</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">03</div><div><strong>Data science</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">04</div><div><strong>AI / engineering</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">05</div><div><strong>Data governance</strong><small>Member not assigned yet</small></div></div>
+    </div>
+    <p class="team-note">These are role placeholders only, not confirmed people. Names and responsibilities can be updated once the team is finalized.</p>
+  </aside>
+  </div>
   </div>
 <div class="hospital-scene" style="display:none!important">
     <div id="bubble-container" class="hospital-building">
