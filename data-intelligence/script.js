@@ -398,12 +398,16 @@
       txt(g,x+w-54,y+56,"CT SCAN",{"font-size":8.5,"font-weight":"bold","text-anchor":"middle",fill:"#5b61a1"});
     }
 
+    const notifyParent = () => {
+      try { window.parent.postMessage({type:"YIA_HOSPITAL_ROOM_SELECTED",roomLabel:label,floor:String(floor)},window.location.origin); } catch (_) {}
+    };
     g.addEventListener("click", event => {
       if (event.target.closest(".room-object")) return;
       selectRoom(label,g);
+      notifyParent();
     });
     g.addEventListener("keydown", event => {
-      if (event.key==="Enter" || event.key===" ") { event.preventDefault(); selectRoom(label,g); }
+      if (event.key==="Enter" || event.key===" ") { event.preventDefault(); selectRoom(label,g); notifyParent(); }
     });
     [bed,doctor,monitor].forEach(node=>{
       node.addEventListener("click",event=>{event.stopPropagation();selectObject(node.id.startsWith("bed")?"bed":node.id.startsWith("doctor")?"doctor":"monitor",node);});
