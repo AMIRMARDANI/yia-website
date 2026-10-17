@@ -10,6 +10,12 @@
 /* Embedded hospital view: hide the lower editor/control sidebar while keeping the original SVG and scripts intact. */
 .controls{display:none!important}
 .page-footer{display:none!important}
+/* Let the original hospital scene use the full width of the results-page iframe. */
+.layout{grid-template-columns:minmax(0,1fr)!important;width:100%!important;max-width:none!important;margin:0 auto!important;gap:0!important}
+.scene-card{width:100%!important;max-width:none!important}
+.svg-wrap{overflow:hidden!important}
+#hospital-scene{width:100%!important;min-width:0!important;height:auto!important}
+.topbar{width:100%!important}
 </style>
 </head>
 <body>
