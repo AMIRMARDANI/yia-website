@@ -572,7 +572,7 @@
   function clearHighlights(){ document.querySelectorAll(".selected-object").forEach(n=>n.classList.remove("selected-object")); }
   function selectRoom(label,group){
     clearHighlights();
-    document.querySelectorAll("#rooms > .room-hit").forEach(room=>{
+    document.querySelectorAll("#rooms .independent-room").forEach(room=>{
       room.classList.toggle("room-dimmed", room!==group);
       room.classList.toggle("room-active", room===group);
     });
@@ -587,7 +587,7 @@
     const labels={monitor:"All nine monitors are highlighted.",doctor:"All nine doctors are highlighted.",bed:"All nine beds are highlighted."};
     info.textContent=labels[type];
   }
-  document.querySelectorAll("[data-floor]").forEach(button=>{
+  document.querySelectorAll("button[data-floor]").forEach(button=>{
     button.addEventListener("click",()=>{
       const floor=button.dataset.floor;
       document.querySelectorAll(".room-hit").forEach(g=>g.classList.toggle("floor-dim",floor!=="all"&&g.dataset.floor!==floor));
