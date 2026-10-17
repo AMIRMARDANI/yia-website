@@ -571,8 +571,14 @@
 
   function clearHighlights(){ document.querySelectorAll(".selected-object").forEach(n=>n.classList.remove("selected-object")); }
   function selectRoom(label,group){
-    clearHighlights(); group.classList.add("selected-object");
-    info.textContent=`${label} selected. Its bed, patient, doctor, monitor and IV stand are independent SVG groups.`;
+    clearHighlights();
+    document.querySelectorAll("#rooms > .room-hit").forEach(room=>{
+      room.classList.toggle("room-dimmed", room!==group);
+      room.classList.toggle("room-active", room===group);
+    });
+    group.classList.add("selected-object");
+    info.textContent=`${label} selected. Other rooms are dimmed; click another room to switch selection.`;
+    try { window.parent.postMessage({type:"YIA_HOSPITAL_ROOM_SELECTED",roomLabel:label,floor:group.dataset.floor},window.location.origin); } catch (_) {}
   }
   function selectObject(type){
     clearHighlights();
