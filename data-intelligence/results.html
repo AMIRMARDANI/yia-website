@@ -171,16 +171,16 @@ main{max-width:1440px;padding:18px 22px 36px}
 .premium-hospital-hotspot:hover,.premium-hospital-hotspot:focus-visible{border-color:#39c5d3;background:#00b7cc12;box-shadow:0 0 0 4px #24b8cd28,0 8px 28px #003e5626;outline:none;transform:translateY(-2px)}
 .premium-hotspot-label{font-size:clamp(10px,.94vw,15px);font-weight:800;text-align:center;text-shadow:0 1px 5px #ffffffef,0 0 12px #ffffffef;opacity:0;transition:opacity .16s;background:#fffffff0;border:1px solid #c3e8ed;border-radius:12px;padding:8px 11px;box-shadow:0 4px 15px #19384b25;white-space:normal}
 .premium-hospital-hotspot:hover .premium-hotspot-label,.premium-hospital-hotspot:focus-visible .premium-hotspot-label{opacity:1}
-.premium-hotspot-count{font-size:11px;font-weight:850;border-radius:999px;padding:4px 8px;background:#087e91;color:#fff;box-shadow:0 3px 12px #003d4c30}
-.premium-hospital-hotspot.room-blood{left:23%;top:54%;width:15%;height:16%}
-.premium-hospital-hotspot.room-imaging{left:16%;top:42%;width:16%;height:16%}
-.premium-hospital-hotspot.room-patient{left:64%;top:60%;width:16%;height:16%}
-.premium-hospital-hotspot.room-genomics{left:29%;top:31%;width:16%;height:15%}
-.premium-hospital-hotspot.room-ai{left:72%;top:29%;width:15%;height:16%}
-.premium-hospital-hotspot.room-environment{left:72%;top:64%;width:16%;height:16%}
-.premium-hospital-hotspot.room-clinical{left:58%;top:46%;width:17%;height:16%}
-.premium-hospital-hotspot.room-public{left:38%;top:15%;width:17%;height:16%}
-.premium-hospital-hotspot.room-intake{left:8%;top:12%;width:17%;height:16%}
+.premium-hospital-hotspot.is-selected{z-index:8;opacity:1;border:3px solid #21c4d4;background:#00bfd014;box-shadow:0 0 0 9999px rgba(12,32,47,.48),inset 0 0 0 2px #fff,0 0 26px #17c7d8!important;transform:none!important}.premium-hospital-hotspot.is-dimmed{opacity:.2;filter:grayscale(.8)}.premium-hospital-hotspot.is-selected .premium-hotspot-label{opacity:1}.premium-hospital-hotspot{transition:opacity .18s,filter .18s,background .18s,border-color .18s,box-shadow .18s}.premium-hotspot-count{font-size:11px;font-weight:850;border-radius:999px;padding:4px 8px;background:#087e91;color:#fff;box-shadow:0 3px 12px #003d4c30}
+.premium-hospital-hotspot.room-imaging{left:10%;top:6%;width:30%;height:33%}
+.premium-hospital-hotspot.room-blood{left:40%;top:6%;width:30%;height:33%}
+.premium-hospital-hotspot.room-patient{left:70%;top:6%;width:29%;height:33%}
+.premium-hospital-hotspot.room-genomics{left:10%;top:39%;width:30%;height:31%}
+.premium-hospital-hotspot.room-ai{left:40%;top:39%;width:30%;height:31%}
+.premium-hospital-hotspot.room-environment{left:70%;top:39%;width:29%;height:31%}
+.premium-hospital-hotspot.room-clinical{left:10%;top:70%;width:30%;height:29%}
+.premium-hospital-hotspot.room-public{left:40%;top:70%;width:30%;height:29%}
+.premium-hospital-hotspot.room-intake{left:70%;top:70%;width:29%;height:29%}
 .hospital-panel .hospital-footer{margin-top:12px}
 @media(max-width:700px){.premium-hospital-art{max-height:none}.premium-hotspot-label{font-size:10px;padding:5px 7px}.premium-hotspot-count{font-size:9px}.premium-hospital-hotspot{border-radius:10px}.hospital-panel .hospital-stage{padding:5px!important}}
 
@@ -347,8 +347,12 @@ function renderConstellation(){
  const roomById=id=>rooms.find(r=>r.id===id);
  const roomSvg=roomLayout.map(p=>{const r=roomById(p.id),count=countFor(p.id),label=r.short.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");return '<g class="svg-room '+(count?'has-data':'')+'" data-room-id="'+r.id+'" role="button" tabindex="0" aria-label="Open '+esc(r.title)+'" aria-describedby="hospital-svg-help"><rect class="svg-room-hit" x="'+p.x+'" y="'+p.y+'" width="'+p.w+'" height="'+p.h+'" rx="9" fill="'+p.fill+'"/><path class="svg-room-topline" d="M'+(p.x+9)+' '+(p.y+8)+' H'+(p.x+p.w-9)+'"/><text class="svg-room-symbol" x="'+(p.x+p.w/2)+'" y="'+(p.y+38)+'" text-anchor="middle">'+p.symbol+'</text><text class="svg-room-title" x="'+(p.x+p.w/2)+'" y="'+(p.y+64)+'" text-anchor="middle">'+label+'</text><text class="svg-room-sub" x="'+(p.x+p.w/2)+'" y="'+(p.y+84)+'" text-anchor="middle">'+(count?count+' dataset'+(count===1?'':'s'):'Explore department')+'</text><circle class="svg-room-status" cx="'+(p.x+p.w-13)+'" cy="'+(p.y+14)+'" r="4" fill="'+(count?'#159c91':'#b6d4da')+'"/></g>'}).join("");
  container.innerHTML='<div class="premium-hospital-canvas" role="group" aria-label="Interactive YIA research hospital"><img class="premium-hospital-art" src="../images/yia-research-hospital-premium.png" alt="Detailed isometric cutaway of the YIA Research Hospital" draggable="false"><div class="premium-hospital-hotspots">'+rooms.map(r=>'<button type="button" class="premium-hospital-hotspot room-'+r.id+'" data-room-id="'+r.id+'" aria-label="Open '+esc(r.title)+'" title="'+esc(r.title)+'"><span class="premium-hotspot-label">'+esc(r.icon+' '+r.title)+'</span>'+(countFor(r.id)?'<span class="premium-hotspot-count">'+countFor(r.id)+' dataset'+(countFor(r.id)===1?'':'s')+'</span>':'')+'</button>').join('')+'</div></div><p class="hospital-svg-help">Select a department on the hospital illustration to explore connected datasets</p>';
- container.querySelectorAll("[data-room-id]").forEach(el=>{const activate=()=>openDepartment(el.dataset.roomId);el.addEventListener("click",activate);el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();activate()}})});
- container.querySelectorAll("[data-room-id]").forEach(el=>el.addEventListener("click",()=>openDepartment(el.dataset.roomId)));
+ const roomHotspots=container.querySelectorAll(".premium-hospital-hotspot[data-room-id]");
+ const selectHotspot=el=>{
+   roomHotspots.forEach(other=>{const selected=other===el;other.classList.toggle("is-selected",selected);other.classList.toggle("is-dimmed",!selected);other.setAttribute("aria-pressed",String(selected));});
+   openDepartment(el.dataset.roomId);
+ };
+ roomHotspots.forEach(el=>el.addEventListener("click",()=>selectHotspot(el)));
  const modal=$("department-backdrop");
  const closeDepartment=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};
  $("department-close").onclick=closeDepartment;
