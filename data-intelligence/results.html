@@ -184,6 +184,38 @@ main{max-width:1440px;padding:18px 22px 36px}
 .hospital-panel .hospital-footer{margin-top:12px}
 @media(max-width:700px){.premium-hospital-art{max-height:none}.premium-hotspot-label{font-size:10px;padding:5px 7px}.premium-hotspot-count{font-size:9px}.premium-hospital-hotspot{border-radius:10px}.hospital-panel .hospital-stage{padding:5px!important}}
 
+
+/* Research hospital side rails: team roster + live Gemini workspace assistant */
+.hospital-stage{overflow:visible!important}
+.hospital-layout{display:grid;grid-template-columns:220px minmax(0,1fr) 300px;gap:14px;align-items:stretch;min-width:0}
+.hospital-side{background:rgba(255,255,255,.96);border:1px solid #dce9ef;border-radius:18px;padding:15px;box-shadow:0 8px 24px #1c52600b;min-width:0;align-self:start}
+.hospital-side-head{display:flex;align-items:flex-start;gap:9px;margin-bottom:13px}
+.hospital-side-icon{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:#e5f5f5;font-size:17px;flex:none}
+.hospital-side h2{font-size:15px;line-height:1.35;margin:0;color:#183d51}
+.hospital-side .side-subtitle{font-size:11px;line-height:1.45;color:#6c8796;margin:4px 0 0}
+.team-list{display:grid;gap:9px}
+.team-member{display:flex;align-items:center;gap:9px;padding:10px 8px;border:1px solid #e4edf0;border-radius:12px;background:#fbfefe;min-width:0}
+.team-avatar{width:32px;height:32px;display:grid;place-items:center;border-radius:50%;background:#e7efff;color:#5364a6;font-weight:850;flex:none}
+.team-member strong{display:block;font-size:11px;line-height:1.4;color:#244c5d}
+.team-member small{display:block;font-size:10px;color:#718995;line-height:1.45;margin-top:2px}
+.team-note{font-size:10px;color:#718995;line-height:1.6;margin:12px 1px 0}
+.hospital-center{min-width:0}
+.hospital-center .hospital-original-embed{width:100%;min-width:0}
+.hospital-center iframe{width:100%;min-width:0}
+.yia-chat-panel{display:flex;flex-direction:column;min-height:520px;max-height:calc(100vh - 42px);position:sticky;top:14px}
+.yia-chat-state{font-size:10px;color:#688493;background:#f2f8fa;border-radius:9px;padding:7px 9px;margin-bottom:10px}
+.yia-chat-log{display:flex;flex-direction:column;gap:9px;overflow:auto;min-height:190px;max-height:calc(100vh - 300px);padding:3px 1px 12px;flex:1}
+.yia-chat-message{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.6;padding:10px 11px;border-radius:13px;max-width:100%}
+.yia-chat-message.assistant{background:#f0f8fa;border:1px solid #dcebef;color:#234a5a;align-self:stretch}
+.yia-chat-message.user{background:#e8e9ff;border:1px solid #d8d9ff;color:#353b77;align-self:flex-end}
+.yia-chat-compose{display:grid;gap:8px;margin-top:10px}
+.yia-chat-compose textarea{width:100%;min-height:90px;resize:vertical;border:1px solid #d7e6eb;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#183d51;background:#fff}
+.yia-chat-compose button{width:100%;border:0;border-radius:11px;padding:11px;background:linear-gradient(110deg,#347f8d,#5b8ee8);color:white;font-weight:800}
+.yia-chat-compose button:disabled{opacity:.55;cursor:wait}
+.yia-chat-footnote{font-size:10px;line-height:1.5;color:#748b98;margin:9px 1px 0}
+@media(max-width:1100px){.hospital-layout{grid-template-columns:190px minmax(0,1fr)}.yia-chat-panel{grid-column:1/-1;position:static;max-height:none;min-height:360px}.yia-chat-log{max-height:380px}}
+@media(max-width:760px){.hospital-stage{padding:10px!important}.hospital-layout{grid-template-columns:minmax(0,1fr)}.hospital-side,.hospital-center{grid-column:1}.hospital-center{overflow-x:auto}.hospital-center iframe{min-width:560px}.yia-chat-panel{grid-column:1;min-height:420px}.team-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
 </style></head><body>
 <div id="hospital-prototype-notice" style="position:relative;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;background:linear-gradient(100deg,#08283c,#10465b);border-bottom:1px solid #2e91a7;color:#eafaff;font:600 14px/1.4 system-ui,sans-serif">
 <span>پروژهٔ اصلی بیمارستان YIA؛ ساختمان برداری، تجهیزات، انیمیشن‌ها و ویرایشگر تعاملی را باز کنید.</span>
@@ -196,10 +228,36 @@ main{max-width:1440px;padding:18px 22px 36px}
 <section class="panel orbital-panel hospital-panel">
 <div class="hospital-stage" id="orbital-stage">
   <div class="hospital-topbar"><div><strong>YIA · Research Hospital</strong><small id="stage-subtitle">Choose a department to explore its datasets</small></div><div class="stage-tools"><span class="pill" id="constellation-status">Waiting for project</span><button id="change-project" type="button" onclick="var p=document.querySelector('.hero .intro');if(p){p.classList.add('project-picker-open');p.style.display='block';p.style.position='relative';p.style.zIndex='20';var i=document.getElementById('project-id');if(i){i.focus();i.scrollIntoView({behavior:'smooth',block:'center'})}}">Choose project</button><button id="refresh">↻ Refresh</button></div></div>
+  <div class="hospital-layout">
+  <aside class="hospital-side" aria-labelledby="yia-team-title">
+    <div class="hospital-side-head"><div class="hospital-side-icon" aria-hidden="true">👥</div><div><h2 id="yia-team-title">Project team</h2><p class="side-subtitle">Team members will be added when confirmed</p></div></div>
+    <div class="team-list">
+      <div class="team-member"><div class="team-avatar">01</div><div><strong>Project lead</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">02</div><div><strong>Clinical research</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">03</div><div><strong>Data science</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">04</div><div><strong>AI / engineering</strong><small>Member not assigned yet</small></div></div>
+      <div class="team-member"><div class="team-avatar">05</div><div><strong>Data governance</strong><small>Member not assigned yet</small></div></div>
+    </div>
+    <p class="team-note">These are role placeholders only, not confirmed people. Names and responsibilities can be updated once the team is finalized.</p>
+  </aside>
+  <div class="hospital-center">
   <div class="hospital-original-embed" aria-label="Original interactive YIA hospital project" style="width:100%;margin:0;padding:0">
   <iframe src="./index.html" title="Original YIA three-floor hospital with nine rooms and AI basement" loading="eager" style="display:block;width:100%;height:1500px;max-height:none;border:0;border-radius:16px;background:#e7f4f1" allowfullscreen></iframe>
   <div style="display:flex;justify-content:flex-end;padding:10px 2px 0"><a href="./index.html" target="_blank" rel="noopener" style="font-size:13px;color:#367d77;font-weight:700">Open original hospital in a full page ↗</a></div>
 </div>
+  <aside class="hospital-side yia-chat-panel" aria-labelledby="yia-chat-title">
+    <div class="hospital-side-head"><div class="hospital-side-icon" aria-hidden="true">✦</div><div><h2 id="yia-chat-title">Ask YIA AI</h2><p class="side-subtitle">Research workspace assistant</p></div></div>
+    <div id="yia-chat-state" class="yia-chat-state" role="status" aria-live="polite">Sign in and connect a project to start.</div>
+    <div id="yia-chat-log" class="yia-chat-log" aria-live="polite">
+      <div class="yia-chat-message assistant">Hello! I can help summarize the connected project, research datasets, saved analyses, experiments, findings, and next steps.</div>
+    </div>
+    <form id="yia-chat-form" class="yia-chat-compose">
+      <textarea id="yia-chat-input" maxlength="8000" placeholder="Ask about this research project…" aria-label="Your question to YIA AI" required></textarea>
+      <button id="yia-chat-send" type="submit">Send question ↗</button>
+    </form>
+    <p class="yia-chat-footnote">Uses the existing secured Supabase AI function. Answers depend on the signed-in account's project access and the context available to the assistant.</p>
+  </aside>
+  </div>
 <div class="hospital-scene" style="display:none!important">
     <div id="bubble-container" class="hospital-building">
 <section class="hospital-room room-blood"><div class="room-header"><span class="room-icon">🩸</span><span class="room-title">BLOOD LAB</span></div><p class="room-desc">Blood tests, glucose and laboratory measurements</p><div class="room-empty">No datasets yet. Connect a project to populate this room.</div></section>
@@ -228,6 +286,28 @@ window.addEventListener("error",e=>{const s=$("status");if(s)s.textContent="Page
 window.addEventListener("unhandledrejection",e=>{const s=$("status");if(s)s.textContent="Page request failed: "+(e.reason?.message||String(e.reason||"unknown error"));console.error("YIA unhandled rejection",e.reason)});
 
 const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function appendHospitalChatMessage(text,kind){
+ const log=$("yia-chat-log");if(!log)return;
+ const item=document.createElement("div");item.className="yia-chat-message "+kind;item.textContent=String(text??"");log.appendChild(item);log.scrollTop=log.scrollHeight;return item;
+}
+const hospitalChatForm=$("yia-chat-form");
+if(hospitalChatForm)hospitalChatForm.addEventListener("submit",async event=>{
+ event.preventDefault();
+ const input=$("yia-chat-input"),send=$("yia-chat-send"),state=$("yia-chat-state");
+ const message=String(input?.value||"").trim();
+ if(!message)return;
+ if(!activeProjectId){state.textContent="Connect a project first, then ask your question.";appendHospitalChatMessage("Please sign in and connect a project using the project controls above before starting a chat.","assistant");return;}
+ if(!await getWorkspaceSession().catch(()=>null)){state.textContent="Sign in is required.";appendHospitalChatMessage("Your YIA session is missing or expired. Sign in again, then retry.","assistant");return;}
+ appendHospitalChatMessage(message,"user");input.value="";input.disabled=true;send.disabled=true;send.textContent="Thinking…";state.textContent="Contacting YIA AI…";
+ try{
+  const {data,error}=await supabase.functions.invoke("workspace-ai-assistant",{body:{project_id:activeProjectId,message}});
+  if(error)throw error;if(data?.error)throw new Error(data.error);
+  appendHospitalChatMessage(data?.answer||"No answer returned.","assistant");state.textContent="AI response received.";
+ }catch(err){const msg=err?.message||"AI request failed.";appendHospitalChatMessage("AI request failed: "+msg,"assistant");state.textContent="Could not get an answer. Check sign-in, project access, and Gemini configuration.";}
+ finally{input.disabled=false;send.disabled=false;send.textContent="Send question ↗";input.focus();}
+});
+
 const num=v=>v!==null&&v!==""&&Number.isFinite(Number(v));
 function parseResults(b){let x=b.results||{};if(typeof x==="string"){try{x=JSON.parse(x)}catch{x={}}}return x}
 function all(){return batches.flatMap(b=>{const x=parseResults(b);return (x.rows||[]).map((r,i)=>({...r,_batch:b.title||"Data batch",_row:i+1}))})}
