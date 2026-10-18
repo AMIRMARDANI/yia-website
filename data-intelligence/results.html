@@ -219,14 +219,18 @@ main{max-width:1440px;padding:18px 22px 36px}
 
 /* Full-screen hospital-only preview */\n.hospital-right-stack{display:none!important}.hospital-layout{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}.hospital-center{display:block!important;width:100%!important;min-width:0!important;overflow:visible!important}.hospital-center iframe{display:block!important;width:100%!important;min-width:0!important;height:max(1600px,calc(100vh + 700px))!important;min-height:1600px!important;max-height:none!important;border:0!important;border-radius:0!important}.hospital-stage{padding:0!important;min-height:0!important;width:100%!important;max-width:none!important;overflow:visible!important}.hospital-stage>.section-heading{display:none!important}@media(max-width:760px){.hospital-center iframe{height:1500px!important;min-height:1500px!important}}\n
 /* Hospital-only view: hide all assistant, team, dataset and auxiliary panels. */
-html,body{width:100%!important;min-width:0!important;margin:0!important;padding:0!important;overflow-x:hidden!important}
+/* Responsive hospital-only layout: keep every control and the full building inside the viewport. */
+html,body{width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;overflow-x:clip!important}
 body>*:not(main):not(script):not(style){display:none!important}
-.hospital-stage{width:100vw!important;max-width:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important}
+main{width:100%!important;max-width:none!important;min-width:0!important;margin:0 auto!important;padding:clamp(8px,1.2vw,18px)!important;overflow-x:clip!important}
+.top{width:100%;min-width:0;flex-wrap:wrap;row-gap:10px}
+.top>*{min-width:0}
+.hospital-stage{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;overflow:visible!important}
 .hospital-stage>.section-heading,.hospital-right-stack,.yia-chat-panel,.team-panel,.dataset-overview,.dataset-cards,.hospital-stage>.dataset-footer{display:none!important}
-.hospital-layout{display:block!important;width:100%!important;max-width:none!important;margin:0!important;padding:0!important}
-.hospital-center{display:block!important;width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important;overflow:visible!important}
-.hospital-center iframe{display:block!important;width:100vw!important;max-width:none!important;min-width:0!important;height:max(1500px,calc(100vh + 650px))!important;min-height:1500px!important;max-height:none!important;margin:0!important;border:0!important;border-radius:0!important}
-@media(max-width:760px){.hospital-center iframe{height:1500px!important;min-height:1500px!important}}
+.hospital-layout{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important}
+.hospital-center{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:0!important;overflow:hidden!important}
+.hospital-center iframe{display:block!important;box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;height:max(1500px,calc(100vh + 650px))!important;min-height:1500px!important;max-height:none!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important}
+@media(max-width:760px){main{padding:6px!important}.hospital-center iframe{height:1500px!important;min-height:1500px!important}.top{align-items:flex-start}.top a,.top button{white-space:normal}}
 </style></head><body>
 <div id="hospital-prototype-notice" style="position:relative;z-index:9999;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 18px;background:linear-gradient(100deg,#08283c,#10465b);border-bottom:1px solid #2e91a7;color:#eafaff;font:600 14px/1.4 system-ui,sans-serif">
 <span>پروژهٔ اصلی بیمارستان YIA؛ ساختمان برداری، تجهیزات، انیمیشن‌ها و ویرایشگر تعاملی را باز کنید.</span>
