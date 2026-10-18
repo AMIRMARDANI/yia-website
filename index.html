@@ -152,6 +152,12 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
   .member-login-link{padding:8px 11px}
 }
 
+
+.hospital-featured-project{display:grid;grid-template-columns:minmax(220px,.9fr) 1.1fr;gap:clamp(22px,4vw,52px);align-items:center;margin:26px 0 28px;padding:clamp(20px,3vw,36px);border:1px solid rgba(76,210,255,.28);border-radius:24px;background:linear-gradient(115deg,rgba(8,36,55,.98),rgba(13,24,48,.98));text-decoration:none;color:var(--text);overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s}
+.hospital-featured-project:hover{transform:translateY(-3px);border-color:rgba(76,210,255,.65);box-shadow:0 20px 55px rgba(0,0,0,.25)}
+.hospital-featured-copy h3{font-size:clamp(25px,3vw,38px);line-height:1.15;margin:9px 0 12px}.hospital-featured-copy p{color:var(--muted);line-height:1.8;max-width:620px;font-size:14px}.hospital-featured-cta{display:inline-flex;margin-top:20px;padding:11px 16px;border-radius:999px;background:linear-gradient(100deg,var(--cyan),var(--blue));color:#061321;font-weight:800;font-size:13px}
+.hospital-featured-art{position:relative;min-height:210px;display:flex;align-items:center;justify-content:center;isolation:isolate;background:radial-gradient(ellipse at center,rgba(72,220,255,.15),transparent 65%)}.hospital-art-roof{position:absolute;top:18px;width:78%;height:70px;background:linear-gradient(160deg,#80d6d0,#286d79);clip-path:polygon(50% 0,100% 100%,0 100%);opacity:.9}.hospital-art-building{position:relative;margin-top:52px;width:82%;height:120px;padding:25px 12px 12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border:5px solid #438d8a;border-radius:8px;background:#d8f2ed;box-shadow:0 14px 35px rgba(0,0,0,.25)}.hospital-art-building i{display:block;border:3px solid #4c8c8e;border-radius:4px;background:repeating-linear-gradient(0deg,transparent 0 25px,#75b6b4 26px 30px),linear-gradient(90deg,#b6e4df 48%,#fff 49% 53%,#b6e4df 54%)}.hospital-art-building b{position:absolute;top:-16px;left:15%;width:70%;padding:5px 8px;text-align:center;border:2px solid #9dd6d0;border-radius:6px;background:#f4fffc;color:#275e61;letter-spacing:.2em;font-size:15px}.hospital-art-base{position:absolute;bottom:4px;width:88%;height:8px;border-radius:5px;background:#f2c66d;box-shadow:0 9px 0 rgba(72,220,255,.22)}
+@media(max-width:700px){.hospital-featured-project{grid-template-columns:1fr}.hospital-featured-art{min-height:185px}.hospital-art-building{height:105px}}
 </style>
 </head>
 <body>
@@ -204,6 +210,10 @@ footer{border-top:1px solid rgba(140,190,230,.1);padding:28px;text-align:center;
     <div id="project-filters" class="project-filters" aria-label="Filter projects by field"></div>
     <div id="project-count" class="project-count" aria-live="polite"></div>
   </div>
+  <a class="hospital-featured-project" href="data-intelligence/results.html" aria-label="Open YIA Research Hospital">
+    <div class="hospital-featured-art" aria-hidden="true"><span class="hospital-art-roof"></span><span class="hospital-art-building"><i></i><i></i><i></i><b>YIA</b></span><span class="hospital-art-base"></span></div>
+    <div class="hospital-featured-copy"><div class="kicker">FEATURED RESEARCH PROJECT</div><h3>YIA Research Hospital</h3><p>An interactive research hospital for exploring departments and connecting medical documents, laboratory results, images and research datasets.</p><span class="hospital-featured-cta">Explore Research Hospital ↗</span></div>
+  </a>
   <div id="public-projects" class="public-projects">
     <div class="project-loading">Loading approved projects…</div>
   </div>
