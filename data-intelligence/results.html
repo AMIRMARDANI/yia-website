@@ -368,17 +368,19 @@ function renderConstellation(){
  container.innerHTML='<div class="premium-hospital-canvas" role="group" aria-label="Interactive YIA research hospital"><img class="premium-hospital-art" src="../images/yia-research-hospital-premium.png" alt="Detailed isometric cutaway of the YIA Research Hospital" draggable="false"><div class="premium-hospital-hotspots">'+rooms.map(r=>'<button type="button" class="premium-hospital-hotspot room-'+r.id+'" data-room-id="'+r.id+'" aria-label="Open '+esc(r.title)+'" title="'+esc(r.title)+'"><span class="premium-hotspot-label">'+esc(r.icon+' '+r.title)+'</span>'+(countFor(r.id)?'<span class="premium-hotspot-count">'+countFor(r.id)+' dataset'+(countFor(r.id)===1?'':'s')+'</span>':'')+'</button>').join('')+'</div></div><p class="hospital-svg-help">Select a department on the hospital illustration to explore connected datasets</p>';
  const roomHotspots=container.querySelectorAll(".premium-hospital-hotspot[data-room-id]");
  const selectHotspot=el=>{
+   const vault=$("vault-upload-backdrop");if(vault){vault.classList.remove("open");vault.setAttribute("aria-hidden","true");}
    roomHotspots.forEach(other=>{const selected=other===el;other.classList.toggle("is-selected",selected);other.classList.toggle("is-dimmed",!selected);other.setAttribute("aria-pressed",String(selected));});
    container.querySelector(".premium-hospital-canvas")?.classList.add("has-room-selection");
    openDepartment(el.dataset.roomId);
  };
- roomHotspots.forEach(el=>el.addEventListener("click",()=>selectHotspot(el)));
+ roomHotspots.forEach(el=>el.addEventListener("click",ev=>{ev.preventDefault();ev.stopPropagation();selectHotspot(el);}));
  const modal=$("department-backdrop");
  const closeDepartment=()=>{modal.classList.remove("open");modal.setAttribute("aria-hidden","true")};
  $("department-close").onclick=closeDepartment;
  modal.onclick=e=>{if(e.target===modal)closeDepartment()};
  $("department-analyze").onclick=()=>{closeDepartment();if(!batches.length){const intro=document.querySelector(".hero .intro");if(intro)intro.classList.add("project-picker-open");const input=$("project-id");if(input)input.focus();return}openAnalysisOutput()};
  function openDepartment(id){
+  const vault=$("vault-upload-backdrop");if(vault){vault.classList.remove("open");vault.setAttribute("aria-hidden","true");}
   const room=rooms.find(r=>r.id===id);if(!room)return;
   const items=cardData.filter(d=>d.roomId===id);
   $("department-title").textContent=room.icon+" "+room.title;
