@@ -457,12 +457,10 @@ const id=new URLSearchParams(location.search).get("project");if(id){$("project-i
 window.addEventListener("message",event=>{
  if(event.origin!==window.location.origin||event.source!==document.querySelector(".hospital-center iframe")?.contentWindow)return;
  const d=event.data;if(!d||d.type!=="YIA_HOSPITAL_ROOM_SELECTED")return;
- const backdrop=$("vault-upload-backdrop"),label=String(d.roomLabel||"Hospital room");
- backdrop.dataset.roomId=label;
- $("vault-room-label").textContent=label+" · Floor "+String(d.floor||"")+" · Private project vault";
- $("vault-upload-status").textContent=activeProjectId?"Ready to add a document.":"First sign in and connect a project using Choose project.";
- $("vault-upload-form").reset();
- backdrop.classList.add("open");backdrop.setAttribute("aria-hidden","false");
+ /* Room selection updates context only. Upload opens only from the explicit Upload file button. */
+ const label=String(d.roomLabel||"Hospital room");
+ const button=$("department-open-vault");
+ if(button)button.dataset.selectedRoomLabel=label;
 });
 const vaultBackdrop=$("vault-upload-backdrop");if(vaultBackdrop){$("vault-close").onclick=()=>{vaultBackdrop.classList.remove("open");vaultBackdrop.setAttribute("aria-hidden","true")};vaultBackdrop.addEventListener("click",e=>{if(e.target===vaultBackdrop){vaultBackdrop.classList.remove("open");vaultBackdrop.setAttribute("aria-hidden","true")}});
 $("vault-upload-form").addEventListener("submit",async e=>{e.preventDefault();const status=$("vault-upload-status"),button=$("vault-submit"),file=$("vault-file").files[0],roomId=vaultBackdrop.dataset.roomId;if(!activeProjectId){status.textContent="Connect a project first.";return}if(!file){status.textContent="Choose a file.";return}if(file.size>50*1024*1024){status.textContent="File exceeds 50 MB.";return}try{await requireApprovedMember()}catch(err){status.textContent=err.message;return}button.disabled=true;status.textContent="Uploading to private vault…";let storagePath=null,datasetId=null;try{const safeName=file.name.replace(/[^a-zA-Z0-9._-]+/g,"_").slice(-150)||"upload";storagePath=activeProjectId+"/"+crypto.randomUUID()+"/"+safeName;const up=await supabase.storage.from("yia-private-vault").upload(storagePath,file,{contentType:file.type||"application/octet-stream"});if(up.error)throw up.error;const meta={room_id:roomId,document_type:$("vault-doc-type").value,original_filename:file.name,mime_type:file.type||null,size_bytes:file.size,notes:$("vault-notes").value.trim(),storage_bucket:"yia-private-vault",storage_path:storagePath};const d=await supabase.from("workspace_datasets").insert({project_id:activeProjectId,title:$("vault-doc-title").value.trim(),description:meta.notes||null,source_type:"file",status:"registered",metadata:meta}).select("id").single();if(d.error)throw d.error;datasetId=d.data.id;const v=await supabase.from("workspace_dataset_versions").insert({dataset_id:datasetId,version_number:1,storage_path:storagePath,schema_snapshot:meta});if(v.error)throw v.error;status.textContent="Uploaded and registered in the private vault.";await load()}catch(err){if(storagePath&&!datasetId)await supabase.storage.from("yia-private-vault").remove([storagePath]).catch(()=>{});status.textContent="Upload failed: "+(err.message||"Check project access and vault permissions")}finally{button.disabled=false}});}
